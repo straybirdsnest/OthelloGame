@@ -5,8 +5,8 @@ import java.time.Instant;
 public class Game {
 
 	/**
-	 * Game represent one game between two players.
-	 * A game should record the game time, two players, and the result.
+	 * Game represent one game between two players. A game should record the
+	 * game time, two players, and the result.
 	 */
 	Player playerBlack;
 	Player playerWhite;
@@ -14,7 +14,25 @@ public class Game {
 	int white;
 	Instant gameBeginTime;
 	Instant gameEndTime;
-	public static void main(String[] args){
+
+	private ChessBoard chessBoard = null;
+
+	public Game() {
+		if (chessBoard == null) {
+			chessBoard = new ChessBoard();
+		}
+	}
+
+	public void newGame() {
+		chessBoard.initChessboard();
+	}
+
+	public void update() {
+		chessBoard.searchSuggestedChessmanPosition();
+
+	}
+
+	public static void main(String[] args) {
 		Instant instant = Instant.now();
 	}
 }

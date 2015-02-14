@@ -86,7 +86,7 @@ public class ChessBoard {
 		}
 		return false;
 	}
-
+	
 	private int stepDirection(int x, int y, boolean findDifferent, int direction) {
 		if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH) {
 			if (chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
@@ -202,7 +202,20 @@ public class ChessBoard {
 		}
 		return false;
 	}
-
+	
+	public void turnEnd(){
+		int i=0;
+		boolean flag = false;
+		for(i=0;i<64;i++){
+			if(suggestedPosition[i] != 0){
+				flag = true;
+			}
+		}
+		if(flag == true){
+			currentChessman.flip();
+		}
+	}
+	
 	/**
 	 * get the chessman of position (x,y).
 	 * 
@@ -231,6 +244,9 @@ public class ChessBoard {
 	 */
 	public static void main(String[] args) {
 		ChessBoard chessBoard = new ChessBoard();
+		chessBoard.searchSuggestedChessmanPosition();
+		chessBoard.setChessman(2, 4);
+		chessBoard.turnEnd();
 		chessBoard.searchSuggestedChessmanPosition();
 		int i = 0, j = 0;
 		int[] suggestedPosition = chessBoard.getSuggestedPosition();
