@@ -9,16 +9,25 @@ public class ChessBoard {
 	 */
 	public static final int BOARDWIDTH = 8;
 
+	private static final int DIRECTION_TOP = 1;
+	private static final int DIRECTION_LEFT = 2;
+	private static final int DIRECTION_RIGHT = 3;
+	private static final int DIRECTION_BUTTOM = 4;
+	private static final int DIRECTION_LEFTTOP = 5;
+	private static final int DIRECTION_RIGHTTOP = 6;
+	private static final int DIRECTION_LEFTBUTTOM = 7;
+	private static final int DIRECTION_RIGHTBUTTOM = 8;
+
 	private Chessman chessmen[][] = null;
-	private int suggestPostion[] = null;
+	private int suggestedPosition[] = null;
 	private Chessman currentChessman = null;
 
 	public ChessBoard() {
 		if (currentChessman == null) {
 			currentChessman = new Chessman();
 		}
-		if (suggestPostion == null) {
-			suggestPostion = new int[64];
+		if (suggestedPosition == null) {
+			suggestedPosition = new int[64];
 		}
 		if (chessmen == null) {
 			chessmen = new Chessman[BOARDWIDTH][BOARDWIDTH];
@@ -71,14 +80,90 @@ public class ChessBoard {
 	private boolean checkChessmanPosition(int x, int y) {
 		if (0 <= x && x < 8 && 0 <= y && y < 8) {
 			int position = x * 8 + y;
-			if (suggestPostion[position] == 1) {
+			if (suggestedPosition[position] == 1) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	// private void test
+	private int stepDirection(int x, int y, boolean findDifferent, int direction) {
+		if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH) {
+			if (chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
+				return 0;
+			} else {
+				if (chessmen[x][y].getChessman() != currentChessman
+						.getChessman()) {
+					if (direction == DIRECTION_TOP) {
+						return stepDirection(x - 1, y, true, DIRECTION_TOP);
+					}
+					if (direction == DIRECTION_LEFT) {
+						return stepDirection(x, y - 1, true, DIRECTION_LEFT);
+					}
+					if (direction == DIRECTION_RIGHT) {
+						return stepDirection(x, y + 1, true, DIRECTION_RIGHT);
+					}
+					if (direction == DIRECTION_BUTTOM) {
+						return stepDirection(x + 1, y, true, DIRECTION_BUTTOM);
+					}
+					if (direction == DIRECTION_LEFTTOP) {
+						return stepDirection(x - 1, y - 1, true,
+								DIRECTION_LEFTTOP);
+					}
+					if (direction == DIRECTION_RIGHTTOP) {
+						return stepDirection(x - 1, y + 1, true,
+								DIRECTION_RIGHTTOP);
+					}
+					if (direction == DIRECTION_LEFTBUTTOM) {
+						return stepDirection(x + 1, y - 1, true,
+								DIRECTION_LEFTBUTTOM);
+					}
+					if (direction == DIRECTION_RIGHTBUTTOM) {
+						return stepDirection(x + 1, y + 1, true,
+								DIRECTION_RIGHTBUTTOM);
+					}
+				}
+
+			}
+			if (findDifferent == true
+					&& chessmen[x][y].getChessman() == currentChessman
+							.getChessman()) {
+				return 1;
+			}
+		} else {
+			return 0;
+		}
+		return 0;
+	}
+
+	private void testAllDirection(int x, int y) {
+		int position = x * 8 + y;
+		suggestedPosition[position] = 0;
+		if (stepDirection(x - 1, y, false, DIRECTION_TOP) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x, y - 1, false, DIRECTION_LEFT) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x, y + 1, false, DIRECTION_RIGHT) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x + 1, y, false, DIRECTION_BUTTOM) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x - 1, y - 1, false, DIRECTION_LEFTTOP) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x - 1, y + 1, false, DIRECTION_RIGHTTOP) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x + 1, y - 1, false, DIRECTION_LEFTBUTTOM) == 1) {
+			suggestedPosition[position] = 1;
+		}
+		if (stepDirection(x + 1, y + 1, false, DIRECTION_RIGHTBUTTOM) == 1) {
+			suggestedPosition[position] = 1;
+		}
+	}
 
 	public void searchSuggestedChessmanPosition() {
 		int i = 0, j = 0, position = 0;
@@ -86,9 +171,9 @@ public class ChessBoard {
 			for (j = 0; j < BOARDWIDTH; j++) {
 				position = i * 8 + j;
 				if (chessmen[i][j].getChessman() != Chessman.CHESSMAN_NONE) {
-					suggestPostion[position] = 0;
+					suggestedPosition[position] = 0;
 				} else {
-
+					testAllDirection(i, j);
 				}
 			}
 		}
@@ -103,17 +188,19 @@ public class ChessBoard {
 	 * @param y
 	 *            the column position of the chessman, from 0 to BOARDWIDTH - 1
 	 */
-	public void setChessman(int x, int y) {
+	public boolean setChessman(int x, int y) {
 		if (chessmen != null) {
 			if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH
 					&& chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
 				if (checkChessmanPosition(x, y) == true) {
 					chessmen[x][y].setChessman(currentChessman.getChessman());
+					return true;
 				}
 			}
 		} else {
 			System.err.println("Chessboard initialization failed!.");
 		}
+		return false;
 	}
 
 	/**
@@ -134,17 +221,31 @@ public class ChessBoard {
 		}
 	}
 
+	public int[] getSuggestedPosition() {
+		return suggestedPosition;
+	}
+
 	/**
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		ChessBoard chessBoard = new ChessBoard();
+		chessBoard.searchSuggestedChessmanPosition();
 		int i = 0, j = 0;
+		int[] suggestedPosition = chessBoard.getSuggestedPosition();
 		System.out.println("The chessboard:");
 		for (i = 0; i < ChessBoard.BOARDWIDTH; i++) {
 			for (j = 0; j < ChessBoard.BOARDWIDTH; j++) {
-				System.out.print(chessBoard.getChessman(i, j) + " ");
+				if (chessBoard.getChessman(i, j).getChessman() == Chessman.CHESSMAN_NONE) {
+					if (suggestedPosition[i * 8 + j] == 1) {
+						System.out.print("SUGGESTED ");
+					} else {
+						System.out.print(chessBoard.getChessman(i, j) + " ");
+					}
+				} else {
+					System.out.print(chessBoard.getChessman(i, j) + " ");
+				}
 			}
 			System.out.println("");
 		}
