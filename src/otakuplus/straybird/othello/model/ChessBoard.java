@@ -87,7 +87,8 @@ public class ChessBoard {
 		return false;
 	}
 	
-	private int stepDirection(int x, int y, boolean findDifferent, int direction) {
+	private int stepDirection(int x, int y, boolean findDifferent, int direction, boolean flip) {
+		int result = 0;
 		if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH) {
 			if (chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
 				return 0;
@@ -95,32 +96,64 @@ public class ChessBoard {
 				if (chessmen[x][y].getChessman() != currentChessman
 						.getChessman()) {
 					if (direction == DIRECTION_TOP) {
-						return stepDirection(x - 1, y, true, DIRECTION_TOP);
+						result = stepDirection(x - 1, y, true, DIRECTION_TOP, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_LEFT) {
-						return stepDirection(x, y - 1, true, DIRECTION_LEFT);
+						result =  stepDirection(x, y - 1, true, DIRECTION_LEFT, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_RIGHT) {
-						return stepDirection(x, y + 1, true, DIRECTION_RIGHT);
+						result =  stepDirection(x, y + 1, true, DIRECTION_RIGHT, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_BUTTOM) {
-						return stepDirection(x + 1, y, true, DIRECTION_BUTTOM);
+						result =  stepDirection(x + 1, y, true, DIRECTION_BUTTOM, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_LEFTTOP) {
-						return stepDirection(x - 1, y - 1, true,
-								DIRECTION_LEFTTOP);
+						result = stepDirection(x - 1, y - 1, true,
+								DIRECTION_LEFTTOP, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_RIGHTTOP) {
-						return stepDirection(x - 1, y + 1, true,
-								DIRECTION_RIGHTTOP);
+						result = stepDirection(x - 1, y + 1, true,
+								DIRECTION_RIGHTTOP, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_LEFTBUTTOM) {
-						return stepDirection(x + 1, y - 1, true,
-								DIRECTION_LEFTBUTTOM);
+						result = stepDirection(x + 1, y - 1, true,
+								DIRECTION_LEFTBUTTOM, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 					if (direction == DIRECTION_RIGHTBUTTOM) {
-						return stepDirection(x + 1, y + 1, true,
-								DIRECTION_RIGHTBUTTOM);
+						result = stepDirection(x + 1, y + 1, true,
+								DIRECTION_RIGHTBUTTOM, flip);
+						if(result == 1 && flip == true){
+							chessmen[x][y].flip();
+						}
+						return result;
 					}
 				}
 
@@ -136,31 +169,31 @@ public class ChessBoard {
 		return 0;
 	}
 
-	private void testAllDirection(int x, int y) {
+	private void testAllDirection(int x, int y, boolean flip) {
 		int position = x * 8 + y;
 		suggestedPosition[position] = 0;
-		if (stepDirection(x - 1, y, false, DIRECTION_TOP) == 1) {
+		if (stepDirection(x - 1, y, false, DIRECTION_TOP, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x, y - 1, false, DIRECTION_LEFT) == 1) {
+		if (stepDirection(x, y - 1, false, DIRECTION_LEFT, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x, y + 1, false, DIRECTION_RIGHT) == 1) {
+		if (stepDirection(x, y + 1, false, DIRECTION_RIGHT, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x + 1, y, false, DIRECTION_BUTTOM) == 1) {
+		if (stepDirection(x + 1, y, false, DIRECTION_BUTTOM, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x - 1, y - 1, false, DIRECTION_LEFTTOP) == 1) {
+		if (stepDirection(x - 1, y - 1, false, DIRECTION_LEFTTOP, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x - 1, y + 1, false, DIRECTION_RIGHTTOP) == 1) {
+		if (stepDirection(x - 1, y + 1, false, DIRECTION_RIGHTTOP, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x + 1, y - 1, false, DIRECTION_LEFTBUTTOM) == 1) {
+		if (stepDirection(x + 1, y - 1, false, DIRECTION_LEFTBUTTOM, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
-		if (stepDirection(x + 1, y + 1, false, DIRECTION_RIGHTBUTTOM) == 1) {
+		if (stepDirection(x + 1, y + 1, false, DIRECTION_RIGHTBUTTOM, flip) == 1) {
 			suggestedPosition[position] = 1;
 		}
 	}
@@ -173,7 +206,7 @@ public class ChessBoard {
 				if (chessmen[i][j].getChessman() != Chessman.CHESSMAN_NONE) {
 					suggestedPosition[position] = 0;
 				} else {
-					testAllDirection(i, j);
+					testAllDirection(i, j, false);
 				}
 			}
 		}
@@ -193,6 +226,7 @@ public class ChessBoard {
 			if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH
 					&& chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
 				if (checkChessmanPosition(x, y) == true) {
+					testAllDirection(x, y, true);
 					chessmen[x][y].setChessman(currentChessman.getChessman());
 					return true;
 				}

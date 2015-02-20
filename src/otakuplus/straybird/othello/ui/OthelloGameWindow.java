@@ -1,6 +1,8 @@
 package otakuplus.straybird.othello.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -49,7 +51,7 @@ public class OthelloGameWindow {
 		GridLayout othellGameLayout = new GridLayout();
 		shell.setLayout(othellGameLayout);
 
-		Canvas canvas = new Canvas(shell, SWT.NONE);
+		final Canvas canvas = new Canvas(shell, SWT.NONE);
 		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
 		canvas.setLayoutData(canvasGridData);
 		canvas.addPaintListener(new PaintListener() {
@@ -109,6 +111,34 @@ public class OthelloGameWindow {
 
 				image.dispose();
 			}
+		});
+		
+		canvas.addMouseListener(new MouseListener(){
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				int x = e.x;
+				int y = e.y;
+				if(chessBoard.setChessman( y / 40, x / 40) == true)
+				{
+					chessBoard.turnEnd();
+					chessBoard.searchSuggestedChessmanPosition();
+				}
+				canvas.redraw();
+			}
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
 		});
 	}
 
