@@ -1,6 +1,8 @@
 package otakuplus.straybird.othellogame.ui;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -11,6 +13,7 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -30,9 +33,13 @@ public class LoginWindow {
 	}
 
 	protected void createContents() {
+		Monitor monitor = Display.getDefault().getPrimaryMonitor();
+
 		shell = new Shell(SWT.SHELL_TRIM);
 		shell.setText("奥赛罗棋");
 		shell.setSize(430, 325);
+		shell.setLocation((monitor.getBounds().width - 430) / 2,
+				(monitor.getBounds().height - 325) / 2);
 		GridLayout loginWindowLayout = new GridLayout();
 		loginWindowLayout.numColumns = 5;
 		loginWindowLayout.makeColumnsEqualWidth = false;
@@ -74,8 +81,29 @@ public class LoginWindow {
 			}
 		});
 
-		Text userNameText = new Text(shell, SWT.LEFT);
+		final Text userNameText = new Text(shell, SWT.LEFT);
 		userNameText.setText("帐号");
+		userNameText.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (userNameText.getText().equals("帐号")) {
+					userNameText.setText("");
+				} else if (userNameText.getText().equals("")) {
+					userNameText.setText("帐号");
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (userNameText.getText().equals("帐号")) {
+					userNameText.setText("");
+				} else if (userNameText.getText().equals("")) {
+					userNameText.setText("帐号");
+				}
+			}
+		});
+
 		GridData usernameGridData = new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 3, 1);
 		usernameGridData.widthHint = 194;
@@ -83,22 +111,46 @@ public class LoginWindow {
 		Link registerLink = new Link(shell, SWT.CENTER);
 		registerLink.setText("注册帐号");
 
-		Text passWordText = new Text(shell, SWT.LEFT);
+		final Text passWordText = new Text(shell, SWT.LEFT);
 		passWordText.setText("密码");
+		passWordText.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (passWordText.getText().equals("密码")) {
+					passWordText.setText("");
+					passWordText.setEchoChar('*');
+				} else if (passWordText.getText().equals("")) {
+					passWordText.setText("密码");
+					passWordText.setEchoChar('\0');
+				}
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (passWordText.getText().equals("密码")) {
+					passWordText.setText("");
+					passWordText.setEchoChar('*');
+				} else if (passWordText.getText().equals("")) {
+					passWordText.setText("密码");
+					passWordText.setEchoChar('\0');
+				}
+			}
+		});
 		GridData passwordGridData = new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 3, 1);
 		passwordGridData.widthHint = 194;
 		passWordText.setLayoutData(passwordGridData);
 		Link forgetLink = new Link(shell, SWT.CENTER);
 		forgetLink.setText("找回密码");
-		
+
 		Button remeberButton = new Button(shell, SWT.CHECK);
-		
+
 		Label remeberLabel = new Label(shell, SWT.CENTER);
 		remeberLabel.setText("记住密码");
-		
+
 		Button autoButton = new Button(shell, SWT.CHECK);
-		
+
 		Label autoLabel = new Label(shell, SWT.CENTER);
 		autoLabel.setText("自动登陆");
 		GridData autoLabelGridData = new GridData();
