@@ -22,6 +22,9 @@ public class ChessBoard {
 	private int suggestedPosition[] = null;
 	private Chessman currentChessman = null;
 
+	private int blackNumber = 0;
+	private int whiteNumber = 0;
+
 	public ChessBoard() {
 		if (currentChessman == null) {
 			currentChessman = new Chessman();
@@ -64,6 +67,23 @@ public class ChessBoard {
 
 		// Set Player's current chessman to black
 		currentChessman.setChessman(Chessman.CHESSMAN_BLACK);
+
+		calculateChessmenNumber();
+	}
+
+	private void calculateChessmenNumber() {
+		int i = 0, j = 0;
+		blackNumber = 0;
+		whiteNumber = 0;
+		for (i = 0; i < ChessBoard.BOARDWIDTH; i++) {
+			for (j = 0; j < ChessBoard.BOARDWIDTH; j++) {
+				if (chessmen[i][j].getChessman() == Chessman.CHESSMAN_BLACK) {
+					blackNumber++;
+				} else if (chessmen[i][j].getChessman() == Chessman.CHESSMAN_WHITE) {
+					whiteNumber++;
+				}
+			}
+		}
 	}
 
 	/**
@@ -86,8 +106,9 @@ public class ChessBoard {
 		}
 		return false;
 	}
-	
-	private int stepDirection(int x, int y, boolean findDifferent, int direction, boolean flip) {
+
+	private int stepDirection(int x, int y, boolean findDifferent,
+			int direction, boolean flip) {
 		int result = 0;
 		if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH) {
 			if (chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
@@ -96,29 +117,33 @@ public class ChessBoard {
 				if (chessmen[x][y].getChessman() != currentChessman
 						.getChessman()) {
 					if (direction == DIRECTION_TOP) {
-						result = stepDirection(x - 1, y, true, DIRECTION_TOP, flip);
-						if(result == 1 && flip == true){
+						result = stepDirection(x - 1, y, true, DIRECTION_TOP,
+								flip);
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
 					}
 					if (direction == DIRECTION_LEFT) {
-						result =  stepDirection(x, y - 1, true, DIRECTION_LEFT, flip);
-						if(result == 1 && flip == true){
+						result = stepDirection(x, y - 1, true, DIRECTION_LEFT,
+								flip);
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
 					}
 					if (direction == DIRECTION_RIGHT) {
-						result =  stepDirection(x, y + 1, true, DIRECTION_RIGHT, flip);
-						if(result == 1 && flip == true){
+						result = stepDirection(x, y + 1, true, DIRECTION_RIGHT,
+								flip);
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
 					}
 					if (direction == DIRECTION_BUTTOM) {
-						result =  stepDirection(x + 1, y, true, DIRECTION_BUTTOM, flip);
-						if(result == 1 && flip == true){
+						result = stepDirection(x + 1, y, true,
+								DIRECTION_BUTTOM, flip);
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
@@ -126,7 +151,7 @@ public class ChessBoard {
 					if (direction == DIRECTION_LEFTTOP) {
 						result = stepDirection(x - 1, y - 1, true,
 								DIRECTION_LEFTTOP, flip);
-						if(result == 1 && flip == true){
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
@@ -134,7 +159,7 @@ public class ChessBoard {
 					if (direction == DIRECTION_RIGHTTOP) {
 						result = stepDirection(x - 1, y + 1, true,
 								DIRECTION_RIGHTTOP, flip);
-						if(result == 1 && flip == true){
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
@@ -142,7 +167,7 @@ public class ChessBoard {
 					if (direction == DIRECTION_LEFTBUTTOM) {
 						result = stepDirection(x + 1, y - 1, true,
 								DIRECTION_LEFTBUTTOM, flip);
-						if(result == 1 && flip == true){
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
@@ -150,7 +175,7 @@ public class ChessBoard {
 					if (direction == DIRECTION_RIGHTBUTTOM) {
 						result = stepDirection(x + 1, y + 1, true,
 								DIRECTION_RIGHTBUTTOM, flip);
-						if(result == 1 && flip == true){
+						if (result == 1 && flip == true) {
 							chessmen[x][y].flip();
 						}
 						return result;
@@ -236,20 +261,21 @@ public class ChessBoard {
 		}
 		return false;
 	}
-	
-	public void turnEnd(){
-		int i=0;
+
+	public void turnEnd() {
+		int i = 0;
 		boolean flag = false;
-		for(i=0;i<64;i++){
-			if(suggestedPosition[i] != 0){
+		for (i = 0; i < 64; i++) {
+			if (suggestedPosition[i] != 0) {
 				flag = true;
 			}
 		}
-		if(flag == true){
+		if (flag == true) {
 			currentChessman.flip();
 		}
+		calculateChessmenNumber();
 	}
-	
+
 	/**
 	 * get the chessman of position (x,y).
 	 * 
@@ -266,6 +292,14 @@ public class ChessBoard {
 			System.err.println("out of index.");
 			return null;
 		}
+	}
+
+	public int getBlackNumber() {
+		return blackNumber;
+	}
+
+	public int getWhiteNumber() {
+		return whiteNumber;
 	}
 
 	public int[] getSuggestedPosition() {

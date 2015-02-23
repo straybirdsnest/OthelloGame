@@ -10,6 +10,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import otakuplus.straybird.othellogame.model.ChessBoard;
@@ -49,17 +50,23 @@ public class OthelloGameWindow {
 		shell.setBackgroundImage(image);
 		image.dispose();
 		GridLayout othellGameLayout = new GridLayout();
+		othellGameLayout.numColumns = 1;
 		shell.setLayout(othellGameLayout);
 
 		final Canvas canvas = new Canvas(shell, SWT.NONE);
 		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
+		canvasGridData.widthHint = 321;
+		canvasGridData.heightHint = 321;
 		canvas.setLayoutData(canvasGridData);
+
+		final Label whiteLabel = new Label(shell, SWT.CENTER);
+		whiteLabel.setText("White: 02");
+		final Label blackLabel = new Label(shell, SWT.CENTER);
+		blackLabel.setText("Black: 02");
+
 		canvas.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
-				Image image = new Image(Display.getDefault(), "Othello.png");
-				e.gc.drawImage(image, 0, 0, 391, 192, 0, 0, 391, 192);
-
 				// drawing chessboard
 				e.gc.setForeground(Display.getDefault().getSystemColor(
 						SWT.COLOR_BLACK));
@@ -108,38 +115,42 @@ public class OthelloGameWindow {
 								31, 31);
 					}
 				}
-
-				image.dispose();
 			}
 		});
-		
-		canvas.addMouseListener(new MouseListener(){
+
+		canvas.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
-				if(chessBoard.setChessman( y / 40, x / 40) == true)
-				{
+				if (chessBoard.setChessman(y / 40, x / 40) == true) {
 					chessBoard.turnEnd();
 					chessBoard.searchSuggestedChessmanPosition();
 				}
+				blackLabel.setText("Black: " + chessBoard.getBlackNumber());
+				whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
+				blackLabel.redraw();
+				whiteLabel.redraw();
+
 				canvas.redraw();
 			}
 
 			@Override
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		});
+
+		shell.pack();
 	}
 
 	public static void main(String[] args) {
