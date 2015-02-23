@@ -51,7 +51,8 @@ public class LoginWindow {
 			@Override
 			public void paintControl(PaintEvent e) {
 				Image image = new Image(Display.getDefault(), "Othello.png");
-				e.gc.drawImage(image, 0, 0, image.getBounds().width, image.getBounds().height, 0, 0, 313, 162);
+				e.gc.drawImage(image, 0, 0, image.getBounds().width,
+						image.getBounds().height, 0, 0, 313, 162);
 				image.dispose();
 			}
 		});
@@ -61,7 +62,7 @@ public class LoginWindow {
 		userImageData.horizontalIndent = 45;
 		userImageData.widthHint = 80;
 		userImageData.heightHint = 80;
-		userImageData.verticalSpan = 2;
+		userImageData.verticalSpan = 3;
 		userImage.setLayout(new GridLayout());
 		userImage.setLayoutData(userImageData);
 		userImage.addPaintListener(new PaintListener() {
@@ -90,6 +91,19 @@ public class LoginWindow {
 		passWordText.setLayoutData(passwordGridData);
 		Link forgetLink = new Link(shell, SWT.CENTER);
 		forgetLink.setText("找回密码");
+		
+		Button remeberButton = new Button(shell, SWT.CHECK);
+		
+		Label remeberLabel = new Label(shell, SWT.CENTER);
+		remeberLabel.setText("记住密码");
+		
+		Button autoButton = new Button(shell, SWT.CHECK);
+		
+		Label autoLabel = new Label(shell, SWT.CENTER);
+		autoLabel.setText("自动登陆");
+		GridData autoLabelGridData = new GridData();
+		autoLabelGridData.horizontalIndent = -80;
+		autoLabel.setLayoutData(autoLabelGridData);
 
 		new Label(shell, SWT.NONE);
 		Button loginButton = new Button(shell, SWT.CENTER | SWT.PUSH);
