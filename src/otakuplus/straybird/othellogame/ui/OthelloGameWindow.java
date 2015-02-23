@@ -1,4 +1,4 @@
-package otakuplus.straybird.othello.ui;
+package otakuplus.straybird.othellogame.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -12,8 +12,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import otakuplus.straybird.othello.model.ChessBoard;
-import otakuplus.straybird.othello.model.Chessman;
+import otakuplus.straybird.othellogame.model.ChessBoard;
+import otakuplus.straybird.othellogame.model.Chessman;
 
 public class OthelloGameWindow {
 	protected Shell shell;

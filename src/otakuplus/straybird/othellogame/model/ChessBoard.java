@@ -1,4 +1,4 @@
-package otakuplus.straybird.othello.model;
+package otakuplus.straybird.othellogame.model;
 
 public class ChessBoard {
 

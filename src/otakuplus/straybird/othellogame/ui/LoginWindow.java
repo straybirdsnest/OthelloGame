@@ -1,4 +1,4 @@
-package otakuplus.straybird.othello.ui;
+package otakuplus.straybird.othellogame.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -32,7 +32,7 @@ public class LoginWindow {
 	protected void createContents() {
 		shell = new Shell(SWT.SHELL_TRIM);
 		shell.setText("Login");
-		//shell.setSize(480, 320);
+		shell.setSize(400, 320);
 		GridLayout loginWindowLayout = new GridLayout();
 		loginWindowLayout.numColumns = 7;
 		loginWindowLayout.makeColumnsEqualWidth = false;
@@ -41,6 +41,7 @@ public class LoginWindow {
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
 		canvasGridData.horizontalSpan = 7;
+		canvasGridData.verticalSpan = 4;
 		canvas.setLayoutData(canvasGridData);
 		canvas.addPaintListener(new PaintListener() {
 			@Override
@@ -74,7 +75,7 @@ public class LoginWindow {
 		passWordText.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 3, 1));
 		Link forgetLink = new Link(shell, SWT.CENTER);
-		forgetLink.setText("Forget Password");
+		forgetLink.setText("resume");
 		new Label(shell, SWT.CENTER).setLayoutData(new GridData(SWT.LEFT,
 				SWT.CENTER, false, false, 1, 1));
 
@@ -82,6 +83,8 @@ public class LoginWindow {
 		loginButton.setText("Login");
 		Button canceButton = new Button(shell, SWT.CENTER | SWT.PUSH);
 		canceButton.setText("Cance");
+		
+		shell.pack();
 	}
 
 	public static void main(String[] args) {
