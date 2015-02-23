@@ -9,7 +9,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -31,19 +30,20 @@ public class LoginWindow {
 
 	protected void createContents() {
 		shell = new Shell(SWT.SHELL_TRIM);
-		shell.setText("Login");
-		shell.setSize(400, 320);
+		shell.setText("奥赛罗棋");
+		shell.setSize(430, 325);
 		GridLayout loginWindowLayout = new GridLayout();
-		loginWindowLayout.numColumns = 7;
+		loginWindowLayout.numColumns = 5;
 		loginWindowLayout.makeColumnsEqualWidth = false;
 		shell.setLayout(loginWindowLayout);
 
-		Canvas canvas = new Canvas(shell, SWT.NONE);
+		Canvas backgroundImage = new Canvas(shell, SWT.NONE);
 		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
-		canvasGridData.horizontalSpan = 7;
-		canvasGridData.verticalSpan = 4;
-		canvas.setLayoutData(canvasGridData);
-		canvas.addPaintListener(new PaintListener() {
+		canvasGridData.horizontalSpan = 5;
+		canvasGridData.verticalSpan = 2;
+		backgroundImage.setLayout(new GridLayout());
+		backgroundImage.setLayoutData(canvasGridData);
+		backgroundImage.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				Image image = new Image(Display.getDefault(), "Othello.png");
@@ -52,38 +52,40 @@ public class LoginWindow {
 			}
 		});
 
-		new Label(shell, SWT.CENTER).setLayoutData(new GridData(SWT.LEFT,
-				SWT.CENTER, false, false, 1, 1));
+		Canvas userImage = new Canvas(shell, SWT.NONE);
+		GridData userImageData = new GridData(GridData.FILL_BOTH);
+		userImageData.horizontalIndent = 45;
+		userImage.setLayout(new GridLayout());
+		userImage.setLayoutData(userImageData);
+		userImage.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				Image image = new Image(Display.getDefault(), "Dog-icon.png");
+				e.gc.drawImage(image, 0, 0, 128, 128, 0, 0, 128, 128);
+				image.dispose();
+			}
 
-		Label userNameLabel = new Label(shell, SWT.CENTER);
-		userNameLabel.setText("UserName: ");
-		userNameLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
-				false, 1, 1));
+		});
+
 		Text userNameText = new Text(shell, SWT.CENTER);
+		userNameText.setText("帐号");
 		userNameText.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 3, 1));
 		Link registerLink = new Link(shell, SWT.CENTER);
-		registerLink.setText("Register");
-		new Label(shell, SWT.CENTER).setLayoutData(new GridData(SWT.LEFT,
-				SWT.CENTER, false, false, 1, 1));
-		new Label(shell, SWT.CENTER).setLayoutData(new GridData(SWT.LEFT,
-				SWT.CENTER, false, false, 1, 1));
+		registerLink.setText("注册帐号");
 
-		Label passWordLabel = new Label(shell, SWT.CENTER);
-		passWordLabel.setText("PassWord: ");
 		Text passWordText = new Text(shell, SWT.CENTER);
+		passWordText.setText("密码");
 		passWordText.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false,
 				false, 3, 1));
 		Link forgetLink = new Link(shell, SWT.CENTER);
-		forgetLink.setText("resume");
-		new Label(shell, SWT.CENTER).setLayoutData(new GridData(SWT.LEFT,
-				SWT.CENTER, false, false, 1, 1));
+		forgetLink.setText("找回密码");
 
 		Button loginButton = new Button(shell, SWT.CENTER | SWT.PUSH);
 		loginButton.setText("Login");
 		Button canceButton = new Button(shell, SWT.CENTER | SWT.PUSH);
 		canceButton.setText("Cance");
-		
+
 		shell.pack();
 	}
 
