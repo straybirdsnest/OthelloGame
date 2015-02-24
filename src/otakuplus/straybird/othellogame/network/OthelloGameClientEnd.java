@@ -26,7 +26,8 @@ public class OthelloGameClientEnd {
 
 			public void received(Connection connection, Object object) {
 				if (object instanceof User) {
-
+					User user = (User) object;
+					System.out.println("Receive User Email "+user.getEmailAddress());
 				}
 			}
 		});

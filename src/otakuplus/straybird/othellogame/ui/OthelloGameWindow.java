@@ -5,7 +5,6 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -46,9 +45,8 @@ public class OthelloGameWindow {
 	protected void createContents() {
 		shell = new Shell(SWT.SHELL_TRIM);
 		shell.setText("OthelloGame");
-		Image image = new Image(Display.getDefault(), "Othello.png");
-		shell.setBackgroundImage(image);
-		image.dispose();
+		shell.setLocation((Display.getDefault().getBounds().width - 400) / 2,
+				(Display.getDefault().getBounds().height - 400) / 2);
 		GridLayout othellGameLayout = new GridLayout();
 		othellGameLayout.numColumns = 1;
 		shell.setLayout(othellGameLayout);
@@ -122,8 +120,6 @@ public class OthelloGameWindow {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -144,8 +140,6 @@ public class OthelloGameWindow {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 		});
