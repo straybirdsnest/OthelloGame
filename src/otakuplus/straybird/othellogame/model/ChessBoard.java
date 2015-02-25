@@ -262,7 +262,11 @@ public class ChessBoard {
 		return false;
 	}
 
-	public void turnEnd() {
+	/**
+	 * check if the current player can set chessman
+	 * @return if the current player can set chessman
+	 */
+	public boolean checkHasNext() {
 		int i = 0;
 		boolean flag = false;
 		for (i = 0; i < 64; i++) {
@@ -270,7 +274,13 @@ public class ChessBoard {
 				flag = true;
 			}
 		}
-		if (flag == true) {
+		return flag;
+	}
+
+	public void turnEnd() {
+		if (checkHasNext() == true) {
+			currentChessman.flip();
+		}else{
 			currentChessman.flip();
 		}
 		calculateChessmenNumber();

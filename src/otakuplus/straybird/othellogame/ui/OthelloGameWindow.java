@@ -5,6 +5,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
@@ -24,10 +25,6 @@ public class OthelloGameWindow {
 			chessBoard = new ChessBoard();
 			chessBoard.searchSuggestedChessmanPosition();
 		}
-	}
-
-	protected void updateGame() {
-		chessBoard.searchSuggestedChessmanPosition();
 	}
 
 	public void open() {
@@ -66,34 +63,28 @@ public class OthelloGameWindow {
 			@Override
 			public void paintControl(PaintEvent e) {
 				// drawing chessboard
-				e.gc.setForeground(Display.getDefault().getSystemColor(
-						SWT.COLOR_BLACK));
-				e.gc.setBackground(Display.getDefault().getSystemColor(
-						SWT.COLOR_GRAY));
-				e.gc.drawRectangle(0, 0, 320, 320);
-				e.gc.fillRectangle(1, 1, 319, 319);
-
-				int i = 0, chessmanStat = 0;
-				for (i = 1; i < 8; i++) {
-					e.gc.drawLine(40 * i, 0, 40 * i, 320);
-					e.gc.drawLine(0, 40 * i, 320, 40 * i);
-				}
-
+				Image chessboardImage = new Image(Display.getDefault(),
+						"Chessboard.png");
+				e.gc.drawImage(chessboardImage, 0, 0,
+						chessboardImage.getBounds().width,
+						chessboardImage.getBounds().height, 0, 0, 320, 320);
+				chessboardImage.dispose();
 				// drawing chessmen
+				int i = 0, chessmanStat = 0;
 				i = 0;
 				for (i = 0; i < 64; i++) {
 					chessmanStat = chessBoard.getChessman(i / 8, i % 8)
 							.getChessman();
 					if (chessmanStat == Chessman.CHESSMAN_BLACK) {
 						e.gc.setBackground(Display.getDefault().getSystemColor(
-								SWT.COLOR_BLACK));
+								SWT.COLOR_GREEN));
 						e.gc.drawOval((i % 8) * 40 + 4, (i / 8) * 40 + 4, 32,
 								32);
 						e.gc.fillOval((i % 8) * 40 + 5, (i / 8) * 40 + 5, 31,
 								31);
 					} else if (chessmanStat == Chessman.CHESSMAN_WHITE) {
 						e.gc.setBackground(Display.getDefault().getSystemColor(
-								SWT.COLOR_WHITE));
+								SWT.COLOR_BLUE));
 						e.gc.drawOval((i % 8) * 40 + 4, (i / 8) * 40 + 4, 32,
 								32);
 						e.gc.fillOval((i % 8) * 40 + 5, (i / 8) * 40 + 5, 31,
@@ -126,10 +117,19 @@ public class OthelloGameWindow {
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
-				if (chessBoard.setChessman(y / 40, x / 40) == true) {
+				if (chessBoard.checkHasNext() == true) {
+					if (chessBoard.setChessman(y / 40, x / 40) == true) {
+						chessBoard.turnEnd();
+						chessBoard.searchSuggestedChessmanPosition();
+					} else {
+						System.out.println("You must set your chessman.");
+					}
+				} else {
+					System.out.println("The current player have to pass.");
 					chessBoard.turnEnd();
 					chessBoard.searchSuggestedChessmanPosition();
 				}
+
 				blackLabel.setText("Black: " + chessBoard.getBlackNumber());
 				whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
 				blackLabel.redraw();
