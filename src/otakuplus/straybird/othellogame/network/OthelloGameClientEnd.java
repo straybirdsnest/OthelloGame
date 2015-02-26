@@ -27,7 +27,8 @@ public class OthelloGameClientEnd {
 			public void received(Connection connection, Object object) {
 				if (object instanceof User) {
 					User user = (User) object;
-					System.out.println("Receive User Email "+user.getEmailAddress());
+					System.out.println("Receive User Email "
+							+ user.getEmailAddress());
 				}
 			}
 		});
@@ -50,6 +51,12 @@ public class OthelloGameClientEnd {
 			login.setPassword(password);
 			client.sendTCP(login);
 		}
+	}
+
+	public void logout(int userId) {
+		Logout logout = new Logout();
+		logout.setUserId(userId);
+		client.sendTCP(logout);
 	}
 
 	public static void main(String[] args) {
