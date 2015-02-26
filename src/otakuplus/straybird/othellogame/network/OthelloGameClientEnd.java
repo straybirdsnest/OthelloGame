@@ -45,10 +45,10 @@ public class OthelloGameClientEnd {
 		if (username == null || password == null) {
 			return;
 		} else {
-			User user = new User();
-			user.setUsername(username);
-			user.setPassword(password);
-			client.sendTCP(user);
+			Login login = new Login();
+			login.setUsername(username);
+			login.setPassword(password);
+			client.sendTCP(login);
 		}
 	}
 
