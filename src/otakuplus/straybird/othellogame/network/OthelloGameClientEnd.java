@@ -3,6 +3,7 @@ package otakuplus.straybird.othellogame.network;
 import java.io.IOException;
 
 import otakuplus.straybird.othellogame.model.User;
+import otakuplus.straybird.othellogame.model.UserInformation;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -12,6 +13,8 @@ import com.esotericsoftware.minlog.Log;
 public class OthelloGameClientEnd {
 
 	private Client client = null;
+	private ClientManager clientManager = null;
+	private boolean isConnected = false;
 
 	public OthelloGameClientEnd() {
 		client = new Client();
@@ -21,14 +24,19 @@ public class OthelloGameClientEnd {
 
 		client.addListener(new Listener() {
 			public void connected(Connection connection) {
-
 			}
 
 			public void received(Connection connection, Object object) {
 				if (object instanceof User) {
 					User user = (User) object;
-					System.out.println("Receive User Email "
-							+ user.getEmailAddress());
+					
+				} else if (object instanceof UserInformation) {
+					UserInformation userInformation = (UserInformation) object;
+				/*	
+				} else if (object instanceof LoginSuccess) {
+					
+				} else if (object instanceof LoginFaild) {
+				*/
 				}
 			}
 		});
@@ -37,6 +45,7 @@ public class OthelloGameClientEnd {
 	public void connect() {
 		try {
 			client.connect(5000, "localhost", KryonetUtil.SERVER_PORT);
+			isConnected = true;
 		} catch (IOException ioException) {
 			ioException.printStackTrace();
 		}
@@ -59,8 +68,11 @@ public class OthelloGameClientEnd {
 		client.sendTCP(logout);
 	}
 
+	public boolean getIsConnected() {
+		return isConnected;
+	}
+
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Log.set(Log.LEVEL_DEBUG);
 		OthelloGameClientEnd clientEnd = new OthelloGameClientEnd();
 		clientEnd.connect();

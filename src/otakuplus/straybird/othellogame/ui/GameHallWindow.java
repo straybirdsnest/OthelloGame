@@ -11,17 +11,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 public class GameHallWindow {
+	protected Shell shell;
+	protected Display display;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Display display = new Display();
-		Shell gameHallWindow = new Shell(display);
+	public void createContents() {
+		shell = new Shell(SWT.SHELL_TRIM);
 		GridLayout gameHallLayout = new GridLayout();
 		gameHallLayout.numColumns = 10;
-		gameHallWindow.setLayout(gameHallLayout);
+		shell.setLayout(gameHallLayout);
 
-		SashForm sashForm = new SashForm(gameHallWindow, SWT.HORIZONTAL
-				| SWT.BORDER);
+		SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
 		GridLayout sashGridLayout = new GridLayout();
 		sashForm.setLayout(sashGridLayout);
 
@@ -37,9 +36,13 @@ public class GameHallWindow {
 		GridLayout composite2Layout = new GridLayout();
 		composite2.setLayout(new FillLayout());
 		new Text(composite2, SWT.MULTI).setText("Windows2");
+	}
 
-		gameHallWindow.open();
-		while (!gameHallWindow.isDisposed()) {
+	public void open() {
+		display = Display.getDefault();
+		createContents();
+		shell.open();
+		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -47,4 +50,7 @@ public class GameHallWindow {
 		display.dispose();
 	}
 
+	public static void main(String[] args) {
+		GameHallWindow gameHallWindow = new GameHallWindow();
+	}
 }

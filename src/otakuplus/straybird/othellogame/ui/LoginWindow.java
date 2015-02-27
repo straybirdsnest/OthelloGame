@@ -3,6 +3,8 @@ package otakuplus.straybird.othellogame.ui;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Image;
@@ -19,9 +21,12 @@ import org.eclipse.swt.widgets.Text;
 
 public class LoginWindow {
 	protected Shell shell;
+	protected Display display;
+	protected Text userNameText;
+	protected Text passWordText;
 
 	public void open() {
-		final Display display = Display.getDefault();
+		Display display = Display.getDefault();
 		createContents();
 		shell.open();
 		while (!shell.isDisposed()) {
@@ -81,7 +86,7 @@ public class LoginWindow {
 			}
 		});
 
-		final Text userNameText = new Text(shell, SWT.LEFT);
+		userNameText = new Text(shell, SWT.LEFT);
 		userNameText.setText("帐号");
 		userNameText.addFocusListener(new FocusListener() {
 
@@ -111,7 +116,7 @@ public class LoginWindow {
 		Link registerLink = new Link(shell, SWT.CENTER);
 		registerLink.setText("注册帐号");
 
-		final Text passWordText = new Text(shell, SWT.LEFT);
+		passWordText = new Text(shell, SWT.LEFT);
 		passWordText.setText("密码");
 		passWordText.addFocusListener(new FocusListener() {
 
@@ -145,6 +150,8 @@ public class LoginWindow {
 		forgetLink.setText("找回密码");
 
 		Button remeberButton = new Button(shell, SWT.CHECK);
+		GridData remeberButtonGridData = new GridData();
+		remeberButton.setLayoutData(remeberButtonGridData);
 
 		Label remeberLabel = new Label(shell, SWT.CENTER);
 		remeberLabel.setText("记住密码");
@@ -160,6 +167,26 @@ public class LoginWindow {
 		new Label(shell, SWT.NONE);
 		Button loginButton = new Button(shell, SWT.CENTER | SWT.PUSH);
 		loginButton.setText("登陆");
+		loginButton.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				String username = userNameText.getText();
+				String password = passWordText.getText();
+				if (username != null && password != null) {
+
+				}
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+			}
+		});
+
 		GridData loginGridData = new GridData();
 		loginGridData.horizontalSpan = 3;
 		loginGridData.widthHint = 194;
