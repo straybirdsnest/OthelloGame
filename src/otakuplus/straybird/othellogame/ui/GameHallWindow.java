@@ -71,7 +71,7 @@ public class GameHallWindow {
 		composite2GridData.horizontalSpan = 3;
 		composite2GridData.widthHint = 400;
 		composite2GridData.heightHint = 200;
-		TableViewer tableViewer = new TableViewer(composite2, SWT.FILL
+		TableViewer tableViewer = new TableViewer(composite2, SWT.CENTER
 				| SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
 				| SWT.BORDER);
 		Table table = tableViewer.getTable();
