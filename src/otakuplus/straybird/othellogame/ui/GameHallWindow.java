@@ -11,10 +11,13 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -31,21 +34,37 @@ public class GameHallWindow {
 	public void createContents() {
 		shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText("游戏大厅");
-		GridLayout gameHallLayout = new GridLayout();
-		gameHallLayout.numColumns = 10;
-		shell.setLayout(gameHallLayout);
+		shell.setLayout(new GridLayout());
 
 		SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
 		GridLayout sashGridLayout = new GridLayout();
+		sashGridLayout.numColumns = 10;
 		sashForm.setLayout(sashGridLayout);
 
 		Composite composite = new Composite(sashForm, SWT.NONE);
 		GridData compositeGridData = new GridData();
 		compositeGridData.horizontalSpan = 7;
 		compositeGridData.widthHint = 400;
+		compositeGridData.heightHint = 400;
 		composite.setLayout(new GridLayout());
 		composite.setData(compositeGridData);
-		new Text(composite, SWT.MULTI).setText("Windows1");
+		Canvas tableCanvas = new Canvas(composite, SWT.FILL);
+		GridData tableCanvasGridData = new GridData();
+		tableCanvasGridData.horizontalSpan = 7;
+		tableCanvasGridData.widthHint = 400;
+		tableCanvasGridData.heightHint = 400;
+		tableCanvas.setLayoutData(tableCanvasGridData);
+		tableCanvas.addPaintListener(new PaintListener() {
+
+			@Override
+			public void paintControl(PaintEvent event) {
+				event.gc.drawString("桌面", 0, 0);
+				event.gc.setBackground(Display.getDefault().getSystemColor(
+						SWT.COLOR_CYAN));
+				event.gc.fillRectangle(0, 50, 200, 200);
+
+			}
+		});
 
 		Composite composite2 = new Composite(sashForm, SWT.NONE);
 		GridLayout composite2Layout = new GridLayout();
@@ -73,7 +92,7 @@ public class GameHallWindow {
 			@Override
 			protected void measure(Event event, Object element) {
 				UserInformation userInformation = (UserInformation) element;
-				event.setBounds(new Rectangle(event.x, event.y, 400, 400));
+				event.setBounds(new Rectangle(event.x, event.y, 400, 200));
 			}
 
 			@Override
@@ -121,25 +140,28 @@ public class GameHallWindow {
 		tableViewer.setInput(userInfo);
 		tableViewer.setSelection(new StructuredSelection(userInfo[0]));
 
-		TableViewerColumn firstColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE, 0);
-		firstColumn.getColumn().setText("用户ID");
-
-		TableViewerColumn secondColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE, 1);
-		secondColumn.getColumn().setText("昵称");
-
-		TableViewerColumn thridColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE, 2);
-		thridColumn.getColumn().setText("胜利");
-
-		TableViewerColumn fourthColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE, 3);
-		fourthColumn.getColumn().setText("平局");
-
-		TableViewerColumn fivethColumn = new TableViewerColumn(tableViewer,
-				SWT.NONE, 4);
-		fivethColumn.getColumn().setText("失败");
+		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[5];
+		for (int i = 0; i < 5; i++) {
+			tableViewerColumn[i] = new TableViewerColumn(tableViewer,
+					SWT.CENTER, i);
+			switch (i) {
+			case 0:
+				tableViewerColumn[i].getColumn().setText("用户ID");
+				break;
+			case 1:
+				tableViewerColumn[i].getColumn().setText("昵称");
+				break;
+			case 2:
+				tableViewerColumn[i].getColumn().setText("胜利");
+				break;
+			case 3:
+				tableViewerColumn[i].getColumn().setText("平局");
+				break;
+			case 4:
+				tableViewerColumn[i].getColumn().setText("失败");
+				break;
+			}
+		}
 
 		TableLayout tableLayout = new TableLayout();
 		tableLayout.addColumnData(new ColumnPixelData(60));
