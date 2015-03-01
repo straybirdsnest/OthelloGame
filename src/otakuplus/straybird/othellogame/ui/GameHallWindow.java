@@ -3,14 +3,21 @@ package otakuplus.straybird.othellogame.ui;
 import java.util.Date;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.OwnerDrawLabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
@@ -33,24 +40,67 @@ public class GameHallWindow {
 		sashForm.setLayout(sashGridLayout);
 
 		Composite composite = new Composite(sashForm, SWT.NONE);
-		GridLayout compositeLayout = new GridLayout();
 		GridData compositeGridData = new GridData();
 		compositeGridData.horizontalSpan = 7;
-		composite.setLayout(compositeLayout);
+		compositeGridData.widthHint = 400;
+		composite.setLayout(new GridLayout());
 		composite.setData(compositeGridData);
 		new Text(composite, SWT.MULTI).setText("Windows1");
 
 		Composite composite2 = new Composite(sashForm, SWT.NONE);
 		GridLayout composite2Layout = new GridLayout();
+		composite2Layout.numColumns = 3;
 		composite2.setLayout(composite2Layout);
-		TableViewer tableViewer = new TableViewer(composite2, SWT.MULTI
-				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+		GridData composite2GridData = new GridData(GridData.FILL_BOTH);
+		composite2GridData.horizontalSpan = 3;
+		composite2GridData.widthHint = 400;
+		composite2GridData.heightHint = 200;
+		TableViewer tableViewer = new TableViewer(composite2, SWT.FILL
+				| SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
+				| SWT.BORDER);
 		Table table = tableViewer.getTable();
+		GridData tableViewerGridData = new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
+		tableViewerGridData.horizontalSpan = 3;
+		tableViewerGridData.widthHint = 400;
+		tableViewerGridData.heightHint = 200;
+		tableViewer.getControl().setLayoutData(tableViewerGridData);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-		tableViewer.setLabelProvider(new LabelProvider());
-		UserInformation[] userInfo = new UserInformation[1];
+		tableViewer.setLabelProvider(new OwnerDrawLabelProvider() {
+
+			@Override
+			protected void measure(Event event, Object element) {
+				UserInformation userInformation = (UserInformation) element;
+				event.setBounds(new Rectangle(event.x, event.y, 400, 400));
+			}
+
+			@Override
+			protected void paint(Event event, Object element) {
+				System.out.println("Paint Event call!");
+				UserInformation userInformation = (UserInformation) element;
+				event.gc.setForeground(Display.getDefault().getSystemColor(
+						SWT.COLOR_BLACK));
+				switch (event.index) {
+				case 0:
+					event.gc.drawText(userInformation.getNickname(), 0, 0);
+					break;
+				case 1:
+					event.gc.drawText("" + userInformation.getGameWins(), 0, 0);
+					break;
+				case 2:
+					event.gc.drawText("" + userInformation.getGameDraws(), 0, 0);
+					break;
+				case 3:
+					event.gc.drawText("" + userInformation.getGameLosts(), 0, 0);
+					break;
+				}
+			}
+
+		});
+
+		UserInformation[] userInfo = new UserInformation[2];
 		userInfo[0] = new UserInformation();
 		userInfo[0].setUserInformationId(999);
 		userInfo[0].setNickname("Jack");
@@ -58,7 +108,67 @@ public class GameHallWindow {
 		userInfo[0].setGameDraws(100);
 		userInfo[0].setGameLosts(50);
 		userInfo[0].setBirthday(new Date());
+		userInfo[0] = new UserInformation();
+
+		userInfo[1] = new UserInformation();
+		userInfo[1].setUserInformationId(1000);
+		userInfo[1].setNickname("Brown");
+		userInfo[1].setGameWins(10);
+		userInfo[1].setGameDraws(4);
+		userInfo[1].setGameLosts(2);
+		userInfo[1].setBirthday(new Date());
+
 		tableViewer.setInput(userInfo);
+		tableViewer.setSelection(new StructuredSelection(userInfo[0]));
+
+		TableViewerColumn firstColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE, 0);
+		firstColumn.getColumn().setText("用户ID");
+
+		TableViewerColumn secondColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE, 1);
+		secondColumn.getColumn().setText("昵称");
+
+		TableViewerColumn thridColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE, 2);
+		thridColumn.getColumn().setText("胜利");
+
+		TableViewerColumn fourthColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE, 3);
+		fourthColumn.getColumn().setText("平局");
+
+		TableViewerColumn fivethColumn = new TableViewerColumn(tableViewer,
+				SWT.NONE, 4);
+		fivethColumn.getColumn().setText("失败");
+
+		TableLayout tableLayout = new TableLayout();
+		tableLayout.addColumnData(new ColumnPixelData(60));
+		tableLayout.addColumnData(new ColumnPixelData(80));
+		tableLayout.addColumnData(new ColumnPixelData(50));
+		tableLayout.addColumnData(new ColumnPixelData(50));
+		tableLayout.addColumnData(new ColumnPixelData(50));
+		table.setLayout(tableLayout);
+
+		Text gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
+		GridData gameHallGridData = new GridData();
+		gameHallGridData.horizontalSpan = 3;
+		gameHallGridData.widthHint = 400;
+		gameHallGridData.heightHint = 200;
+		gameHallChat.setLayoutData(gameHallGridData);
+		gameHallChat.setText("游戏大厅广播");
+
+		Text messageText = new Text(composite2, SWT.NONE);
+		GridData messageTextGridData = new GridData();
+		messageTextGridData.horizontalSpan = 2;
+		messageTextGridData.widthHint = 150;
+		messageText.setText("请输入聊天信息");
+		messageText.setLayoutData(messageTextGridData);
+
+		Button sendMessageButton = new Button(composite2, SWT.PUSH);
+		GridData sendMessageGridData = new GridData();
+		sendMessageGridData.horizontalSpan = 1;
+		sendMessageButton.setLayoutData(sendMessageGridData);
+		sendMessageButton.setText("发送");
 	}
 
 	public void open() {
