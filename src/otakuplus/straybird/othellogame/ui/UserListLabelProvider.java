@@ -24,22 +24,22 @@ public class UserListLabelProvider extends OwnerDrawLabelProvider {
 		switch (event.index) {
 		case 0:
 			event.gc.drawText("" + userInformation.getUserInformationId(),
-					event.x, event.y);
+					event.x+2, event.y+2);
 			break;
 		case 1:
-			event.gc.drawText(userInformation.getNickname(), event.x, event.y);
+			event.gc.drawText(userInformation.getNickname(), event.x+2, event.y+2);
 			break;
 		case 2:
-			event.gc.drawText("" + userInformation.getGameWins(), event.x,
-					event.y);
+			event.gc.drawText("" + userInformation.getGameWins(), event.x+2,
+					event.y+2);
 			break;
 		case 3:
-			event.gc.drawText("" + userInformation.getGameDraws(), event.x,
-					event.y);
+			event.gc.drawText("" + userInformation.getGameDraws(), event.x+2,
+					event.y+2);
 			break;
 		case 4:
-			event.gc.drawText("" + userInformation.getGameLosts(), event.x,
-					event.y);
+			event.gc.drawText("" + userInformation.getGameLosts(), event.x+2,
+					event.y+2);
 			break;
 		/*
 		 * case 5: event.gc.drawText(userInformation.getBirthday().toString(),
