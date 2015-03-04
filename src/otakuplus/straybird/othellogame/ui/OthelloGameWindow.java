@@ -17,7 +17,10 @@ import otakuplus.straybird.othellogame.model.ChessBoard;
 import otakuplus.straybird.othellogame.model.Chessman;
 
 public class OthelloGameWindow {
+
+	protected Display display;
 	protected Shell shell;
+
 	protected ChessBoard chessBoard;
 
 	public OthelloGameWindow() {
@@ -25,18 +28,6 @@ public class OthelloGameWindow {
 			chessBoard = new ChessBoard();
 			chessBoard.searchSuggestedChessmanPosition();
 		}
-	}
-
-	public void open() {
-		final Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-		display.dispose();
 	}
 
 	protected void createContents() {
@@ -147,13 +138,25 @@ public class OthelloGameWindow {
 		shell.pack();
 	}
 
-	public static void main(String[] args) {
-		try {
-			OthelloGameWindow othelloGameWindow = new OthelloGameWindow();
-			othelloGameWindow.open();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
+	public void open() {
+		display = Display.getDefault();
+		createContents();
+		shell.open();
 	}
 
+	public void close() {
+		shell.close();
+	}
+
+	public void hide() {
+		shell.setVisible(false);
+	}
+
+	public void show() {
+		shell.setVisible(true);
+	}
+
+	public static void main(String[] args) {
+
+	}
 }

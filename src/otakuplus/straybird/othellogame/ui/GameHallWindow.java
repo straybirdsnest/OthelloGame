@@ -22,11 +22,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.UserInformation;
 
 public class GameHallWindow {
+	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
+
+	public GameHallWindow(MainApplication mainApplication) {
+		this.mainApplication = mainApplication;
+	}
 
 	public void createContents() {
 		shell = new Shell(display, SWT.SHELL_TRIM);
@@ -93,7 +99,7 @@ public class GameHallWindow {
 		userInfo[0].setGameDraws(100);
 		userInfo[0].setGameLosts(50);
 		userInfo[0].setBirthday(new Date());
-		
+
 		userInfo[1] = new UserInformation();
 		userInfo[1].setUserInformationId(1000);
 		userInfo[1].setNickname("Brown");
@@ -101,7 +107,7 @@ public class GameHallWindow {
 		userInfo[1].setGameDraws(4);
 		userInfo[1].setGameLosts(2);
 		userInfo[1].setBirthday(new Date());
-		
+
 		userInfo[2] = new UserInformation();
 		userInfo[2].setUserInformationId(1001);
 		userInfo[2].setNickname("Arash");
@@ -109,7 +115,7 @@ public class GameHallWindow {
 		userInfo[2].setGameDraws(30);
 		userInfo[2].setGameLosts(87);
 		userInfo[2].setBirthday(new Date());
-		
+
 		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[5];
 		for (int i = 0; i < 5; i++) {
 			tableViewerColumn[i] = new TableViewerColumn(tableViewer,
@@ -171,16 +177,25 @@ public class GameHallWindow {
 		display = Display.getDefault();
 		createContents();
 		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
+	}
+
+	public void hide() {
+		shell.setVisible(false);
+	}
+
+	public void show() {
+		if(shell == null){
+			System.out.println("Warning!");
+			System.out.println("Shell is null!");
 		}
-		display.dispose();
+		shell.setVisible(true);
+	}
+	
+	public void close(){
+		shell.close();
 	}
 
 	public static void main(String[] args) {
-		GameHallWindow gameHallWindow = new GameHallWindow();
-		gameHallWindow.open();
+
 	}
 }

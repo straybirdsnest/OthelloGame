@@ -19,22 +19,17 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import otakuplus.straybird.othellogame.MainApplication;
+
 public class LoginWindow {
+	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
 	protected Text userNameText;
 	protected Text passWordText;
 
-	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-		display.dispose();
+	public LoginWindow(MainApplication mainApplication) {
+		this.mainApplication = mainApplication;
 	}
 
 	protected void createContents() {
@@ -177,8 +172,8 @@ public class LoginWindow {
 			public void mouseDown(MouseEvent e) {
 				String username = userNameText.getText();
 				String password = passWordText.getText();
-				if (username != null && password != null) {
-
+				if (username.length() >0 && password.length() > 0) {
+					mainApplication.entryGameHall();
 				}
 			}
 
@@ -194,13 +189,26 @@ public class LoginWindow {
 
 		shell.pack();
 	}
+	
+	public void open() {
+		display = Display.getDefault();
+		createContents();
+		shell.open();
+	}
 
+	public void hide(){
+		shell.setVisible(false);
+	}
+	
+	public void show(){
+		shell.setVisible(true);
+	}
+	
+	public void close(){
+		shell.close();
+	}
+	
 	public static void main(String[] args) {
-		try {
-			LoginWindow loginWindow = new LoginWindow();
-			loginWindow.open();
-		} catch (Exception exception) {
-			exception.printStackTrace();
-		}
+
 	}
 }
