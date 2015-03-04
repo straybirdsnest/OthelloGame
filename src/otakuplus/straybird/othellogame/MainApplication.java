@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Display;
 import otakuplus.straybird.othellogame.network.Login;
 import otakuplus.straybird.othellogame.network.OthelloGameClientEnd;
 import otakuplus.straybird.othellogame.network.ProcessResponse;
+import otakuplus.straybird.othellogame.network.SendMessage;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
@@ -52,13 +53,12 @@ public class MainApplication {
 			}
 		}
 		display.dispose();
-		
+
 		clientEnd.close();
 	}
 
 	public void login(Login login) {
 		clientEnd.login(login);
-		System.out.println("Login click!");
 	}
 
 	public void postLogin() {
@@ -74,6 +74,23 @@ public class MainApplication {
 					loginWindow.hide();
 					gameHallWindow.show();
 				}
+			}
+		});
+
+	}
+
+	public void receiveMessage(final SendMessage sendMessage) {
+		/*
+		 * Java doesn't have pass-by-reference at all, it has pass reference by
+		 * value, so use final keyword to indicates that the parameter will not
+		 * change.
+		 */
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Main Receive");
+				gameHallWindow.receiveMessage(sendMessage);
 			}
 		});
 

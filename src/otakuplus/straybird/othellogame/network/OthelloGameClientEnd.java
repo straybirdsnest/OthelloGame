@@ -10,7 +10,6 @@ import otakuplus.straybird.othellogame.model.UserInformation;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.esotericsoftware.minlog.Log;
 
 public class OthelloGameClientEnd {
 
@@ -43,15 +42,10 @@ public class OthelloGameClientEnd {
 
 				} else if (object instanceof ProcessResponse) {
 					ProcessResponse processResponse = (ProcessResponse) object;
-					ArrayList<Object> itemList;
-					if (processResponse.getRequestType() == ProcessResponse.LOGIN) {
-						itemList = clientManager
-								.getObserver(ProcessResponse.class);
-						if (itemList != null && itemList.isEmpty() != true) {
-							System.out.println("Get message.");
-							OthelloGameClientEnd.this.mainApplication.postLogin();
-						}
-					}
+					receiveProcessResponse(processResponse);
+				} else if (object instanceof SendMessage) {
+					SendMessage sendMessage = (SendMessage) object;
+					receiveSendMessage(sendMessage);
 				}
 			}
 		});
@@ -88,9 +82,9 @@ public class OthelloGameClientEnd {
 			ioException.printStackTrace();
 		}
 	}
-	
-	public void close(){
-		if(kryonetClient != null){
+
+	public void close() {
+		if (kryonetClient != null) {
 			kryonetClient.close();
 		}
 	}
@@ -115,8 +109,23 @@ public class OthelloGameClientEnd {
 		return isConnected;
 	}
 
+	public void receiveProcessResponse(ProcessResponse processResponse) {
+		ArrayList<Object> itemList;
+		if (processResponse.getRequestType() == ProcessResponse.LOGIN) {
+			itemList = clientManager.getObserver(ProcessResponse.class);
+			if (itemList != null && itemList.isEmpty() != true) {
+				OthelloGameClientEnd.this.mainApplication.postLogin();
+			}
+		}
+	}
+
+	public void receiveSendMessage(SendMessage sendMessage) {
+		System.out.println("Client receive sendMessage");
+		OthelloGameClientEnd.this.mainApplication.receiveMessage(sendMessage);
+	}
+
 	public static void main(String[] args) {
-		
+
 	}
 
 }

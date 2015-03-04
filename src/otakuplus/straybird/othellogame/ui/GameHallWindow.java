@@ -24,11 +24,14 @@ import org.eclipse.swt.widgets.Text;
 
 import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.UserInformation;
+import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class GameHallWindow {
 	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
+
+	protected Text gameHallChat;
 
 	public GameHallWindow(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
@@ -151,13 +154,12 @@ public class GameHallWindow {
 		tableViewer.setInput(userInfo);
 		tableViewer.setSelection(new StructuredSelection(userInfo[0]));
 
-		Text gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
+		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
 		GridData gameHallGridData = new GridData();
 		gameHallGridData.horizontalSpan = 3;
 		gameHallGridData.widthHint = 400;
 		gameHallGridData.heightHint = 200;
 		gameHallChat.setLayoutData(gameHallGridData);
-		gameHallChat.setText("游戏大厅广播");
 
 		Text messageText = new Text(composite2, SWT.NONE);
 		GridData messageTextGridData = new GridData();
@@ -184,15 +186,22 @@ public class GameHallWindow {
 	}
 
 	public void show() {
-		if(shell == null){
+		if (shell == null) {
 			System.out.println("Warning!");
 			System.out.println("Shell is null!");
 		}
 		shell.setVisible(true);
 	}
-	
-	public void close(){
+
+	public void close() {
 		shell.close();
+	}
+
+	public void receiveMessage(SendMessage sendMessage) {
+		System.out.println("Called Received");
+		gameHallChat.append(sendMessage.getNickname() + " : "
+				+ sendMessage.getMessage() + "\n");
+		gameHallChat.redraw();
 	}
 
 	public static void main(String[] args) {

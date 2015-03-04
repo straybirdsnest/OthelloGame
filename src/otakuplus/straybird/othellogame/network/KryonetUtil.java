@@ -24,6 +24,7 @@ public class KryonetUtil {
 		kryo.register(User.class);
 		kryo.register(GetUserInformation.class);
 		kryo.register(UserInformation.class);
+		kryo.register(SendMessage.class);
 
 	}
 
