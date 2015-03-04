@@ -1,7 +1,9 @@
 package otakuplus.straybird.othellogame.network;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.User;
 import otakuplus.straybird.othellogame.model.UserInformation;
 
@@ -12,12 +14,15 @@ import com.esotericsoftware.minlog.Log;
 
 public class OthelloGameClientEnd {
 
+	protected MainApplication mainApplication;
+
 	private Client kryonetClient = null;
 	private String serverAddress = null;
 	private ClientManager clientManager = null;
 	private boolean isConnected = false;
 
-	public OthelloGameClientEnd() {
+	public OthelloGameClientEnd(MainApplication mainApplication) {
+		this.mainApplication = mainApplication;
 		serverAddress = "localhost";
 
 		kryonetClient = new Client();
@@ -38,7 +43,14 @@ public class OthelloGameClientEnd {
 
 				} else if (object instanceof ProcessResponse) {
 					ProcessResponse processResponse = (ProcessResponse) object;
+					ArrayList<Object> itemList;
 					if (processResponse.getRequestType() == ProcessResponse.LOGIN) {
+						itemList = clientManager
+								.getObserver(ProcessResponse.class);
+						if (itemList != null && itemList.isEmpty() != true) {
+							System.out.println("Get message.");
+							OthelloGameClientEnd.this.mainApplication.postLogin();
+						}
 					}
 				}
 			}
@@ -76,16 +88,15 @@ public class OthelloGameClientEnd {
 			ioException.printStackTrace();
 		}
 	}
-
-	public void login(String username, String password) {
-		if (username == null || password == null) {
-			return;
-		} else {
-			Login login = new Login();
-			login.setUsername(username);
-			login.setPassword(password);
-			kryonetClient.sendTCP(login);
+	
+	public void close(){
+		if(kryonetClient != null){
+			kryonetClient.close();
 		}
+	}
+
+	public void login(Login login) {
+		kryonetClient.sendTCP(login);
 	}
 
 	public void logout(int userId) {
@@ -105,11 +116,7 @@ public class OthelloGameClientEnd {
 	}
 
 	public static void main(String[] args) {
-		Log.set(Log.LEVEL_DEBUG);
-		OthelloGameClientEnd clientEnd = new OthelloGameClientEnd();
-		clientEnd.setServerAddress("127.0.0.1");
-		clientEnd.connect();
-		clientEnd.login("TestUser", "TestUser");
+		
 	}
 
 }

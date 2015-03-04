@@ -2,11 +2,14 @@ package otakuplus.straybird.othellogame;
 
 import org.eclipse.swt.widgets.Display;
 
+import otakuplus.straybird.othellogame.network.Login;
 import otakuplus.straybird.othellogame.network.OthelloGameClientEnd;
 import otakuplus.straybird.othellogame.network.ProcessResponse;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
+
+import com.esotericsoftware.minlog.Log;
 
 public class MainApplication {
 
@@ -15,7 +18,7 @@ public class MainApplication {
 	protected LoginWindow loginWindow;
 	protected GameHallWindow gameHallWindow;
 	protected OthelloGameWindow othelloGameWindow;
-	
+
 	protected OthelloGameClientEnd clientEnd;
 
 	public MainApplication() {
@@ -24,8 +27,8 @@ public class MainApplication {
 		loginWindow = new LoginWindow(this);
 		gameHallWindow = new GameHallWindow(this);
 		othelloGameWindow = new OthelloGameWindow();
-		
-		clientEnd = new OthelloGameClientEnd();
+
+		clientEnd = new OthelloGameClientEnd(this);
 	}
 
 	public void startUp() {
@@ -37,7 +40,10 @@ public class MainApplication {
 
 		clientEnd.attach(loginWindow);
 		clientEnd.attach(gameHallWindow);
+		clientEnd.attach(othelloGameWindow);
 		clientEnd.register(ProcessResponse.class, loginWindow);
+
+		clientEnd.connect();
 
 		// This is the main UI thread
 		while (!display.isDisposed()) {
@@ -46,11 +52,31 @@ public class MainApplication {
 			}
 		}
 		display.dispose();
+		
+		clientEnd.close();
 	}
 
-	public void entryGameHall() {
-		loginWindow.hide();
-		gameHallWindow.show();
+	public void login(Login login) {
+		clientEnd.login(login);
+		System.out.println("Login click!");
+	}
+
+	public void postLogin() {
+		/*
+		 * Use asyncExec to call UI thread to update when the caller is in
+		 * another thread
+		 */
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				if (loginWindow != null && gameHallWindow != null) {
+					loginWindow.hide();
+					gameHallWindow.show();
+				}
+			}
+		});
+
 	}
 
 	public void exitApplication() {
@@ -60,6 +86,7 @@ public class MainApplication {
 	}
 
 	public static void main(String[] args) {
+		Log.set(Log.LEVEL_DEBUG);
 		MainApplication mainApplication = new MainApplication();
 		mainApplication.startUp();
 	}
