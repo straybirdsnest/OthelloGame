@@ -82,27 +82,19 @@ public class MainApplication {
 
 	public void setCurrentUser(User user) {
 		if (user != null) {
+			System.out.println("Set current user.");
 			this.currentUser = user;
-		}
-	}
-
-	public void getCurrentUserInformation() {
-		if (currentUser != null) {
-			clientEnd.getUserInformation(currentUser.getUserId());
-		}
-	}
-
-	public void receiveUserInformation(UserInformation userInformation) {
-		if (currentUser != null) {
-			int currentUserId = currentUser.getUserId();
-			if (currentUserId == userInformation.getUserId()) {
-				
+			if (currentUser.getUserInformation() != null) {
+				currentUserInformation = user.getUserInformation();
 			}
 		}
 	}
 
+	public void receiveUserInformation(UserInformation userInformation) {
+
+	}
+
 	public void postLogin() {
-		getCurrentUserInformation();
 		/*
 		 * Use asyncExec to call UI thread to update when the caller is in
 		 * another thread
@@ -117,7 +109,6 @@ public class MainApplication {
 				}
 			}
 		});
-
 	}
 
 	public void sendMessage(String message) {

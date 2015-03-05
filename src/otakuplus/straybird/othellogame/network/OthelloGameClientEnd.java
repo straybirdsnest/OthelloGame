@@ -130,8 +130,7 @@ public class OthelloGameClientEnd {
 	}
 
 	public void receiveSendMessage(SendMessage sendMessage) {
-		System.out.println("Client receive sendMessage");
-		OthelloGameClientEnd.this.mainApplication.receiveMessage(sendMessage);
+		mainApplication.receiveMessage(sendMessage);
 	}
 
 	public static void main(String[] args) {

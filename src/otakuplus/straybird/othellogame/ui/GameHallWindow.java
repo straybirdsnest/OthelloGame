@@ -103,28 +103,28 @@ public class GameHallWindow {
 
 		UserInformation userInfo[] = new UserInformation[3];
 		userInfo[0] = new UserInformation();
-		userInfo[0].setUserInformationId(999);
+		userInfo[0].setUserId(999);
 		userInfo[0].setNickname("Jack");
 		userInfo[0].setGameWins(100);
 		userInfo[0].setGameDraws(100);
 		userInfo[0].setGameLosts(50);
-		userInfo[0].setBirthday(new Date());
+		userInfo[0].setBirthday(new Date(Instant.now().toEpochMilli()));
 
 		userInfo[1] = new UserInformation();
-		userInfo[1].setUserInformationId(1000);
+		userInfo[1].setUserId(1000);
 		userInfo[1].setNickname("Brown");
 		userInfo[1].setGameWins(10);
 		userInfo[1].setGameDraws(4);
 		userInfo[1].setGameLosts(2);
-		userInfo[1].setBirthday(new Date());
+		userInfo[1].setBirthday(new Date(Instant.now().toEpochMilli()));
 
 		userInfo[2] = new UserInformation();
-		userInfo[2].setUserInformationId(1001);
+		userInfo[2].setUserId(1001);
 		userInfo[2].setNickname("Arash");
 		userInfo[2].setGameWins(78);
 		userInfo[2].setGameDraws(30);
 		userInfo[2].setGameLosts(87);
-		userInfo[2].setBirthday(new Date());
+		userInfo[2].setBirthday(new Date(Instant.now().toEpochMilli()));
 
 		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[5];
 		for (int i = 0; i < 5; i++) {

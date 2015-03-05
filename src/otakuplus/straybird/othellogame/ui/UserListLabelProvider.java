@@ -23,7 +23,7 @@ public class UserListLabelProvider extends OwnerDrawLabelProvider {
 				SWT.COLOR_BLACK));
 		switch (event.index) {
 		case 0:
-			event.gc.drawText("" + userInformation.getUserInformationId(),
+			event.gc.drawText("" + userInformation.getUserId(),
 					event.x+2, event.y+2);
 			break;
 		case 1:
