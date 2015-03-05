@@ -1,5 +1,10 @@
 package otakuplus.straybird.othellogame.ui;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Date;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -32,6 +37,7 @@ public class GameHallWindow {
 	protected Display display;
 
 	protected Text gameHallChat;
+	protected Text messageText;
 
 	public GameHallWindow(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
@@ -161,7 +167,7 @@ public class GameHallWindow {
 		gameHallGridData.heightHint = 200;
 		gameHallChat.setLayoutData(gameHallGridData);
 
-		Text messageText = new Text(composite2, SWT.NONE);
+		messageText = new Text(composite2, SWT.NONE);
 		GridData messageTextGridData = new GridData();
 		messageTextGridData.horizontalSpan = 2;
 		messageTextGridData.widthHint = 150;
@@ -199,8 +205,14 @@ public class GameHallWindow {
 
 	public void receiveMessage(SendMessage sendMessage) {
 		System.out.println("Called Received");
-		gameHallChat.append(sendMessage.getNickname() + " : "
-				+ sendMessage.getMessage() + "\n");
+		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
+				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
+				ZoneId.systemDefault());
+		gameHallChat.append(localMessageTime.format(DateTimeFormatter
+				.ofPattern("hh:mm:ss"))
+				+ " "
+				+ sendMessage.getNickname()
+				+ " : " + sendMessage.getMessage() + "\n");
 		gameHallChat.redraw();
 	}
 
