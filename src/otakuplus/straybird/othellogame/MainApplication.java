@@ -1,8 +1,13 @@
 package otakuplus.straybird.othellogame;
 
+import java.util.Date;
+
 import org.eclipse.swt.widgets.Display;
 
+import otakuplus.straybird.othellogame.model.User;
+import otakuplus.straybird.othellogame.model.UserInformation;
 import otakuplus.straybird.othellogame.network.Login;
+import otakuplus.straybird.othellogame.network.Logout;
 import otakuplus.straybird.othellogame.network.OthelloGameClientEnd;
 import otakuplus.straybird.othellogame.network.ProcessResponse;
 import otakuplus.straybird.othellogame.network.SendMessage;
@@ -21,6 +26,9 @@ public class MainApplication {
 	protected OthelloGameWindow othelloGameWindow;
 
 	protected OthelloGameClientEnd clientEnd;
+
+	protected User currentUser;
+	protected UserInformation currentUserInformation;
 
 	public MainApplication() {
 		display = Display.getDefault();
@@ -57,11 +65,44 @@ public class MainApplication {
 		clientEnd.close();
 	}
 
-	public void login(Login login) {
+	public void login(String username, String password) {
+		Login login = new Login();
+		login.setUsername(username);
+		login.setPassword(password);
 		clientEnd.login(login);
 	}
 
+	public void logout() {
+		if (currentUser != null) {
+			Logout logout = new Logout();
+			logout.setUserId(currentUser.getUserId());
+			clientEnd.logout(logout);
+		}
+	}
+
+	public void setCurrentUser(User user) {
+		if (user != null) {
+			this.currentUser = user;
+		}
+	}
+
+	public void getCurrentUserInformation() {
+		if (currentUser != null) {
+			clientEnd.getUserInformation(currentUser.getUserId());
+		}
+	}
+
+	public void receiveUserInformation(UserInformation userInformation) {
+		if (currentUser != null) {
+			int currentUserId = currentUser.getUserId();
+			if (currentUserId == userInformation.getUserId()) {
+				
+			}
+		}
+	}
+
 	public void postLogin() {
+		getCurrentUserInformation();
 		/*
 		 * Use asyncExec to call UI thread to update when the caller is in
 		 * another thread
@@ -79,6 +120,16 @@ public class MainApplication {
 
 	}
 
+	public void sendMessage(String message) {
+		if (currentUser != null && currentUserInformation != null) {
+			SendMessage sendMessage = new SendMessage();
+			sendMessage.setNickname(currentUserInformation.getNickname());
+			sendMessage.setMessage(message);
+			sendMessage.setMessageTime(new Date());
+			clientEnd.sendMessage(sendMessage);
+		}
+	}
+
 	public void receiveMessage(final SendMessage sendMessage) {
 		/*
 		 * Java doesn't have pass-by-reference at all, it has pass reference by
@@ -89,7 +140,6 @@ public class MainApplication {
 
 			@Override
 			public void run() {
-				System.out.println("Main Receive");
 				gameHallWindow.receiveMessage(sendMessage);
 			}
 		});

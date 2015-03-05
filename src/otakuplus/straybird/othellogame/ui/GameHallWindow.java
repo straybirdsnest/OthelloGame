@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Date;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -17,6 +16,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -179,6 +180,21 @@ public class GameHallWindow {
 		sendMessageGridData.horizontalSpan = 1;
 		sendMessageButton.setLayoutData(sendMessageGridData);
 		sendMessageButton.setText("发送");
+		sendMessageButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String message = messageText.getText();
+				if (message != null && message.length() > 0) {
+					mainApplication.sendMessage(message);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
 	}
 
 	public void open() {
@@ -203,8 +219,11 @@ public class GameHallWindow {
 		shell.close();
 	}
 
+	public void sendMessage() {
+
+	}
+
 	public void receiveMessage(SendMessage sendMessage) {
-		System.out.println("Called Received");
 		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
 				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
 				ZoneId.systemDefault());
