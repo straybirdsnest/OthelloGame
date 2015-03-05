@@ -83,10 +83,13 @@ public class MainApplication {
 	public void setCurrentUser(User user) {
 		if (user != null) {
 			System.out.println("Set current user.");
-			this.currentUser = user;
+			currentUser = user;
+			System.out.println(currentUser.getUsername()+","+currentUser.getCreateTime());
+			/*
 			if (currentUser.getUserInformation() != null) {
 				currentUserInformation = user.getUserInformation();
 			}
+			*/
 		}
 	}
 
