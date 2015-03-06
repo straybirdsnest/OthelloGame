@@ -3,10 +3,10 @@ package otakuplus.straybird.othellogame.ui;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -162,23 +162,21 @@ public class LoginWindow {
 		new Label(shell, SWT.NONE);
 		Button loginButton = new Button(shell, SWT.CENTER | SWT.PUSH);
 		loginButton.setText("登陆");
-		loginButton.addMouseListener(new MouseListener() {
+		loginButton.addSelectionListener(new SelectionListener() {
 
 			@Override
-			public void mouseUp(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseDown(MouseEvent e) {
+			public void widgetSelected(SelectionEvent e) {
 				String username = userNameText.getText();
 				String password = passWordText.getText();
-				if (username.length() >0 && password.length() > 0) {
-					mainApplication.login(username,password);
+				if (username.length() > 0 && password.length() > 0) {
+					mainApplication.login(username, password);
 				}
 			}
 
 			@Override
-			public void mouseDoubleClick(MouseEvent e) {
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+
 			}
 		});
 
@@ -189,25 +187,25 @@ public class LoginWindow {
 
 		shell.pack();
 	}
-	
+
 	public void open() {
 		display = Display.getDefault();
 		createContents();
 		shell.open();
 	}
 
-	public void hide(){
+	public void hide() {
 		shell.setVisible(false);
 	}
-	
-	public void show(){
+
+	public void show() {
 		shell.setVisible(true);
 	}
-	
-	public void close(){
+
+	public void close() {
 		shell.close();
 	}
-	
+
 	public static void main(String[] args) {
 
 	}
