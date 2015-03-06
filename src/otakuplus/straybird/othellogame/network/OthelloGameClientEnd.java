@@ -120,7 +120,7 @@ public class OthelloGameClientEnd {
 		if (processResponse.getRequestType() == ProcessResponse.LOGIN) {
 			itemList = clientManager.getObserver(ProcessResponse.class);
 			if (itemList != null && itemList.isEmpty() != true) {
-				OthelloGameClientEnd.this.mainApplication.postLogin();
+				// OthelloGameClientEnd.this.mainApplication.postLogin();
 			}
 		}
 	}

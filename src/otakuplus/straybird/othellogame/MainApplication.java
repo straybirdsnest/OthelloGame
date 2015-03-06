@@ -84,17 +84,27 @@ public class MainApplication {
 		if (user != null) {
 			System.out.println("Set current user.");
 			currentUser = user;
-			System.out.println(currentUser.getUsername()+","+currentUser.getCreateTime());
-			/*
-			if (currentUser.getUserInformation() != null) {
-				currentUserInformation = user.getUserInformation();
-			}
-			*/
+			System.out.println(currentUser.getUsername() + ","
+					+ currentUser.getCreateTime());
+			getCurrentUserInformation();
+		}
+	}
+
+	public void getCurrentUserInformation() {
+		if (currentUser != null) {
+			clientEnd.getUserInformation(currentUser.getUserId());
 		}
 	}
 
 	public void receiveUserInformation(UserInformation userInformation) {
-
+		if (currentUser != null) {
+			if (currentUser.getUserId() == userInformation.getUserId()) {
+				currentUserInformation = userInformation;
+				postLogin();
+			}else{
+				
+			}
+		}
 	}
 
 	public void postLogin() {
