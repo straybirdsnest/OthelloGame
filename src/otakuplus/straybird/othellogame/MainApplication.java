@@ -30,7 +30,11 @@ public class MainApplication {
 	protected User currentUser;
 	protected UserInformation currentUserInformation;
 
+	protected ApplicationState applicationState;
+
 	public MainApplication() {
+		applicationState = new ApplicationState();
+
 		display = Display.getDefault();
 
 		loginWindow = new LoginWindow(this);
@@ -60,9 +64,12 @@ public class MainApplication {
 				display.sleep();
 			}
 		}
-		display.dispose();
-
 		clientEnd.close();
+		clientEnd.stop();
+	}
+
+	public ApplicationState getApplicationState() {
+		return applicationState;
 	}
 
 	public void login(String username, String password) {
@@ -101,8 +108,8 @@ public class MainApplication {
 			if (currentUser.getUserId() == userInformation.getUserId()) {
 				currentUserInformation = userInformation;
 				postLogin();
-			}else{
-				
+			} else {
+
 			}
 		}
 	}
@@ -151,9 +158,17 @@ public class MainApplication {
 	}
 
 	public void exitApplication() {
-		loginWindow.close();
-		gameHallWindow.close();
-		othelloGameWindow.close();
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				loginWindow.close();
+				gameHallWindow.close();
+				othelloGameWindow.close();
+				display.dispose();
+			}
+		});
+
 	}
 
 	public static void main(String[] args) {

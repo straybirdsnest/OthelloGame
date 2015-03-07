@@ -89,6 +89,11 @@ public class OthelloGameClientEnd {
 		}
 	}
 
+	public void stop(){
+		if(kryonetClient != null){
+			kryonetClient.stop();
+		}
+	}
 	public void login(Login login) {
 		kryonetClient.sendTCP(login);
 	}
@@ -121,6 +126,11 @@ public class OthelloGameClientEnd {
 			itemList = clientManager.getObserver(ProcessResponse.class);
 			if (itemList != null && itemList.isEmpty() != true) {
 				// OthelloGameClientEnd.this.mainApplication.postLogin();
+			}
+		} else if (processResponse.getRequestType() == ProcessResponse.LOGOUT) {
+			if (processResponse.getResponseState() == true) {
+				mainApplication.getApplicationState().turnDestory();
+				mainApplication.exitApplication();
 			}
 		}
 	}

@@ -24,10 +24,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
+import com.sun.glass.ui.Application;
+
+import otakuplus.straybird.othellogame.ApplicationState;
 import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.UserInformation;
 import otakuplus.straybird.othellogame.network.SendMessage;
@@ -192,6 +198,27 @@ public class GameHallWindow {
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
+
+		shell.addListener(SWT.Close, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
+					MessageBox messagebox = new MessageBox(shell,
+							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+					messagebox.setText("确认注销");
+					messagebox.setMessage("退出会从游戏大厅中注销，确认退出奥赛罗棋？");
+					int result = messagebox.open();
+					if (result == SWT.YES) {
+						mainApplication.logout();
+					}
+					event.doit = false;
+				} else {
+					event.doit = true;
+				}
 
 			}
 		});

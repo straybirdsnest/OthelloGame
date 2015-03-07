@@ -1,6 +1,6 @@
 package otakuplus.straybird.othellogame;
 
-public class ApllicationState {
+public class ApplicationState {
 	public static int INITILIZE = 100;
 	public static int LOGIN = 101;
 	public static int GAMEHALL = 102;
@@ -9,6 +9,10 @@ public class ApllicationState {
 
 	private int applicationState = 100;
 
+	public void turnDestory(){
+		applicationState = DESTORY;
+	}
+	
 	public int getState() {
 		return applicationState;
 	}
