@@ -13,17 +13,27 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.ChessBoard;
 import otakuplus.straybird.othellogame.model.Chessman;
 
 public class OthelloGameWindow {
+	protected MainApplication mainApplication;
 
 	protected Display display;
 	protected Shell shell;
 
+	protected Label whiteLabel;
+	protected Label blackLabel;
+	protected Label whiteTimer;
+	protected Label blackTimer;
+
 	protected ChessBoard chessBoard;
 
-	public OthelloGameWindow() {
+	public OthelloGameWindow(MainApplication mainApplication) {
+		if (mainApplication == null) {
+			this.mainApplication = mainApplication;
+		}
 		if (chessBoard == null) {
 			chessBoard = new ChessBoard();
 			chessBoard.searchSuggestedChessmanPosition();
@@ -36,19 +46,27 @@ public class OthelloGameWindow {
 		shell.setLocation((Display.getDefault().getBounds().width - 400) / 2,
 				(Display.getDefault().getBounds().height - 400) / 2);
 		GridLayout othellGameLayout = new GridLayout();
-		othellGameLayout.numColumns = 1;
+		othellGameLayout.numColumns = 5;
 		shell.setLayout(othellGameLayout);
 
 		final Canvas canvas = new Canvas(shell, SWT.NONE);
 		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
 		canvasGridData.widthHint = 321;
 		canvasGridData.heightHint = 321;
+		canvasGridData.verticalSpan = 4;
 		canvas.setLayoutData(canvasGridData);
 
-		final Label whiteLabel = new Label(shell, SWT.CENTER);
+		Label whiteUserlabel =new Label(shell, SWT.CENTER);
+		whiteUserlabel.setText("白方");
+		whiteLabel = new Label(shell, SWT.CENTER);
 		whiteLabel.setText("White: 02");
-		final Label blackLabel = new Label(shell, SWT.CENTER);
+		blackLabel = new Label(shell, SWT.CENTER);
 		blackLabel.setText("Black: 02");
+
+		whiteTimer = new Label(shell, SWT.CENTER);
+		whiteTimer.setText("15:00");
+		blackTimer = new Label(shell, SWT.CENTER);
+		blackTimer.setText("15:00");
 
 		canvas.addPaintListener(new PaintListener() {
 			@Override

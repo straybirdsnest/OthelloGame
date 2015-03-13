@@ -39,7 +39,7 @@ public class MainApplication {
 
 		loginWindow = new LoginWindow(this);
 		gameHallWindow = new GameHallWindow(this);
-		othelloGameWindow = new OthelloGameWindow();
+		othelloGameWindow = new OthelloGameWindow(this);
 
 		clientEnd = new OthelloGameClientEnd(this);
 	}
