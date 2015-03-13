@@ -2,6 +2,7 @@ package otakuplus.straybird.othellogame;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Display;
 
@@ -121,7 +122,14 @@ public class MainApplication {
 				userInformationList.add(userInformation);
 				postLogin();
 			} else {
+				userInformationList.add(userInformation);
+				Display.getDefault().asyncExec(new Runnable() {
 
+					@Override
+					public void run() {
+						gameHallWindow.notifyUserListUpdate();
+					}
+				});
 			}
 		}
 	}
@@ -138,10 +146,30 @@ public class MainApplication {
 				if (loginWindow != null && gameHallWindow != null) {
 					loginWindow.hide();
 					gameHallWindow.show();
-					gameHallWindow.notifyUserListUpdate();
+					notifyUserListUpdate();
 				}
 			}
 		});
+	}
+
+	public void receiveLogout(Logout logout) {
+		if (userInformationList != null) {
+			Iterator<UserInformation> userListIterator = userInformationList
+					.iterator();
+			UserInformation userInformation = null;
+			boolean userListUpdate = false;
+			while (userListIterator.hasNext()) {
+				userInformation = userListIterator.next();
+				if (logout.getUserId() == userInformation.getUserId()) {
+					// iterator's remove is the only safe way to modify list
+					userListIterator.remove();
+					userListUpdate = true;
+				}
+			}
+			if (userListUpdate == true) {
+				notifyUserListUpdate();
+			}
+		}
 	}
 
 	public void sendMessage(String message) {
@@ -164,7 +192,10 @@ public class MainApplication {
 
 			@Override
 			public void run() {
-				gameHallWindow.receiveMessage(sendMessage);
+				// should only update after user has logined
+				if (currentUser != null) {
+					gameHallWindow.receiveMessage(sendMessage);
+				}
 			}
 		});
 
@@ -179,6 +210,16 @@ public class MainApplication {
 				gameHallWindow.close();
 				othelloGameWindow.close();
 				display.dispose();
+			}
+		});
+	}
+
+	public void notifyUserListUpdate() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				gameHallWindow.notifyUserListUpdate();
 			}
 		});
 

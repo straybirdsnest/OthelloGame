@@ -34,7 +34,10 @@ public class OthelloGameClientEnd {
 			}
 
 			public void received(Connection connection, Object object) {
-				if (object instanceof User) {
+				if (object instanceof Logout) {
+					Logout logout = (Logout) object;
+					receiveLogout(logout);
+				} else if (object instanceof User) {
 					User user = (User) object;
 					receiveUser(user);
 				} else if (object instanceof UserInformation) {
@@ -89,17 +92,22 @@ public class OthelloGameClientEnd {
 		}
 	}
 
-	public void stop(){
-		if(kryonetClient != null){
+	public void stop() {
+		if (kryonetClient != null) {
 			kryonetClient.stop();
 		}
 	}
+
 	public void login(Login login) {
 		kryonetClient.sendTCP(login);
 	}
 
 	public void logout(Logout logout) {
 		kryonetClient.sendTCP(logout);
+	}
+
+	public void receiveLogout(Logout logout) {
+		mainApplication.receiveLogout(logout);
 	}
 
 	public void receiveUser(User user) {

@@ -56,7 +56,7 @@ public class OthelloGameWindow {
 		canvasGridData.verticalSpan = 4;
 		canvas.setLayoutData(canvasGridData);
 
-		Label whiteUserlabel =new Label(shell, SWT.CENTER);
+		Label whiteUserlabel = new Label(shell, SWT.CENTER);
 		whiteUserlabel.setText("白方");
 		whiteLabel = new Label(shell, SWT.CENTER);
 		whiteLabel.setText("White: 02");
