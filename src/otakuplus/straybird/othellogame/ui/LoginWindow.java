@@ -166,16 +166,11 @@ public class LoginWindow {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String username = userNameText.getText();
-				String password = passWordText.getText();
-				if (username.length() > 0 && password.length() > 0) {
-					mainApplication.login(username, password);
-				}
+				login();
 			}
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -204,6 +199,14 @@ public class LoginWindow {
 
 	public void close() {
 		shell.close();
+	}
+
+	public void login() {
+		String username = userNameText.getText();
+		String password = passWordText.getText();
+		if (username.length() > 0 && password.length() > 0) {
+			mainApplication.login(username, password);
+		}
 	}
 
 	public static void main(String[] args) {

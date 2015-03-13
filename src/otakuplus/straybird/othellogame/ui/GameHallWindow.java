@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -31,20 +30,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
-import com.sun.glass.ui.Application;
-
 import otakuplus.straybird.othellogame.ApplicationState;
 import otakuplus.straybird.othellogame.MainApplication;
-import otakuplus.straybird.othellogame.model.UserInformation;
 import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class GameHallWindow {
+
 	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
 
 	protected Text gameHallChat;
 	protected Text messageText;
+	protected TableViewer userListTableViewer;
 
 	public GameHallWindow(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
@@ -93,48 +91,24 @@ public class GameHallWindow {
 		composite2GridData.horizontalSpan = 3;
 		composite2GridData.widthHint = 400;
 		composite2GridData.heightHint = 200;
-		TableViewer tableViewer = new TableViewer(composite2, SWT.CENTER
+		userListTableViewer = new TableViewer(composite2, SWT.CENTER
 				| SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
 				| SWT.BORDER);
-		Table table = tableViewer.getTable();
+		Table table = userListTableViewer.getTable();
 		GridData tableViewerGridData = new GridData(GridData.GRAB_HORIZONTAL
 				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
 		tableViewerGridData.horizontalSpan = 3;
 		tableViewerGridData.widthHint = 400;
 		tableViewerGridData.heightHint = 200;
-		tableViewer.getControl().setLayoutData(tableViewerGridData);
+		userListTableViewer.getControl().setLayoutData(tableViewerGridData);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
-		tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-
-		UserInformation userInfo[] = new UserInformation[3];
-		userInfo[0] = new UserInformation();
-		userInfo[0].setUserId(999);
-		userInfo[0].setNickname("Jack");
-		userInfo[0].setGameWins(100);
-		userInfo[0].setGameDraws(100);
-		userInfo[0].setGameLosts(50);
-		userInfo[0].setBirthday(new Date(Instant.now().toEpochMilli()));
-
-		userInfo[1] = new UserInformation();
-		userInfo[1].setUserId(1000);
-		userInfo[1].setNickname("Brown");
-		userInfo[1].setGameWins(10);
-		userInfo[1].setGameDraws(4);
-		userInfo[1].setGameLosts(2);
-		userInfo[1].setBirthday(new Date(Instant.now().toEpochMilli()));
-
-		userInfo[2] = new UserInformation();
-		userInfo[2].setUserId(1001);
-		userInfo[2].setNickname("Arash");
-		userInfo[2].setGameWins(78);
-		userInfo[2].setGameDraws(30);
-		userInfo[2].setGameLosts(87);
-		userInfo[2].setBirthday(new Date(Instant.now().toEpochMilli()));
+		userListTableViewer.setContentProvider(ArrayContentProvider
+				.getInstance());
 
 		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[5];
 		for (int i = 0; i < 5; i++) {
-			tableViewerColumn[i] = new TableViewerColumn(tableViewer,
+			tableViewerColumn[i] = new TableViewerColumn(userListTableViewer,
 					SWT.CENTER, i);
 			switch (i) {
 			case 0:
@@ -163,9 +137,10 @@ public class GameHallWindow {
 		tableLayout.addColumnData(new ColumnPixelData(50));
 		table.setLayout(tableLayout);
 
-		tableViewer.setLabelProvider(new UserListLabelProvider());
-		tableViewer.setInput(userInfo);
-		tableViewer.setSelection(new StructuredSelection(userInfo[0]));
+		userListTableViewer.setLabelProvider(new UserListLabelProvider());
+		userListTableViewer.setInput(mainApplication.getUserInformationList());
+		userListTableViewer.setSelection(new StructuredSelection(
+				mainApplication.getUserInformationList()));
 
 		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
 		GridData gameHallGridData = new GridData();
@@ -190,10 +165,7 @@ public class GameHallWindow {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				String message = messageText.getText();
-				if (message != null && message.length() > 0) {
-					mainApplication.sendMessage(message);
-				}
+				sendMessage();
 			}
 
 			@Override
@@ -246,8 +218,17 @@ public class GameHallWindow {
 		shell.close();
 	}
 
-	public void sendMessage() {
+	public void notifyUserListUpdate() {
+		if (userListTableViewer != null) {
+			userListTableViewer.refresh();
+		}
+	}
 
+	public void sendMessage() {
+		String message = messageText.getText();
+		if (message != null && message.length() > 0) {
+			mainApplication.sendMessage(message);
+		}
 	}
 
 	public void receiveMessage(SendMessage sendMessage) {

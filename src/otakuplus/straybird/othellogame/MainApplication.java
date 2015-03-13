@@ -1,5 +1,6 @@
 package otakuplus.straybird.othellogame;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.eclipse.swt.widgets.Display;
@@ -32,16 +33,21 @@ public class MainApplication {
 
 	protected ApplicationState applicationState;
 
-	public MainApplication() {
-		applicationState = new ApplicationState();
+	protected ArrayList<UserInformation> userInformationList;
 
+	public MainApplication() {
+		userInformationList = new ArrayList<UserInformation>();
+
+		applicationState = new ApplicationState();
+		// network
+		clientEnd = new OthelloGameClientEnd(this);
+
+		// UI
 		display = Display.getDefault();
 
 		loginWindow = new LoginWindow(this);
 		gameHallWindow = new GameHallWindow(this);
 		othelloGameWindow = new OthelloGameWindow(this);
-
-		clientEnd = new OthelloGameClientEnd(this);
 	}
 
 	public void startUp() {
@@ -103,10 +109,16 @@ public class MainApplication {
 		}
 	}
 
+	public ArrayList<UserInformation> getUserInformationList() {
+		return userInformationList;
+	}
+
 	public void receiveUserInformation(UserInformation userInformation) {
 		if (currentUser != null) {
 			if (currentUser.getUserId() == userInformation.getUserId()) {
 				currentUserInformation = userInformation;
+				// add current user information
+				userInformationList.add(userInformation);
 				postLogin();
 			} else {
 
@@ -126,6 +138,7 @@ public class MainApplication {
 				if (loginWindow != null && gameHallWindow != null) {
 					loginWindow.hide();
 					gameHallWindow.show();
+					gameHallWindow.notifyUserListUpdate();
 				}
 			}
 		});
