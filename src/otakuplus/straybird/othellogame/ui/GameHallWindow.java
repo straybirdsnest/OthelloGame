@@ -4,9 +4,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
@@ -14,10 +15,13 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -33,6 +37,7 @@ import org.eclipse.swt.widgets.Text;
 
 import otakuplus.straybird.othellogame.ApplicationState;
 import otakuplus.straybird.othellogame.MainApplication;
+import otakuplus.straybird.othellogame.model.GameTable;
 import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class GameHallWindow {
@@ -44,6 +49,8 @@ public class GameHallWindow {
 	protected Text gameHallChat;
 	protected Text messageText;
 	protected TableViewer userListTableViewer;
+
+	protected Image tableMiniUserIcon;
 
 	public GameHallWindow(MainApplication mainApplication) {
 		this.mainApplication = mainApplication;
@@ -66,6 +73,9 @@ public class GameHallWindow {
 		compositeGridData.heightHint = 400;
 		composite.setLayout(new GridLayout());
 		composite.setData(compositeGridData);
+
+		tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
+
 		Canvas tableCanvas = new Canvas(composite, SWT.FILL);
 		GridData tableCanvasGridData = new GridData();
 		tableCanvasGridData.horizontalSpan = 7;
@@ -76,10 +86,59 @@ public class GameHallWindow {
 
 			@Override
 			public void paintControl(PaintEvent event) {
-				event.gc.drawString("桌面", 0, 0);
-				event.gc.setBackground(Display.getDefault().getSystemColor(
-						SWT.COLOR_CYAN));
-				event.gc.fillRectangle(0, 50, 200, 200);
+				ArrayList<GameTable> gameTableList = mainApplication
+						.getGameTableList();
+				if (gameTableList.size() > 0) {
+					Iterator<GameTable> gameTableIterator = gameTableList
+							.iterator();
+					GameTable tempGameTable = null;
+					while (gameTableIterator.hasNext()) {
+						tempGameTable = gameTableIterator.next();
+						event.gc.setForeground(Display.getDefault()
+								.getSystemColor(SWT.COLOR_BLACK));
+						event.gc.setBackground(Display.getDefault()
+								.getSystemColor(SWT.COLOR_WHITE));
+						event.gc.drawString(
+								"" + tempGameTable.getGameTableId(), 0, 72);
+						event.gc.setBackground(Display.getDefault()
+								.getSystemColor(SWT.COLOR_DARK_YELLOW));
+						event.gc.drawRectangle(4, 4, 64, 64);
+						event.gc.fillRectangle(4, 4, 63, 63);
+						if (tempGameTable.getPlayerAId() != 0) {
+							event.gc.drawImage(tableMiniUserIcon, 0, 0,
+									tableMiniUserIcon.getBounds().width,
+									tableMiniUserIcon.getBounds().height, 0,
+									20, 32, 32);
+						}
+						if (tempGameTable.getPlayerBId() != 0) {
+							event.gc.drawImage(tableMiniUserIcon, 0, 0,
+									tableMiniUserIcon.getBounds().width,
+									tableMiniUserIcon.getBounds().height, 72,
+									20, 32, 32);
+						}
+
+					}
+				}
+			}
+		});
+
+		tableCanvas.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseDown(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseDoubleClick(MouseEvent e) {
+				// TODO Auto-generated method stub
 
 			}
 		});
@@ -195,6 +254,7 @@ public class GameHallWindow {
 					event.doit = false;
 				} else {
 					event.doit = true;
+					destoryResources();
 				}
 
 			}
@@ -217,6 +277,12 @@ public class GameHallWindow {
 			System.out.println("Shell is null!");
 		}
 		shell.setVisible(true);
+	}
+
+	public void destoryResources() {
+		if (tableMiniUserIcon != null) {
+			tableMiniUserIcon.dispose();
+		}
 	}
 
 	public void close() {

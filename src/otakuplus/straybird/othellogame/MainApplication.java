@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Display;
 
+import otakuplus.straybird.othellogame.model.GameTable;
 import otakuplus.straybird.othellogame.model.User;
 import otakuplus.straybird.othellogame.model.UserInformation;
 import otakuplus.straybird.othellogame.network.Login;
@@ -35,9 +36,17 @@ public class MainApplication {
 	protected ApplicationState applicationState;
 
 	protected ArrayList<UserInformation> userInformationList;
+	protected ArrayList<GameTable> gameTableList;
 
 	public MainApplication() {
 		userInformationList = new ArrayList<UserInformation>();
+		gameTableList = new ArrayList<GameTable>();
+		// there should be 100 empty tables in the game
+		GameTable tempGameTable = new GameTable();
+		for (int i = 1; i < 101; i++) {
+			tempGameTable.setGameTableId(i);
+			gameTableList.add(tempGameTable);
+		}
 
 		applicationState = new ApplicationState();
 		// network
@@ -110,6 +119,10 @@ public class MainApplication {
 		}
 	}
 
+	public ArrayList<GameTable> getGameTableList() {
+		return gameTableList;
+	}
+
 	public ArrayList<UserInformation> getUserInformationList() {
 		return userInformationList;
 	}
@@ -122,6 +135,20 @@ public class MainApplication {
 				userInformationList.add(userInformation);
 				postLogin();
 			} else {
+				if (userInformationList.size() > 0) {
+					Iterator<UserInformation> userInformationIterator = userInformationList
+							.iterator();
+					UserInformation tempUserInformation = null;
+					while (userInformationIterator.hasNext()) {
+						tempUserInformation = userInformationIterator.next();
+						if (tempUserInformation.getUserId() == userInformation
+								.getUserId()) {
+							// remove the old one to update
+							userInformationIterator.remove();
+							break;
+						}
+					}
+				}
 				userInformationList.add(userInformation);
 				notifyUserListUpdate();
 			}
