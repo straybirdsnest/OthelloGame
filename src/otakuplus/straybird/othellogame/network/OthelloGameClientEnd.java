@@ -49,6 +49,15 @@ public class OthelloGameClientEnd {
 				} else if (object instanceof SendMessage) {
 					SendMessage sendMessage = (SendMessage) object;
 					receiveSendMessage(sendMessage);
+				} else if (object instanceof ArrayList<?>) {
+					// caused by Type erasure, have to test
+					ArrayList<?> tempObject = (ArrayList<?>) object;
+					if (tempObject.isEmpty() != true) {
+						if (tempObject.get(0) instanceof UserInformation) {
+							ArrayList<UserInformation> userInformationList = (ArrayList<UserInformation>) object;
+							receiveUserInformationList(userInformationList);
+						}
+					}
 				}
 			}
 		});
@@ -122,6 +131,18 @@ public class OthelloGameClientEnd {
 
 	public void receiveUserInformation(UserInformation userInformation) {
 		mainApplication.receiveUserInformation(userInformation);
+	}
+
+	public void getUserOnlineList(int fromNumber, int toNumber) {
+		GetUserOnlineList getUserOnlineList = new GetUserOnlineList();
+		getUserOnlineList.setFromNumber(fromNumber);
+		getUserOnlineList.setToNumber(toNumber);
+		kryonetClient.sendTCP(getUserOnlineList);
+	}
+
+	public void receiveUserInformationList(
+			ArrayList<UserInformation> userInformationList) {
+		mainApplication.receiveUserInformationList(userInformationList);
 	}
 
 	public boolean getIsConnected() {

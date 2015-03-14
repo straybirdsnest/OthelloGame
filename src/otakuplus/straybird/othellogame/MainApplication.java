@@ -155,6 +155,28 @@ public class MainApplication {
 		}
 	}
 
+	public void receiveUserInformationList(
+			ArrayList<UserInformation> userOnlineList) {
+		if (userOnlineList.size() > 0) {
+			Iterator<UserInformation> userInformationIterator = userOnlineList
+					.iterator();
+			userInformationList.clear();
+			UserInformation tempUserInfo = null;
+			boolean includeSlef = false;
+			while (userInformationIterator.hasNext()) {
+				tempUserInfo = userInformationIterator.next();
+				if (tempUserInfo.getUserId() == currentUser.getUserId()) {
+					includeSlef = true;
+				}
+				userInformationList.add(tempUserInfo);
+			}
+			if (includeSlef == false) {
+				userInformationList.add(currentUserInformation);
+			}
+			notifyUserListUpdate();
+		}
+	}
+
 	public void postLogin() {
 		/*
 		 * Use asyncExec to call UI thread to update when the caller is in
@@ -168,6 +190,7 @@ public class MainApplication {
 					loginWindow.hide();
 					gameHallWindow.show();
 					notifyUserListUpdate();
+					clientEnd.getUserOnlineList(1, 50);
 				}
 			}
 		});
