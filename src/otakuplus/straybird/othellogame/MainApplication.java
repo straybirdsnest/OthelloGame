@@ -22,6 +22,9 @@ import com.esotericsoftware.minlog.Log;
 
 public class MainApplication {
 
+	public static final int AUTO_UPDATE_TIME = 30000;
+	public static final int STOP_TIME = -1;
+
 	protected Display display;
 
 	protected LoginWindow loginWindow;
@@ -38,6 +41,8 @@ public class MainApplication {
 	protected ArrayList<UserInformation> userInformationList;
 	protected ArrayList<GameTable> gameTableList;
 
+	protected Runnable autoUserListTimer;
+
 	public MainApplication() {
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
@@ -47,6 +52,16 @@ public class MainApplication {
 			tempGameTable.setGameTableId(i);
 			gameTableList.add(tempGameTable);
 		}
+
+		autoUserListTimer = new Runnable() {
+
+			@Override
+			public void run() {
+				if (clientEnd != null && currentUser != null) {
+					clientEnd.getUserOnlineList(0, 50);
+				}
+			}
+		};
 
 		applicationState = new ApplicationState();
 		// network
@@ -190,7 +205,7 @@ public class MainApplication {
 					loginWindow.hide();
 					gameHallWindow.show();
 					notifyUserListUpdate();
-					clientEnd.getUserOnlineList(1, 50);
+					startTimerTask();
 				}
 			}
 		});
@@ -245,11 +260,20 @@ public class MainApplication {
 
 	}
 
+	public void startTimerTask() {
+		Display.getDefault().timerExec(AUTO_UPDATE_TIME, autoUserListTimer);
+	}
+
+	public void stopTimerTask() {
+		Display.getDefault().timerExec(STOP_TIME, autoUserListTimer);
+	}
+
 	public void exitApplication() {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
+				stopTimerTask();
 				loginWindow.close();
 				gameHallWindow.close();
 				othelloGameWindow.close();

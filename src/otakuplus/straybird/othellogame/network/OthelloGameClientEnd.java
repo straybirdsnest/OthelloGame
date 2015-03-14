@@ -133,10 +133,10 @@ public class OthelloGameClientEnd {
 		mainApplication.receiveUserInformation(userInformation);
 	}
 
-	public void getUserOnlineList(int fromNumber, int toNumber) {
+	public void getUserOnlineList(int fromNumber, int maxNumber) {
 		GetUserOnlineList getUserOnlineList = new GetUserOnlineList();
 		getUserOnlineList.setFromNumber(fromNumber);
-		getUserOnlineList.setToNumber(toNumber);
+		getUserOnlineList.setMaxNumber(maxNumber);
 		kryonetClient.sendTCP(getUserOnlineList);
 	}
 
