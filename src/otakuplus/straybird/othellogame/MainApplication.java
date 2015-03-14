@@ -123,13 +123,7 @@ public class MainApplication {
 				postLogin();
 			} else {
 				userInformationList.add(userInformation);
-				Display.getDefault().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						gameHallWindow.notifyUserListUpdate();
-					}
-				});
+				notifyUserListUpdate();
 			}
 		}
 	}

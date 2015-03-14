@@ -38,7 +38,7 @@ public class ClientManager {
 						object = itemIterator.next();
 						if (observer == object) {
 							System.out.println("Observer remove!");
-							itemList.remove(observer);
+							itemIterator.remove();
 						}
 					}
 				}

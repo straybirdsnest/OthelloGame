@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLayoutData;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableLayout;
@@ -106,8 +107,8 @@ public class GameHallWindow {
 		userListTableViewer.setContentProvider(ArrayContentProvider
 				.getInstance());
 
-		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[5];
-		for (int i = 0; i < 5; i++) {
+		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[6];
+		for (int i = 0; i < 6; i++) {
 			tableViewerColumn[i] = new TableViewerColumn(userListTableViewer,
 					SWT.CENTER, i);
 			switch (i) {
@@ -126,12 +127,16 @@ public class GameHallWindow {
 			case 4:
 				tableViewerColumn[i].getColumn().setText("失败");
 				break;
+			case 5:
+				tableViewerColumn[i].getColumn().setText("积分");
+				break;
 			}
 		}
 
 		TableLayout tableLayout = new TableLayout();
 		tableLayout.addColumnData(new ColumnPixelData(60));
 		tableLayout.addColumnData(new ColumnPixelData(80));
+		tableLayout.addColumnData(new ColumnPixelData(50));
 		tableLayout.addColumnData(new ColumnPixelData(50));
 		tableLayout.addColumnData(new ColumnPixelData(50));
 		tableLayout.addColumnData(new ColumnPixelData(50));

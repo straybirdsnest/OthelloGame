@@ -23,28 +23,29 @@ public class UserListLabelProvider extends OwnerDrawLabelProvider {
 				SWT.COLOR_BLACK));
 		switch (event.index) {
 		case 0:
-			event.gc.drawText("" + userInformation.getUserId(),
-					event.x+2, event.y+2);
+			event.gc.drawText("" + userInformation.getUserId(), event.x + 2,
+					event.y + 2);
 			break;
 		case 1:
-			event.gc.drawText(userInformation.getNickname(), event.x+2, event.y+2);
+			event.gc.drawText(userInformation.getNickname(), event.x + 2,
+					event.y + 2);
 			break;
 		case 2:
-			event.gc.drawText("" + userInformation.getGameWins(), event.x+2,
-					event.y+2);
+			event.gc.drawText("" + userInformation.getGameWins(), event.x + 2,
+					event.y + 2);
 			break;
 		case 3:
-			event.gc.drawText("" + userInformation.getGameDraws(), event.x+2,
-					event.y+2);
+			event.gc.drawText("" + userInformation.getGameDraws(), event.x + 2,
+					event.y + 2);
 			break;
 		case 4:
-			event.gc.drawText("" + userInformation.getGameLosts(), event.x+2,
-					event.y+2);
+			event.gc.drawText("" + userInformation.getGameLosts(), event.x + 2,
+					event.y + 2);
 			break;
-		/*
-		 * case 5: event.gc.drawText(userInformation.getBirthday().toString(),
-		 * event.x, event.y);
-		 */
+		case 5:
+			event.gc.drawText("" + userInformation.getRankPoints(),
+					event.x + 2, event.y + 2);
+			break;
 		}
 	}
 
