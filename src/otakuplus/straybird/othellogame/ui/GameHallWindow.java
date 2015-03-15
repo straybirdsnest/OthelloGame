@@ -151,8 +151,19 @@ public class GameHallWindow {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				// TODO Auto-generated method stub
-
+				int x = e.x;
+				int y = e.y;
+				int index = x / 208 + (y / 208) * 2;
+				int widthOffset = (index % 2) * 208;
+				int heightOffset = (index / 2) * 208;
+				if (x >= 4 + widthOffset && x <= 56 + widthOffset
+						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
+					System.out.println("click table:" + index + " 01");
+				}
+				if (x >= 156 + widthOffset && x <= 204 + widthOffset
+						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
+					System.out.println("click table:" + index + " 02");
+				}
 			}
 
 			@Override
