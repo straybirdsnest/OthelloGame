@@ -12,7 +12,6 @@ public class UserListLabelProvider extends OwnerDrawLabelProvider {
 
 	@Override
 	protected void measure(Event event, Object element) {
-		UserInformation userInformation = (UserInformation) element;
 		event.setBounds(new Rectangle(event.x, event.y, 400, 20));
 	}
 

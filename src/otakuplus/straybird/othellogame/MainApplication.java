@@ -14,6 +14,7 @@ import otakuplus.straybird.othellogame.network.Logout;
 import otakuplus.straybird.othellogame.network.OthelloGameClientEnd;
 import otakuplus.straybird.othellogame.network.ProcessResponse;
 import otakuplus.straybird.othellogame.network.SendMessage;
+import otakuplus.straybird.othellogame.network.UpdateGameTable;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
@@ -39,9 +40,11 @@ public class MainApplication {
 	protected ApplicationState applicationState;
 
 	protected ArrayList<UserInformation> userInformationList;
+	protected GameTable currentGameTable;
 	protected ArrayList<GameTable> gameTableList;
 
 	protected Runnable autoUserListTimer;
+	protected Runnable autoGameTableListTimer;
 
 	public MainApplication() {
 		userInformationList = new ArrayList<UserInformation>();
@@ -59,6 +62,16 @@ public class MainApplication {
 			public void run() {
 				if (clientEnd != null && currentUser != null) {
 					clientEnd.getUserOnlineList(0, 50);
+				}
+			}
+		};
+
+		autoGameTableListTimer = new Runnable() {
+
+			@Override
+			public void run() {
+				if (clientEnd != null && currentUser != null) {
+					clientEnd.getGameTableList(0, 50);
 				}
 			}
 		};
@@ -118,12 +131,9 @@ public class MainApplication {
 		}
 	}
 
-	public void setCurrentUser(User user) {
-		if (user != null) {
-			System.out.println("Set current user.");
+	public void receiveUser(User user) {
+		if (currentUser == null && user != null) {
 			currentUser = user;
-			System.out.println(currentUser.getUsername() + ","
-					+ currentUser.getCreateTime());
 			getCurrentUserInformation();
 		}
 	}
@@ -132,6 +142,10 @@ public class MainApplication {
 		if (currentUser != null) {
 			clientEnd.getUserInformation(currentUser.getUserId());
 		}
+	}
+
+	public GameTable getCurrentGameTable() {
+		return currentGameTable;
 	}
 
 	public ArrayList<GameTable> getGameTableList() {
@@ -260,12 +274,110 @@ public class MainApplication {
 
 	}
 
+	public void receiveGameTable(GameTable gameTable) {
+		if (currentGameTable == null && gameTable != null) {
+			currentGameTable = gameTable;
+		}
+	}
+
+	public void receiveGameTableList(ArrayList<GameTable> newGameTableList) {
+		if (gameTableList.size() > 0) {
+			Iterator<GameTable> newGameTableIterator = gameTableList.iterator();
+			Iterator<GameTable> oldGameTableIterator = this.gameTableList
+					.iterator();
+			GameTable oldGameTable = null;
+			GameTable newGameTable = null;
+			while (oldGameTableIterator.hasNext()) {
+				oldGameTable = oldGameTableIterator.next();
+				while (newGameTableIterator.hasNext()) {
+					newGameTable = newGameTableIterator.next();
+					if (oldGameTable.getGameTableId() == newGameTable
+							.getGameTableId()) {
+						// write with new data
+						oldGameTable.setPlayerAId(newGameTable.getPlayerAId());
+						oldGameTable.setPlayerBId(newGameTable.getPlayerBId());
+						if (currentGameTable != null
+								&& currentGameTable.getGameTableId() == newGameTable
+										.getGameTableId()) {
+							currentGameTable.setPlayerAId(newGameTable
+									.getPlayerAId());
+							currentGameTable.setPlayerBId(newGameTable
+									.getPlayerBId());
+						}
+					}
+				}
+			}
+			notifyUserListUpdate();
+		}
+	}
+
+	public void takeGameTable(int tableNumber, int tablePosition) {
+		if (currentUser != null && currentGameTable == null) {
+			UpdateGameTable updateGameTable = new UpdateGameTable();
+			updateGameTable.setGameTableId(tableNumber);
+			updateGameTable.setUserId(currentUser.getUserId());
+			updateGameTable.setTablePosition(tablePosition);
+			updateGameTable.setAction(UpdateGameTable.ACTION_TAKE);
+			clientEnd.updateGameTable(updateGameTable);
+		}
+	}
+
+	public void takeAnotherGameTable(int fromTableNumber,
+			int fromTablePosition, int toTableNumber, int toTablePosition) {
+		leaveGameTable(fromTableNumber, fromTablePosition);
+		takeGameTable(toTableNumber, toTablePosition);
+	}
+
+	public void leaveGameTable(int tableNumber, int tablePosition) {
+		if (currentUser != null && currentGameTable != null) {
+			UpdateGameTable updateGameTable = new UpdateGameTable();
+			updateGameTable.setGameTableId(tableNumber);
+			updateGameTable.setUserId(currentUser.getUserId());
+			updateGameTable.setTablePosition(tablePosition);
+			updateGameTable.setAction(UpdateGameTable.ACTION_LEFT);
+			clientEnd.updateGameTable(updateGameTable);
+		}
+	}
+
+	public void updateGameTable(int tableNumber, int tablePosition) {
+		if (clientEnd != null && currentUser != null) {
+			if (currentGameTable != null) {
+				UpdateGameTable updateGameTable = new UpdateGameTable();
+				updateGameTable.setGameTableId(currentGameTable
+						.getGameTableId());
+				updateGameTable.setUserId(currentUser.getUserId());
+				if (currentGameTable.getPlayerAId() == currentUser.getUserId()) {
+					updateGameTable.setTablePosition(1);
+				}
+				if (currentGameTable.getPlayerBId() == currentUser.getUserId()) {
+					updateGameTable.setTablePosition(2);
+				}
+				updateGameTable.setAction(UpdateGameTable.ACTION_LEFT);
+				clientEnd.updateGameTable(updateGameTable);
+			} else {
+				UpdateGameTable updateGameTable = new UpdateGameTable();
+				updateGameTable.setGameTableId(tableNumber);
+				updateGameTable.setUserId(currentUser.getUserId());
+				updateGameTable.setTablePosition(tablePosition);
+				updateGameTable.setAction(UpdateGameTable.ACTION_TAKE);
+				clientEnd.updateGameTable(updateGameTable);
+			}
+		}
+	}
+
 	public void startTimerTask() {
-		Display.getDefault().timerExec(AUTO_UPDATE_TIME, autoUserListTimer);
+		if (currentUser != null) {
+			Display.getDefault().timerExec(AUTO_UPDATE_TIME, autoUserListTimer);
+			Display.getDefault().timerExec(AUTO_UPDATE_TIME,
+					autoGameTableListTimer);
+		}
 	}
 
 	public void stopTimerTask() {
-		Display.getDefault().timerExec(STOP_TIME, autoUserListTimer);
+		if (currentUser != null) {
+			Display.getDefault().timerExec(STOP_TIME, autoUserListTimer);
+			Display.getDefault().timerExec(STOP_TIME, autoGameTableListTimer);
+		}
 	}
 
 	public void exitApplication() {
@@ -291,6 +403,16 @@ public class MainApplication {
 			}
 		});
 
+	}
+
+	public void notifyGameTableListUpdate() {
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				gameHallWindow.notifyGameTableListUpdate();
+			}
+		});
 	}
 
 	public static void main(String[] args) {

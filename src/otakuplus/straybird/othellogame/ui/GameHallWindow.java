@@ -48,6 +48,7 @@ public class GameHallWindow {
 
 	protected Text gameHallChat;
 	protected Text messageText;
+	protected Canvas gameTableCanvas;
 	protected TableViewer userListTableViewer;
 
 	protected Image tableMiniUserIcon;
@@ -76,13 +77,13 @@ public class GameHallWindow {
 
 		tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
 
-		Canvas tableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
+		gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
 		GridData tableCanvasGridData = new GridData();
 		tableCanvasGridData.horizontalSpan = 3;
 		tableCanvasGridData.widthHint = 420;
 		tableCanvasGridData.heightHint = 420;
-		tableCanvas.setLayoutData(tableCanvasGridData);
-		tableCanvas.addPaintListener(new PaintListener() {
+		gameTableCanvas.setLayoutData(tableCanvasGridData);
+		gameTableCanvas.addPaintListener(new PaintListener() {
 
 			@Override
 			public void paintControl(PaintEvent event) {
@@ -141,7 +142,7 @@ public class GameHallWindow {
 			}
 		});
 
-		tableCanvas.addMouseListener(new MouseListener() {
+		gameTableCanvas.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseUp(MouseEvent e) {
@@ -153,16 +154,23 @@ public class GameHallWindow {
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
+				// index from 0
 				int index = x / 208 + (y / 208) * 2;
 				int widthOffset = (index % 2) * 208;
 				int heightOffset = (index / 2) * 208;
 				if (x >= 4 + widthOffset && x <= 56 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					System.out.println("click table:" + index + " 01");
+					if (mainApplication.getCurrentGameTable() == null) {
+						// index from 0, so it should plus 1
+						mainApplication.takeGameTable(index + 1, 1);
+					}
 				}
 				if (x >= 156 + widthOffset && x <= 204 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					System.out.println("click table:" + index + " 02");
+					if (mainApplication.getCurrentGameTable() == null) {
+						// index from 0, so it should plus 1
+						mainApplication.takeGameTable(index + 1, 2);
+					}
 				}
 			}
 
@@ -324,6 +332,12 @@ public class GameHallWindow {
 	public void notifyUserListUpdate() {
 		if (userListTableViewer != null) {
 			userListTableViewer.refresh();
+		}
+	}
+
+	public void notifyGameTableListUpdate() {
+		if (gameTableCanvas != null) {
+			gameTableCanvas.redraw();
 		}
 	}
 

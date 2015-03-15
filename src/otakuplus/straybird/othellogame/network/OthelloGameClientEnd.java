@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import otakuplus.straybird.othellogame.MainApplication;
+import otakuplus.straybird.othellogame.model.GameTable;
 import otakuplus.straybird.othellogame.model.User;
 import otakuplus.straybird.othellogame.model.UserInformation;
 
@@ -49,6 +50,9 @@ public class OthelloGameClientEnd {
 				} else if (object instanceof SendMessage) {
 					SendMessage sendMessage = (SendMessage) object;
 					receiveSendMessage(sendMessage);
+				} else if (object instanceof GameTable) {
+					GameTable gameTable = (GameTable) object;
+					receiveGameTable(gameTable);
 				} else if (object instanceof ArrayList<?>) {
 					// caused by Type erasure, have to test
 					ArrayList<?> tempObject = (ArrayList<?>) object;
@@ -56,6 +60,9 @@ public class OthelloGameClientEnd {
 						if (tempObject.get(0) instanceof UserInformation) {
 							ArrayList<UserInformation> userInformationList = (ArrayList<UserInformation>) object;
 							receiveUserInformationList(userInformationList);
+						} else if (tempObject.get(0) instanceof GameTable) {
+							ArrayList<GameTable> gameTableList = (ArrayList<GameTable>) object;
+							receiveGameTableList(gameTableList);
 						}
 					}
 				}
@@ -120,7 +127,7 @@ public class OthelloGameClientEnd {
 	}
 
 	public void receiveUser(User user) {
-		mainApplication.setCurrentUser(user);
+		mainApplication.receiveUser(user);
 	}
 
 	public void getUserInformation(int userId) {
@@ -145,16 +152,29 @@ public class OthelloGameClientEnd {
 		mainApplication.receiveUserInformationList(userInformationList);
 	}
 
+	public void receiveGameTable(GameTable gameTable) {
+		mainApplication.receiveGameTable(gameTable);
+	}
+
+	public void getGameTableList(int fromNumber, int maxNumber) {
+		GetGameTableList getGameTableList = new GetGameTableList();
+		getGameTableList.setFromNumber(fromNumber);
+		getGameTableList.setMaxNumber(maxNumber);
+		kryonetClient.sendTCP(getGameTableList);
+	}
+
+	public void receiveGameTableList(ArrayList<GameTable> gameTableList) {
+		mainApplication.receiveGameTableList(gameTableList);
+	}
+
 	public boolean getIsConnected() {
 		return isConnected;
 	}
 
 	public void receiveProcessResponse(ProcessResponse processResponse) {
-		ArrayList<Object> itemList;
 		if (processResponse.getRequestType() == ProcessResponse.LOGIN) {
-			itemList = clientManager.getObserver(ProcessResponse.class);
-			if (itemList != null && itemList.isEmpty() != true) {
-				// OthelloGameClientEnd.this.mainApplication.postLogin();
+			if (processResponse.getResponseState() == false) {
+
 			}
 		} else if (processResponse.getRequestType() == ProcessResponse.LOGOUT) {
 			if (processResponse.getResponseState() == true) {
@@ -170,6 +190,12 @@ public class OthelloGameClientEnd {
 
 	public void receiveSendMessage(SendMessage sendMessage) {
 		mainApplication.receiveMessage(sendMessage);
+	}
+
+	public void updateGameTable(UpdateGameTable updateGameTable) {
+		if (updateGameTable != null) {
+			kryonetClient.sendTCP(updateGameTable);
+		}
 	}
 
 	public static void main(String[] args) {
