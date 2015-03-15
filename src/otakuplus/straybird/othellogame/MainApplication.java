@@ -47,8 +47,8 @@ public class MainApplication {
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
 		// there should be 100 empty tables in the game
-		GameTable tempGameTable = new GameTable();
 		for (int i = 1; i < 101; i++) {
+			GameTable tempGameTable = new GameTable();
 			tempGameTable.setGameTableId(i);
 			gameTableList.add(tempGameTable);
 		}

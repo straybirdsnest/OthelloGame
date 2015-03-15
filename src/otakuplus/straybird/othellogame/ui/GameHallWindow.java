@@ -63,24 +63,24 @@ public class GameHallWindow {
 
 		SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
 		GridLayout sashGridLayout = new GridLayout();
-		sashGridLayout.numColumns = 10;
+		sashGridLayout.numColumns = 6;
 		sashForm.setLayout(sashGridLayout);
 
 		Composite composite = new Composite(sashForm, SWT.NONE);
 		GridData compositeGridData = new GridData();
-		compositeGridData.horizontalSpan = 7;
-		compositeGridData.widthHint = 400;
-		compositeGridData.heightHint = 400;
+		compositeGridData.horizontalSpan = 3;
+		compositeGridData.widthHint = 420;
+		compositeGridData.heightHint = 420;
 		composite.setLayout(new GridLayout());
 		composite.setData(compositeGridData);
 
 		tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
 
-		Canvas tableCanvas = new Canvas(composite, SWT.FILL);
+		Canvas tableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
 		GridData tableCanvasGridData = new GridData();
-		tableCanvasGridData.horizontalSpan = 7;
-		tableCanvasGridData.widthHint = 400;
-		tableCanvasGridData.heightHint = 400;
+		tableCanvasGridData.horizontalSpan = 3;
+		tableCanvasGridData.widthHint = 420;
+		tableCanvasGridData.heightHint = 420;
 		tableCanvas.setLayoutData(tableCanvasGridData);
 		tableCanvas.addPaintListener(new PaintListener() {
 
@@ -92,31 +92,50 @@ public class GameHallWindow {
 					Iterator<GameTable> gameTableIterator = gameTableList
 							.iterator();
 					GameTable tempGameTable = null;
+					int index = 0;
+					int widthOffset, heightOffset = 0;
 					while (gameTableIterator.hasNext()) {
 						tempGameTable = gameTableIterator.next();
+						widthOffset = (index % 2) * 208;
+						heightOffset = index / 2 * 208;
 						event.gc.setForeground(Display.getDefault()
 								.getSystemColor(SWT.COLOR_BLACK));
 						event.gc.setBackground(Display.getDefault()
 								.getSystemColor(SWT.COLOR_WHITE));
 						event.gc.drawString(
-								"" + tempGameTable.getGameTableId(), 0, 72);
+								"" + tempGameTable.getGameTableId(),
+								60 + widthOffset, 156 + heightOffset);
 						event.gc.setBackground(Display.getDefault()
 								.getSystemColor(SWT.COLOR_DARK_YELLOW));
-						event.gc.drawRectangle(4, 4, 64, 64);
-						event.gc.fillRectangle(4, 4, 63, 63);
+						event.gc.drawRectangle(56 + widthOffset,
+								56 + heightOffset, 96, 96);
+						event.gc.fillRectangle(57 + widthOffset,
+								57 + heightOffset, 95, 95);
 						if (tempGameTable.getPlayerAId() != 0) {
 							event.gc.drawImage(tableMiniUserIcon, 0, 0,
 									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height, 0,
-									20, 32, 32);
+									tableMiniUserIcon.getBounds().height,
+									4 + widthOffset, 80 + heightOffset, 48, 48);
+						} else {
+							event.gc.drawImage(tableMiniUserIcon, 0, 0,
+									tableMiniUserIcon.getBounds().width,
+									tableMiniUserIcon.getBounds().height,
+									4 + widthOffset, 80 + heightOffset, 48, 48);
 						}
 						if (tempGameTable.getPlayerBId() != 0) {
 							event.gc.drawImage(tableMiniUserIcon, 0, 0,
 									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height, 72,
-									20, 32, 32);
+									tableMiniUserIcon.getBounds().height,
+									156 + widthOffset, 80 + heightOffset, 48,
+									48);
+						} else {
+							event.gc.drawImage(tableMiniUserIcon, 0, 0,
+									tableMiniUserIcon.getBounds().width,
+									tableMiniUserIcon.getBounds().height,
+									156 + widthOffset, 80 + heightOffset, 48,
+									48);
 						}
-
+						index++;
 					}
 				}
 			}
@@ -259,6 +278,8 @@ public class GameHallWindow {
 
 			}
 		});
+
+		shell.pack();
 	}
 
 	public void open() {
