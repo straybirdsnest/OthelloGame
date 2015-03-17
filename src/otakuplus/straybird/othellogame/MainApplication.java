@@ -47,6 +47,8 @@ public class MainApplication {
 	protected Runnable autoGameTableListTimer;
 
 	public MainApplication() {
+		applicationState = new ApplicationState();
+		
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
 		// there should be 100 empty tables in the game
@@ -76,7 +78,6 @@ public class MainApplication {
 			}
 		};
 
-		applicationState = new ApplicationState();
 		// network
 		clientEnd = new OthelloGameClientEnd(this);
 
@@ -277,6 +278,19 @@ public class MainApplication {
 	public void receiveGameTable(GameTable gameTable) {
 		if (currentGameTable == null && gameTable != null) {
 			currentGameTable = gameTable;
+			postTakeGameTable();
+		}
+	}
+
+	public void postTakeGameTable() {
+		if (othelloGameWindow != null) {
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					othelloGameWindow.show();
+				}
+			});
 		}
 	}
 

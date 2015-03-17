@@ -54,7 +54,9 @@ public class GameHallWindow {
 	protected Image tableMiniUserIcon;
 
 	public GameHallWindow(MainApplication mainApplication) {
-		this.mainApplication = mainApplication;
+		if (mainApplication != null) {
+			this.mainApplication = mainApplication;
+		}
 	}
 
 	public void createContents() {
@@ -281,11 +283,11 @@ public class GameHallWindow {
 			@Override
 			public void handleEvent(Event event) {
 				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
-					MessageBox messagebox = new MessageBox(shell,
+					MessageBox messageBox = new MessageBox(shell,
 							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-					messagebox.setText("确认注销");
-					messagebox.setMessage("退出会从游戏大厅中注销，确认退出奥赛罗棋？");
-					int result = messagebox.open();
+					messageBox.setText("确认注销");
+					messageBox.setMessage("退出会从游戏大厅中注销，确认退出奥赛罗棋？");
+					int result = messageBox.open();
 					if (result == SWT.YES) {
 						mainApplication.logout();
 					}

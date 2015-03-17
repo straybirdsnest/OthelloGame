@@ -10,9 +10,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
+import otakuplus.straybird.othellogame.ApplicationState;
 import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.ChessBoard;
 import otakuplus.straybird.othellogame.model.Chessman;
@@ -31,7 +35,7 @@ public class OthelloGameWindow {
 	protected ChessBoard chessBoard;
 
 	public OthelloGameWindow(MainApplication mainApplication) {
-		if (mainApplication == null) {
+		if (mainApplication != null) {
 			this.mainApplication = mainApplication;
 		}
 		if (chessBoard == null) {
@@ -151,6 +155,27 @@ public class OthelloGameWindow {
 			public void mouseUp(MouseEvent e) {
 			}
 
+		});
+
+		shell.addListener(SWT.Close, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
+					MessageBox messageBox = new MessageBox(shell,
+							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+					System.out.println("othellogame close is call.");
+					messageBox.setText("确认离开");
+					messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
+					int result = messageBox.open();
+					if (result == SWT.YES) {
+						mainApplication.logout();
+					}
+					event.doit = false;
+				} else {
+					event.doit = true;
+				}
+			}
 		});
 
 		shell.pack();

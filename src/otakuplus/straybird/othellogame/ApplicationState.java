@@ -7,7 +7,7 @@ public class ApplicationState {
 	public static int GAMEPLAY = 103;
 	public static int DESTORY = 104;
 
-	private int applicationState = 100;
+	private int applicationState = INITILIZE;
 
 	public void turnDestory(){
 		applicationState = DESTORY;
