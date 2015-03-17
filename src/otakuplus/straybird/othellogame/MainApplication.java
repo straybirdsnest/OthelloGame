@@ -346,7 +346,7 @@ public class MainApplication {
 							.getUserId()) {
 				updateGameTable.setTablePosition(1);
 			}
-			if (currentGameTable.getPlayerAId() != null
+			if (currentGameTable.getPlayerBId() != null
 					&& currentGameTable.getPlayerBId() == currentUser
 							.getUserId()) {
 				updateGameTable.setTablePosition(2);
@@ -354,6 +354,17 @@ public class MainApplication {
 			updateGameTable.setAction(UpdateGameTable.ACTION_LEFT);
 			clientEnd.updateGameTable(updateGameTable);
 		}
+	}
+
+	public void postLeaveGameTable() {
+		currentGameTable = null;
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+				othelloGameWindow.hide();
+			}
+		});
 	}
 
 	public void updateGameTable(int tableNumber, int tablePosition) {

@@ -176,10 +176,16 @@ public class OthelloGameClientEnd {
 			if (processResponse.getResponseState() == false) {
 
 			}
-		} else if (processResponse.getRequestType() == ProcessResponse.LOGOUT) {
+		}
+		if (processResponse.getRequestType() == ProcessResponse.LOGOUT) {
 			if (processResponse.getResponseState() == true) {
 				mainApplication.getApplicationState().turnDestory();
 				mainApplication.exitApplication();
+			}
+		}
+		if (processResponse.getRequestType() == ProcessResponse.UPDATE_GAME_TABLE) {
+			if (processResponse.getResponseState() == true) {
+				mainApplication.postLeaveGameTable();
 			}
 		}
 	}
