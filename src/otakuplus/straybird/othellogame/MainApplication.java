@@ -48,7 +48,7 @@ public class MainApplication {
 
 	public MainApplication() {
 		applicationState = new ApplicationState();
-		
+
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
 		// there should be 100 empty tables in the game
@@ -336,18 +336,21 @@ public class MainApplication {
 		}
 	}
 
-	public void takeAnotherGameTable(int fromTableNumber,
-			int fromTablePosition, int toTableNumber, int toTablePosition) {
-		leaveGameTable(fromTableNumber, fromTablePosition);
-		takeGameTable(toTableNumber, toTablePosition);
-	}
-
-	public void leaveGameTable(int tableNumber, int tablePosition) {
+	public void leaveGameTable() {
 		if (currentUser != null && currentGameTable != null) {
 			UpdateGameTable updateGameTable = new UpdateGameTable();
-			updateGameTable.setGameTableId(tableNumber);
+			updateGameTable.setGameTableId(currentGameTable.getGameTableId());
 			updateGameTable.setUserId(currentUser.getUserId());
-			updateGameTable.setTablePosition(tablePosition);
+			if (currentGameTable.getPlayerAId() != null
+					&& currentGameTable.getPlayerAId() == currentUser
+							.getUserId()) {
+				updateGameTable.setTablePosition(1);
+			}
+			if (currentGameTable.getPlayerAId() != null
+					&& currentGameTable.getPlayerBId() == currentUser
+							.getUserId()) {
+				updateGameTable.setTablePosition(2);
+			}
 			updateGameTable.setAction(UpdateGameTable.ACTION_LEFT);
 			clientEnd.updateGameTable(updateGameTable);
 		}

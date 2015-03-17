@@ -164,12 +164,11 @@ public class OthelloGameWindow {
 				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
 					MessageBox messageBox = new MessageBox(shell,
 							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-					System.out.println("othellogame close is call.");
 					messageBox.setText("确认离开");
 					messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
 					int result = messageBox.open();
 					if (result == SWT.YES) {
-						mainApplication.logout();
+						mainApplication.leaveGameTable();
 					}
 					event.doit = false;
 				} else {
