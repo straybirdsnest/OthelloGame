@@ -1,11 +1,5 @@
 package otakuplus.straybird.othellogame.ui;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -24,7 +18,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 
 import otakuplus.straybird.othellogame.ApplicationState;
@@ -44,8 +37,13 @@ public class OthelloGameWindow {
 	protected Label blackTimer;
 
 	protected Canvas chessBoardCanvas;
+	protected Image chessBoardImage;
+
 	protected Text gameChat;
 	protected Text messageText;
+
+	protected Button standByButton;
+	protected Button fastMatchButton;
 
 	protected Button takeBackButton;
 	protected Button drawButton;
@@ -72,35 +70,58 @@ public class OthelloGameWindow {
 		othellGameLayout.numColumns = 10;
 		shell.setLayout(othellGameLayout);
 
-		chessBoardCanvas = new Canvas(shell, SWT.NONE);
-		GridData canvasGridData = new GridData(GridData.FILL_BOTH);
-		canvasGridData.widthHint = 321;
-		canvasGridData.heightHint = 321;
-		canvasGridData.verticalSpan = 4;
-		chessBoardCanvas.setLayoutData(canvasGridData);
+		Label whiteUserLabel = new Label(shell, SWT.CENTER);
+		GridData whiteUserGridData = new GridData();
+		whiteUserGridData.horizontalSpan = 3;
+		whiteUserLabel.setText("白方");
+		whiteUserLabel.setLayoutData(whiteUserGridData);
 
-		Label whiteUserlabel = new Label(shell, SWT.CENTER);
-		whiteUserlabel.setText("白方");
+		chessBoardCanvas = new Canvas(shell, SWT.NONE);
+		GridData canvasChessBoardGridData = new GridData(GridData.FILL_BOTH);
+		canvasChessBoardGridData.widthHint = 321;
+		canvasChessBoardGridData.heightHint = 321;
+		canvasChessBoardGridData.horizontalSpan = 4;
+		canvasChessBoardGridData.verticalSpan = 4;
+		chessBoardCanvas.setLayoutData(canvasChessBoardGridData);
+
+		Label blackUserLabel = new Label(shell, SWT.CENTER);
+		GridData blackUserGridData = new GridData();
+		blackUserGridData.horizontalSpan = 3;
+		blackUserLabel.setText("黑方");
+		blackUserLabel.setLayoutData(blackUserGridData);
+
 		whiteLabel = new Label(shell, SWT.CENTER);
+		GridData whiteLabelGridData = new GridData();
+		whiteLabelGridData.horizontalSpan = 3;
 		whiteLabel.setText("White: 02");
+		whiteLabel.setLayoutData(whiteLabelGridData);
+
 		blackLabel = new Label(shell, SWT.CENTER);
+		GridData blackLabelGridData = new GridData();
+		blackLabelGridData.horizontalSpan = 3;
 		blackLabel.setText("Black: 02");
+		blackLabel.setLayoutData(blackLabelGridData);
 
 		whiteTimer = new Label(shell, SWT.CENTER);
+		GridData whiteTimerGridData = new GridData();
+		whiteTimerGridData.horizontalSpan = 3;
 		whiteTimer.setText("15:00");
-		blackTimer = new Label(shell, SWT.CENTER);
-		blackTimer.setText("15:00");
+		whiteTimer.setLayoutData(whiteTimerGridData);
 
+		blackTimer = new Label(shell, SWT.CENTER);
+		GridData blackTimerGridData = new GridData();
+		blackTimerGridData.horizontalSpan = 3;
+		blackTimer.setText("15:00");
+		blackTimer.setLayoutData(blackTimerGridData);
+
+		chessBoardImage = new Image(Display.getDefault(), "Chessboard.png");
 		chessBoardCanvas.addPaintListener(new PaintListener() {
 			@Override
 			public void paintControl(PaintEvent e) {
 				// drawing chessboard
-				Image chessboardImage = new Image(Display.getDefault(),
-						"Chessboard.png");
-				e.gc.drawImage(chessboardImage, 0, 0,
-						chessboardImage.getBounds().width,
-						chessboardImage.getBounds().height, 0, 0, 320, 320);
-				chessboardImage.dispose();
+				e.gc.drawImage(chessBoardImage, 0, 0,
+						chessBoardImage.getBounds().width,
+						chessBoardImage.getBounds().height, 1, 1, 320, 320);
 				// drawing chessmen
 				int i = 0, chessmanStat = 0;
 				i = 0;
@@ -175,25 +196,37 @@ public class OthelloGameWindow {
 			}
 
 		});
-		takeBackButton = new Button(shell, SWT.PUSH);
+
+		takeBackButton = new Button(shell, SWT.PUSH | SWT.FILL);
 		GridData takeBackGridData = new GridData();
 		takeBackGridData.horizontalSpan = 3;
 		takeBackButton.setText("悔棋");
-		drawButton = new Button(shell, SWT.PUSH);
-		GridData drawGridData = new GridData();
-		drawGridData.horizontalSpan = 3;
-		drawButton.setText("和棋");
-		giveUpButton = new Button(shell, SWT.PUSH);
-		GridData giveUpGridData = new GridData();
-		giveUpGridData.horizontalSpan = 3;
-		giveUpButton.setText("认输");
+		takeBackButton.setLayoutData(takeBackGridData);
 
 		gameChat = new Text(shell, SWT.MULTI | SWT.V_SCROLL);
 		GridData gameHallGridData = new GridData();
 		gameHallGridData.horizontalSpan = 3;
-		gameHallGridData.widthHint = 400;
+		gameHallGridData.widthHint = 200;
 		gameHallGridData.heightHint = 200;
 		gameChat.setLayoutData(gameHallGridData);
+
+		drawButton = new Button(shell, SWT.PUSH | SWT.FILL);
+		GridData drawGridData = new GridData();
+		drawGridData.horizontalSpan = 3;
+		drawButton.setText("和棋");
+		drawButton.setLayoutData(drawGridData);
+
+		standByButton = new Button(shell, SWT.PUSH | SWT.FILL);
+		GridData standByGridData = new GridData();
+		standByGridData.horizontalSpan = 2;
+		standByButton.setLayoutData(standByGridData);
+		standByButton.setText("准备");
+
+		fastMatchButton = new Button(shell, SWT.PUSH | SWT.FILL);
+		GridData fastMatchGridData = new GridData();
+		fastMatchGridData.horizontalSpan = 2;
+		fastMatchButton.setText("快速匹配");
+		fastMatchButton.setLayoutData(fastMatchGridData);
 
 		messageText = new Text(shell, SWT.NONE);
 		GridData messageTextGridData = new GridData();
@@ -219,6 +252,12 @@ public class OthelloGameWindow {
 
 			}
 		});
+
+		giveUpButton = new Button(shell, SWT.PUSH | SWT.FILL);
+		GridData giveUpGridData = new GridData();
+		giveUpGridData.horizontalSpan = 3;
+		giveUpButton.setText("认输");
+		giveUpButton.setLayoutData(giveUpGridData);
 
 		shell.addListener(SWT.Close, new Listener() {
 
@@ -250,6 +289,7 @@ public class OthelloGameWindow {
 	}
 
 	public void close() {
+		destoryResource();
 		shell.close();
 	}
 
@@ -266,7 +306,9 @@ public class OthelloGameWindow {
 	}
 
 	public void destoryResource() {
-
+		if (chessBoardImage != null) {
+			chessBoardImage.dispose();
+		}
 	}
 
 	public static void main(String[] args) {
