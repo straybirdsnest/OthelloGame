@@ -48,6 +48,7 @@ public class MainApplication {
 
 	public MainApplication() {
 		applicationState = new ApplicationState();
+		applicationState.turnLogin();
 
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
@@ -217,6 +218,7 @@ public class MainApplication {
 			@Override
 			public void run() {
 				if (loginWindow != null && gameHallWindow != null) {
+					applicationState.turnGameHall();
 					loginWindow.hide();
 					gameHallWindow.show();
 					notifyUserListUpdate();
@@ -268,7 +270,14 @@ public class MainApplication {
 			public void run() {
 				// should only update after user has logined
 				if (currentUser != null) {
-					gameHallWindow.receiveMessage(sendMessage);
+					if (applicationState.getState() == ApplicationState.GAME_HALL
+							|| applicationState.getState() == ApplicationState.GAME_TABLE) {
+						gameHallWindow.receiveMessage(sendMessage);
+					}
+
+					if (applicationState.getState() == ApplicationState.GAME_TABLE) {
+						othelloGameWindow.receiveMessage(sendMessage);
+					}
 				}
 			}
 		});
@@ -288,6 +297,7 @@ public class MainApplication {
 
 				@Override
 				public void run() {
+					applicationState.turnGameTable();
 					othelloGameWindow.show();
 				}
 			});
@@ -358,6 +368,7 @@ public class MainApplication {
 
 	public void postLeaveGameTable() {
 		currentGameTable = null;
+		applicationState.turnGameHall();
 		Display.getDefault().asyncExec(new Runnable() {
 
 			@Override

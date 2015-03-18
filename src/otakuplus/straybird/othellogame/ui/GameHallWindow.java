@@ -256,7 +256,7 @@ public class GameHallWindow {
 		messageText = new Text(composite2, SWT.NONE);
 		GridData messageTextGridData = new GridData();
 		messageTextGridData.horizontalSpan = 2;
-		messageTextGridData.widthHint = 150;
+		messageTextGridData.widthHint = 200;
 		messageText.setText("请输入聊天信息");
 		messageText.setLayoutData(messageTextGridData);
 

@@ -1,5 +1,10 @@
 package otakuplus.straybird.othellogame.ui;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -24,6 +29,7 @@ import otakuplus.straybird.othellogame.ApplicationState;
 import otakuplus.straybird.othellogame.MainApplication;
 import otakuplus.straybird.othellogame.model.ChessBoard;
 import otakuplus.straybird.othellogame.model.Chessman;
+import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class OthelloGameWindow {
 	protected MainApplication mainApplication;
@@ -41,6 +47,7 @@ public class OthelloGameWindow {
 
 	protected Text gameChat;
 	protected Text messageText;
+	protected Button sendMessageButton;
 
 	protected Button standByButton;
 	protected Button fastMatchButton;
@@ -235,7 +242,7 @@ public class OthelloGameWindow {
 		messageText.setText("请输入聊天信息");
 		messageText.setLayoutData(messageTextGridData);
 
-		Button sendMessageButton = new Button(shell, SWT.PUSH);
+		sendMessageButton = new Button(shell, SWT.PUSH);
 		GridData sendMessageGridData = new GridData();
 		sendMessageGridData.horizontalSpan = 1;
 		sendMessageButton.setLayoutData(sendMessageGridData);
@@ -302,7 +309,22 @@ public class OthelloGameWindow {
 	}
 
 	public void sendMessage() {
+		String message = messageText.getText();
+		if (message != null && message.length() > 0) {
+			mainApplication.sendMessage(message);
+		}
+	}
 
+	public void receiveMessage(SendMessage sendMessage) {
+		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
+				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
+				ZoneId.systemDefault());
+		gameChat.append(localMessageTime.format(DateTimeFormatter
+				.ofPattern("hh:mm:ss"))
+				+ " "
+				+ sendMessage.getNickname()
+				+ " : " + sendMessage.getMessage() + "\n");
+		gameChat.redraw();
 	}
 
 	public void destoryResource() {
