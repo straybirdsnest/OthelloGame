@@ -42,7 +42,6 @@ import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class GameHallWindow {
 
-	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
 
@@ -53,10 +52,8 @@ public class GameHallWindow {
 
 	protected Image tableMiniUserIcon;
 
-	public GameHallWindow(MainApplication mainApplication) {
-		if (mainApplication != null) {
-			this.mainApplication = mainApplication;
-		}
+	public GameHallWindow() {
+		
 	}
 
 	public void createContents() {
@@ -87,7 +84,6 @@ public class GameHallWindow {
 		gameTableCanvas.setLayoutData(tableCanvasGridData);
 		gameTableCanvas.addPaintListener(new PaintListener() {
 
-			@Override
 			public void paintControl(PaintEvent event) {
 				ArrayList<GameTable> gameTableList = mainApplication
 						.getGameTableList();
@@ -146,13 +142,11 @@ public class GameHallWindow {
 
 		gameTableCanvas.addMouseListener(new MouseListener() {
 
-			@Override
 			public void mouseUp(MouseEvent e) {
 				// TODO Auto-generated method stub
 
 			}
 
-			@Override
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
@@ -176,10 +170,8 @@ public class GameHallWindow {
 				}
 			}
 
-			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-
+				
 			}
 		});
 

@@ -32,8 +32,7 @@ import otakuplus.straybird.othellogame.model.Chessman;
 import otakuplus.straybird.othellogame.network.SendMessage;
 
 public class OthelloGameWindow {
-	protected MainApplication mainApplication;
-
+	
 	protected Display display;
 	protected Shell shell;
 
@@ -58,10 +57,7 @@ public class OthelloGameWindow {
 
 	protected ChessBoard chessBoard;
 
-	public OthelloGameWindow(MainApplication mainApplication) {
-		if (mainApplication != null) {
-			this.mainApplication = mainApplication;
-		}
+	public OthelloGameWindow() {
 		if (chessBoard == null) {
 			chessBoard = new ChessBoard();
 			chessBoard.searchSuggestedChessmanPosition();

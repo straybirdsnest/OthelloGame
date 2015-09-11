@@ -179,7 +179,7 @@ public class OthelloGameClientEnd {
 		}
 		if (processResponse.getRequestType() == ProcessResponse.LOGOUT) {
 			if (processResponse.getResponseState() == true) {
-				mainApplication.getApplicationState().turnDestory();
+				mainApplication.getApplicationState().destory();
 				mainApplication.exitApplication();
 			}
 		}

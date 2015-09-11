@@ -19,8 +19,6 @@ import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
-import com.esotericsoftware.minlog.Log;
-
 public class MainApplication {
 
 	public static final int AUTO_UPDATE_TIME = 30000;
@@ -36,9 +34,7 @@ public class MainApplication {
 
 	protected User currentUser;
 	protected UserInformation currentUserInformation;
-
-	protected ApplicationState applicationState;
-
+	
 	protected ArrayList<UserInformation> userInformationList;
 	protected GameTable currentGameTable;
 	protected ArrayList<GameTable> gameTableList;
@@ -47,9 +43,6 @@ public class MainApplication {
 	protected Runnable autoGameTableListTimer;
 
 	public MainApplication() {
-		applicationState = new ApplicationState();
-		applicationState.turnLogin();
-
 		userInformationList = new ArrayList<UserInformation>();
 		gameTableList = new ArrayList<GameTable>();
 		// there should be 100 empty tables in the game
@@ -61,7 +54,6 @@ public class MainApplication {
 
 		autoUserListTimer = new Runnable() {
 
-			@Override
 			public void run() {
 				if (clientEnd != null && currentUser != null) {
 					clientEnd.getUserOnlineList(0, 50);
@@ -71,7 +63,6 @@ public class MainApplication {
 
 		autoGameTableListTimer = new Runnable() {
 
-			@Override
 			public void run() {
 				if (clientEnd != null && currentUser != null) {
 					clientEnd.getGameTableList(0, 50);
@@ -91,12 +82,7 @@ public class MainApplication {
 	}
 
 	public void startUp() {
-		loginWindow.open();
-		gameHallWindow.open();
-		gameHallWindow.hide();
-		othelloGameWindow.open();
-		othelloGameWindow.hide();
-
+		
 		clientEnd.attach(loginWindow);
 		clientEnd.attach(gameHallWindow);
 		clientEnd.attach(othelloGameWindow);
@@ -115,7 +101,7 @@ public class MainApplication {
 	}
 
 	public ApplicationState getApplicationState() {
-		return applicationState;
+		return applicationConext;
 	}
 
 	public void login(String username, String password) {
@@ -215,10 +201,9 @@ public class MainApplication {
 		 */
 		Display.getDefault().asyncExec(new Runnable() {
 
-			@Override
 			public void run() {
 				if (loginWindow != null && gameHallWindow != null) {
-					applicationState.turnGameHall();
+					applicationConext.turnGameHall();
 					loginWindow.hide();
 					gameHallWindow.show();
 					notifyUserListUpdate();
@@ -266,16 +251,15 @@ public class MainApplication {
 		 */
 		Display.getDefault().asyncExec(new Runnable() {
 
-			@Override
 			public void run() {
 				// should only update after user has logined
 				if (currentUser != null) {
-					if (applicationState.getState() == ApplicationState.GAME_HALL
-							|| applicationState.getState() == ApplicationState.GAME_TABLE) {
+					if (applicationConext.getState() == ApplicationState.ENTER_HALL
+							|| applicationConext.getState() == ApplicationState.GAME_TABLE) {
 						gameHallWindow.receiveMessage(sendMessage);
 					}
 
-					if (applicationState.getState() == ApplicationState.GAME_TABLE) {
+					if (applicationConext.getState() == ApplicationState.GAME_TABLE) {
 						othelloGameWindow.receiveMessage(sendMessage);
 					}
 				}
@@ -295,9 +279,8 @@ public class MainApplication {
 		if (othelloGameWindow != null) {
 			Display.getDefault().asyncExec(new Runnable() {
 
-				@Override
 				public void run() {
-					applicationState.turnGameTable();
+					applicationConext.turnGameTable();
 					othelloGameWindow.show();
 				}
 			});
@@ -368,10 +351,9 @@ public class MainApplication {
 
 	public void postLeaveGameTable() {
 		currentGameTable = null;
-		applicationState.turnGameHall();
+		applicationConext.turnGameHall();
 		Display.getDefault().asyncExec(new Runnable() {
 
-			@Override
 			public void run() {
 				othelloGameWindow.hide();
 			}
@@ -454,7 +436,7 @@ public class MainApplication {
 		});
 	}
 
-	public static void main(String[] args) {
+	public static void main(StString[] argsring[] args) {
 		Log.set(Log.LEVEL_DEBUG);
 		MainApplication mainApplication = new MainApplication();
 		mainApplication.startUp();

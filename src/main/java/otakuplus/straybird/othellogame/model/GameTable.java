@@ -30,8 +30,4 @@ public class GameTable {
 		this.playerBId = playerBId;
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 }
