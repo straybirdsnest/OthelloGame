@@ -1,7 +1,5 @@
 package otakuplus.straybird.othellogame;
 
-import otakuplus.straybird.othellogame.network.SocketIOClient;
-import otakuplus.straybird.othellogame.network.SocketIOClientSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
@@ -10,20 +8,21 @@ public class ApplicationIntializeState implements ApplicationState {
 
 	public void initialize() {
 		// Initialize UI
-		Application application = ApplicationContextSingleton
+		ApplicationContext applicationContext = ApplicationContextSingleton
 				.getInstance();
-		LoginWindow loginWindow = application.getLoginWinodow();
+		
+		LoginWindow loginWindow = applicationContext.getLoginWinodow();
 		loginWindow.open();
-		GameHallWindow gameHallWindow = application.getGameHallWindow();
+		GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
 		gameHallWindow.open();
-		OthelloGameWindow othelloGameWindow = application
+		OthelloGameWindow othelloGameWindow = applicationContext
 				.getOthelloGameWindow();
 		othelloGameWindow.open();
 		gameHallWindow.hide();
 		othelloGameWindow.hide();
-		// Initialize Socket.io client
-		SocketIOClient socketIOClient = SocketIOClientSingleton.getInstance();
-		socketIOClient.setupSocketIOClient();
+
+		applicationContext.changeState(ApplicationStateSingleton
+				.getConnectStateInstance());
 	}
 
 	public void connect() {

@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import otakuplus.straybird.othellogame.MainApplication;
+import otakuplus.straybird.othellogame.ApplicationContextSingleton;
 
 public class LoginWindow {
 	protected Shell shell;
@@ -195,7 +195,7 @@ public class LoginWindow {
 		String username = userNameText.getText();
 		String password = passWordText.getText();
 		if (username.length() > 0 && password.length() > 0) {
-			mainApplication.login(username, password);
+			ApplicationContextSingleton.getInstance().login();
 		}
 	}
 	

@@ -7,7 +7,11 @@ public class ApplicationConnectState implements ApplicationState {
 	}
 
 	public void connect() {
-
+		ApplicationContext applicationContext = ApplicationContextSingleton
+				.getInstance();
+		applicationContext.socketIOClient.connect();
+		applicationContext.changeState(ApplicationStateSingleton
+				.getLoginStateInstance());
 	}
 
 	public void login() {

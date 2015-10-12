@@ -2,27 +2,44 @@ package otakuplus.straybird.othellogame;
 
 public class ApplicationStateSingleton {
 
-	private static class InitStateHolder{
+	private static class InitStateHolder {
 		static final ApplicationIntializeState INSTANCE = new ApplicationIntializeState();
 	}
-	
-	public static ApplicationIntializeState getInitStateInstance(){
+
+	public static ApplicationIntializeState getInitStateInstance() {
 		return InitStateHolder.INSTANCE;
 	}
-	
-	private static class LoginStateHolder{
-		static final ApplicationIntializeState INSTANCE = new ApplicationIntializeState();
+
+	private static class ConnectStateHolder {
+		static final ApplicationConnectState INSTANCE = new ApplicationConnectState();
 	}
-	
-	public static ApplicationIntializeState getLoginStateInstance(){
+
+	public static ApplicationConnectState getConnectStateInstance() {
+		return ConnectStateHolder.INSTANCE;
+	}
+
+	private static class LoginStateHolder {
+		static final ApplicationLoginState INSTANCE = new ApplicationLoginState();
+	}
+
+	public static ApplicationLoginState getLoginStateInstance() {
 		return LoginStateHolder.INSTANCE;
 	}
-	
-	private static class LogOutStateHolder{
-		static final ApplicationIntializeState INSTANCE = new ApplicationIntializeState();
+
+	private static class DisconnectStateHolder {
+		static final ApplicationDisconnectState INSTANCE = new ApplicationDisconnectState();
 	}
-	
-	public static ApplicationIntializeState getLogOutStateInstance(){
-		return LogOutStateHolder.INSTANCE;
+
+	public static ApplicationDisconnectState getDisconnectStateInstance() {
+		return DisconnectStateHolder.INSTANCE;
 	}
+
+	private static class DestoryStateHolder {
+		static final ApplicationDestoryState INSTANCE = new ApplicationDestoryState();
+	}
+
+	public static ApplicationDestoryState getDestoryStateInstance() {
+		return DestoryStateHolder.INSTANCE;
+	}
+
 }

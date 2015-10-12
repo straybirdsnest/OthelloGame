@@ -2,10 +2,10 @@ package otakuplus.straybird.othellogame;
 
 public class ApplicationContextSingleton {
 	private static class ApplicationContextHolder{
-		static final Application INSTANCE = new Application();
+		static final ApplicationContext INSTANCE = new ApplicationContext();
 	}
 	
-	public static Application getInstance(){
+	public static ApplicationContext getInstance(){
 		return ApplicationContextHolder.INSTANCE;
 	}
 }

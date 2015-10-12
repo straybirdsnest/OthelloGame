@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.network;
+package otakuplus.straybird.othellogame.network.socketio;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;

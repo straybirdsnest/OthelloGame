@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.network;
+package otakuplus.straybird.othellogame.network.socketio;
 
 public class SocketIOClientSingleton {
 	private static class SocketIOClientHolder{

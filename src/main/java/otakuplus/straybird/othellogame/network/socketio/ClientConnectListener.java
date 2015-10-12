@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.network;
+package otakuplus.straybird.othellogame.network.socketio;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,13 +1,13 @@
-package otakuplus.straybird.othellogame.network;
+package otakuplus.straybird.othellogame.network.socketio;
 
 import org.json.JSONObject;
 
 import io.socket.emitter.Emitter.Listener;
 
-public class ClientLoginSuccessListener implements Listener {
+public class ClientEnterHallListener implements Listener{
 
 	public void call(Object... object) {
-		System.out.print("Login Success event.");
+		System.out.print("chat event.");
 		int count = object.length;
 		System.out.print("object number :"+count);
 		JSONObject jsonObject = null;
