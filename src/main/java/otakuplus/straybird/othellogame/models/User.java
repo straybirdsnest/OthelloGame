@@ -1,20 +1,41 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
-import java.sql.Timestamp;
+import com.google.api.client.util.Key;
 
 public class User {
-	private int userId = 0;
-	private String username = null;
-	private String emailAddress = null;
-	private String password = null;
-	private Timestamp createTime = null;
+	
+	@Key
+	private Long userId;
+	
+	@Key
+	private String username;
+	
+	@Key
+	private String emailAddress;
+	
+	private String password;
+	
+	@Key
+	private String createTime;
+	
+	@Key
 	private boolean isActive = false;
+	
+	private UserInformation userInformation;
 
-	public int getUserId() {
+	public User() {
+
+	}
+
+	public User(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
@@ -42,11 +63,11 @@ public class User {
 		this.emailAddress = emailAddress;
 	}
 
-	public Timestamp getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Timestamp createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 
@@ -58,9 +79,12 @@ public class User {
 		this.isActive = isActive;
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public UserInformation getUserInformation() {
+		return userInformation;
+	}
 
+	public void setUserInformation(UserInformation userInformation) {
+		this.userInformation = userInformation;
 	}
 
 }

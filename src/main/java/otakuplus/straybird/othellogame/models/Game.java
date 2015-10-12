@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
 import java.time.Instant;
 
@@ -32,7 +32,4 @@ public class Game {
 
 	}
 
-	public static void main(String[] args) {
-		Instant instant = Instant.now();
-	}
 }

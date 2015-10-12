@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
 public class Chessman {
 	/**

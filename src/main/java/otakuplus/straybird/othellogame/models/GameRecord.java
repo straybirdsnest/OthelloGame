@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
 import java.util.Date;
 
@@ -66,11 +66,6 @@ public class GameRecord {
 
 	public void setBlackNumber(int blackNumber) {
 		this.blackNumber = blackNumber;
-	}
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
 public class GameTable {
 
@@ -30,8 +30,4 @@ public class GameTable {
 		this.playerBId = playerBId;
 	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 }

@@ -21,19 +21,14 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import otakuplus.straybird.othellogame.ApplicationState;
-import otakuplus.straybird.othellogame.MainApplication;
-import otakuplus.straybird.othellogame.model.ChessBoard;
-import otakuplus.straybird.othellogame.model.Chessman;
-import otakuplus.straybird.othellogame.network.SendMessage;
+import otakuplus.straybird.othellogame.models.ChessBoard;
+import otakuplus.straybird.othellogame.models.Chessman;
 
 public class OthelloGameWindow {
-	protected MainApplication mainApplication;
-
+	
 	protected Display display;
 	protected Shell shell;
 
@@ -58,10 +53,7 @@ public class OthelloGameWindow {
 
 	protected ChessBoard chessBoard;
 
-	public OthelloGameWindow(MainApplication mainApplication) {
-		if (mainApplication != null) {
-			this.mainApplication = mainApplication;
-		}
+	public OthelloGameWindow() {
 		if (chessBoard == null) {
 			chessBoard = new ChessBoard();
 			chessBoard.searchSuggestedChessmanPosition();
@@ -123,7 +115,6 @@ public class OthelloGameWindow {
 
 		chessBoardImage = new Image(Display.getDefault(), "Chessboard.png");
 		chessBoardCanvas.addPaintListener(new PaintListener() {
-			@Override
 			public void paintControl(PaintEvent e) {
 				// drawing chessboard
 				e.gc.drawImage(chessBoardImage, 0, 0,
@@ -169,11 +160,9 @@ public class OthelloGameWindow {
 
 		chessBoardCanvas.addMouseListener(new MouseListener() {
 
-			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 			}
 
-			@Override
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
@@ -198,7 +187,6 @@ public class OthelloGameWindow {
 				chessBoardCanvas.redraw();
 			}
 
-			@Override
 			public void mouseUp(MouseEvent e) {
 			}
 
@@ -249,12 +237,10 @@ public class OthelloGameWindow {
 		sendMessageButton.setText("发送");
 		sendMessageButton.addSelectionListener(new SelectionListener() {
 
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				sendMessage();
 			}
 
-			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 
 			}
@@ -268,8 +254,8 @@ public class OthelloGameWindow {
 
 		shell.addListener(SWT.Close, new Listener() {
 
-			@Override
 			public void handleEvent(Event event) {
+				/*
 				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
 					MessageBox messageBox = new MessageBox(shell,
 							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
@@ -283,6 +269,7 @@ public class OthelloGameWindow {
 				} else {
 					event.doit = true;
 				}
+				*/
 			}
 		});
 
@@ -309,12 +296,14 @@ public class OthelloGameWindow {
 	}
 
 	public void sendMessage() {
+		/*
 		String message = messageText.getText();
 		if (message != null && message.length() > 0) {
 			mainApplication.sendMessage(message);
 		}
+		*/
 	}
-
+/*
 	public void receiveMessage(SendMessage sendMessage) {
 		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
 				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
@@ -326,14 +315,11 @@ public class OthelloGameWindow {
 				+ " : " + sendMessage.getMessage() + "\n");
 		gameChat.redraw();
 	}
-
+*/
 	public void destoryResource() {
 		if (chessBoardImage != null) {
 			chessBoardImage.dispose();
 		}
 	}
 
-	public static void main(String[] args) {
-
-	}
 }

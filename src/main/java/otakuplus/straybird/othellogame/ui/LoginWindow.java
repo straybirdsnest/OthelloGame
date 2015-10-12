@@ -19,17 +19,15 @@ import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import otakuplus.straybird.othellogame.MainApplication;
+import otakuplus.straybird.othellogame.ApplicationContextSingleton;
 
 public class LoginWindow {
-	protected MainApplication mainApplication;
 	protected Shell shell;
 	protected Display display;
 	protected Text userNameText;
 	protected Text passWordText;
 
-	public LoginWindow(MainApplication mainApplication) {
-		this.mainApplication = mainApplication;
+	public LoginWindow() {
 	}
 
 	protected void createContents() {
@@ -55,7 +53,6 @@ public class LoginWindow {
 		backgroundImage.setLayout(new GridLayout());
 		backgroundImage.setLayoutData(canvasGridData);
 		backgroundImage.addPaintListener(new PaintListener() {
-			@Override
 			public void paintControl(PaintEvent e) {
 				Image image = new Image(Display.getDefault(), "Othello.png");
 				e.gc.drawImage(image, 0, 0, image.getBounds().width,
@@ -73,7 +70,6 @@ public class LoginWindow {
 		userImage.setLayout(new GridLayout());
 		userImage.setLayoutData(userImageData);
 		userImage.addPaintListener(new PaintListener() {
-			@Override
 			public void paintControl(PaintEvent e) {
 				Image image = new Image(Display.getDefault(), "Dog-icon.png");
 				e.gc.drawImage(image, 0, 0, 128, 128, 0, 0, 80, 80);
@@ -85,7 +81,6 @@ public class LoginWindow {
 		userNameText.setText("帐号");
 		userNameText.addFocusListener(new FocusListener() {
 
-			@Override
 			public void focusLost(FocusEvent e) {
 				if (userNameText.getText().equals("帐号")) {
 					userNameText.setText("");
@@ -94,7 +89,6 @@ public class LoginWindow {
 				}
 			}
 
-			@Override
 			public void focusGained(FocusEvent e) {
 				if (userNameText.getText().equals("帐号")) {
 					userNameText.setText("");
@@ -115,7 +109,6 @@ public class LoginWindow {
 		passWordText.setText("密码");
 		passWordText.addFocusListener(new FocusListener() {
 
-			@Override
 			public void focusLost(FocusEvent e) {
 				if (passWordText.getText().equals("密码")) {
 					passWordText.setText("");
@@ -126,7 +119,6 @@ public class LoginWindow {
 				}
 			}
 
-			@Override
 			public void focusGained(FocusEvent e) {
 				if (passWordText.getText().equals("密码")) {
 					passWordText.setText("");
@@ -164,12 +156,10 @@ public class LoginWindow {
 		loginButton.setText("登陆");
 		loginButton.addSelectionListener(new SelectionListener() {
 
-			@Override
 			public void widgetSelected(SelectionEvent e) {
 				login();
 			}
 
-			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 
 			}
@@ -205,11 +195,8 @@ public class LoginWindow {
 		String username = userNameText.getText();
 		String password = passWordText.getText();
 		if (username.length() > 0 && password.length() > 0) {
-			mainApplication.login(username, password);
+			ApplicationContextSingleton.getInstance().login();
 		}
 	}
-
-	public static void main(String[] args) {
-
-	}
+	
 }

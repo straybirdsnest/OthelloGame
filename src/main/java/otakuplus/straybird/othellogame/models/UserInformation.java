@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.model;
+package otakuplus.straybird.othellogame.models;
 
 import java.util.Date;
 
@@ -78,7 +78,4 @@ public class UserInformation {
 		this.rankPoints = rankPoints;
 	}
 
-	public static void main(String[] args) {
-
-	}
 }
