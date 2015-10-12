@@ -25,7 +25,7 @@ public class ApplicationContext {
 	private ApplicationState applicationState;
 
 	public ApplicationContext() {
-		applicationState = ApplicationStateSingleton.getInitStateInstance();
+		this.applicationState = ApplicationStateSingleton.getInitStateInstance();
 		// UI
 		display = Display.getDefault();
 		loginWindow = new LoginWindow();
@@ -42,10 +42,14 @@ public class ApplicationContext {
 
 	public void connect() {
 		applicationState.connect();
+        System.out.println("state "+applicationState.getClass());
+        System.out.println("call connect");
 	}
 
 	public void login() {
-		applicationState.login();
+        System.out.println(applicationState.getClass());
+        System.out.println("call login!");
+        applicationState.login();
 	}
 
 	public void enterGameHall() {
@@ -65,7 +69,9 @@ public class ApplicationContext {
 	}
 
 	public void changeState(ApplicationState applicationState) {
-		this.applicationState = applicationState;
+		System.out.println("state:" + this.applicationState.getClass());
+        this.applicationState = applicationState;
+        System.out.println("change to:" + this.applicationState.getClass());
 	}
 
 	public LoginWindow getLoginWinodow() {
@@ -90,8 +96,11 @@ public class ApplicationContext {
 	}
 
 	public static void main(String[] args) {
-		ApplicationContext applicationContext = new ApplicationContext();
+		ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
 		applicationContext.initialize();
+        applicationContext.connect();
 		applicationContext.startUp();
+        applicationContext.disconnect();
+        applicationContext.destory();
 	}
 }

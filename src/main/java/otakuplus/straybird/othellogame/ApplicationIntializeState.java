@@ -20,9 +20,8 @@ public class ApplicationIntializeState implements ApplicationState {
 		othelloGameWindow.open();
 		gameHallWindow.hide();
 		othelloGameWindow.hide();
-
-		applicationContext.changeState(ApplicationStateSingleton
-				.getConnectStateInstance());
+        applicationContext.changeState(ApplicationStateSingleton
+                .getConnectStateInstance());
 	}
 
 	public void connect() {

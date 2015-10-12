@@ -1,24 +1,12 @@
 package otakuplus.straybird.othellogame.ui;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Monitor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-
+import org.eclipse.swt.widgets.*;
+import otakuplus.straybird.othellogame.ApplicationContext;
 import otakuplus.straybird.othellogame.ApplicationContextSingleton;
 
 public class LoginWindow {
@@ -191,11 +179,19 @@ public class LoginWindow {
 		shell.close();
 	}
 
+    public String getUsername(){
+        return userNameText.getText();
+    }
+
+    public String getPassword(){
+        return passWordText.getText();
+    }
+
 	public void login() {
 		String username = userNameText.getText();
 		String password = passWordText.getText();
 		if (username.length() > 0 && password.length() > 0) {
-			ApplicationContextSingleton.getInstance().login();
+            ApplicationContextSingleton.getInstance().login();
 		}
 	}
 	

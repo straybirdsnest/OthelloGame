@@ -1,7 +1,7 @@
 package otakuplus.straybird.othellogame;
 
-import otakuplus.straybird.othellogame.model.User;
-import otakuplus.straybird.othellogame.model.UserInformation;
+import otakuplus.straybird.othellogame.models.User;
+import otakuplus.straybird.othellogame.models.UserInformation;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
@@ -73,7 +73,6 @@ public class Application {
 		application.initialize();
 		application.connect();
 		application.login();
-		application.disconnect();
-		application.destory();
+        application.destory();
 	}
 }
