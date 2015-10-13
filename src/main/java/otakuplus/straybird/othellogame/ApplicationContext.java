@@ -10,6 +10,8 @@ import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
+import java.util.List;
+
 public class ApplicationContext {
 	// UI Scope
 	protected Display display;
@@ -22,10 +24,12 @@ public class ApplicationContext {
 	// Network Scope
 	protected SocketIOClient socketIOClient;
 
+	protected List<String> currentCookie;
+
 	private ApplicationState applicationState;
 
 	public ApplicationContext() {
-		this.applicationState = ApplicationStateSingleton.getInitStateInstance();
+		applicationState = ApplicationStateSingleton.getInitStateInstance();
 		// UI
 		display = Display.getDefault();
 		loginWindow = new LoginWindow();
@@ -42,13 +46,9 @@ public class ApplicationContext {
 
 	public void connect() {
 		applicationState.connect();
-        System.out.println("state "+applicationState.getClass());
-        System.out.println("call connect");
 	}
 
 	public void login() {
-        System.out.println(applicationState.getClass());
-        System.out.println("call login!");
         applicationState.login();
 	}
 
@@ -69,10 +69,8 @@ public class ApplicationContext {
 	}
 
 	public void changeState(ApplicationState applicationState) {
-		System.out.println("state:" + this.applicationState.getClass());
-        this.applicationState = applicationState;
-        System.out.println("change to:" + this.applicationState.getClass());
-	}
+		this.applicationState = applicationState;
+    }
 
 	public LoginWindow getLoginWinodow() {
 		return loginWindow;
