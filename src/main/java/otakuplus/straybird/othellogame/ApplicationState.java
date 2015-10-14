@@ -10,6 +10,8 @@ public interface ApplicationState {
 
 	public void enterGameHall();
 
+	public void leaveGameHall();
+
 	public void enterGameTable();
 
 	public void disconnect();

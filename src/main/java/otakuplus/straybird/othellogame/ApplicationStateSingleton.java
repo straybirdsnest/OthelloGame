@@ -26,12 +26,20 @@ public class ApplicationStateSingleton {
 		return LoginStateHolder.INSTANCE;
 	}
 
-	private static class GameHallStateHolder {
-		static final ApplicationGameHallState INSTANCE = new ApplicationGameHallState();
+	private static class EnterGameHallStateHolder {
+		static final ApplicationEnterGameHallState INSTANCE = new ApplicationEnterGameHallState();
 	}
 
-	public static ApplicationGameHallState getGameHallStateInstance() {
-		return GameHallStateHolder.INSTANCE;
+	public static ApplicationEnterGameHallState getEnterGameHallStateInstance() {
+		return EnterGameHallStateHolder.INSTANCE;
+	}
+
+	private static class LeaveGameHallStateHolder {
+		static final ApplicationLeaveGameHallState INSTANCE = new ApplicationLeaveGameHallState();
+	}
+
+	public static ApplicationLeaveGameHallState getLeaveGameHallStateInstance() {
+		return LeaveGameHallStateHolder.INSTANCE;
 	}
 	private static class DisconnectStateHolder {
 		static final ApplicationDisconnectState INSTANCE = new ApplicationDisconnectState();

@@ -33,6 +33,10 @@ public class ApplicationIntializeState implements ApplicationState {
 	public void enterGameHall() {
 	}
 
+	public void leaveGameHall(){
+
+	}
+
 	public void enterGameTable() {
 	}
 

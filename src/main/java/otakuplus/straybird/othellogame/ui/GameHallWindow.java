@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import otakuplus.straybird.othellogame.ApplicationContextSingleton;
 
 public class GameHallWindow {
 
@@ -298,22 +299,7 @@ public class GameHallWindow {
 
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
-				/*
-				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
-					MessageBox messageBox = new MessageBox(shell,
-							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-					messageBox.setText("确认注销");
-					messageBox.setMessage("退出会从游戏大厅中注销，确认退出奥赛罗棋？");
-					int result = messageBox.open();
-					if (result == SWT.YES) {
-						mainApplication.logout();
-					}
-					event.doit = false;
-				} else {
-					event.doit = true;
-					destoryResources();
-				}
-				*/
+                ApplicationContextSingleton.getInstance().leaveGameHall();
 			}
 		});
 

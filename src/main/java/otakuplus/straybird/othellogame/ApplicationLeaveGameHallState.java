@@ -1,7 +1,6 @@
 package otakuplus.straybird.othellogame;
 
-public class ApplicationGameHallState implements ApplicationState{
-
+public class ApplicationLeaveGameHallState implements ApplicationState{
     public void initialize() {
 
     }
@@ -18,6 +17,10 @@ public class ApplicationGameHallState implements ApplicationState{
 
     }
 
+    public void leaveGameHall() {
+
+    }
+
     public void enterGameTable() {
 
     }
@@ -30,4 +33,3 @@ public class ApplicationGameHallState implements ApplicationState{
 
     }
 }
-

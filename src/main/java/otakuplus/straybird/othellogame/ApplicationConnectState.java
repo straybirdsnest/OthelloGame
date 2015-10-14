@@ -22,6 +22,10 @@ public class ApplicationConnectState implements ApplicationState {
 
 	}
 
+	public void leaveGameHall(){
+
+	}
+
 	public void enterGameTable() {
 
 	}

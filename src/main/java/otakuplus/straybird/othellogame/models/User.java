@@ -1,6 +1,7 @@
 package otakuplus.straybird.othellogame.models;
 
 import com.google.api.client.util.Key;
+import otakuplus.straybird.othellogame.network.http.UserLinks;
 
 public class User {
 	
@@ -22,6 +23,9 @@ public class User {
 	private boolean isActive = false;
 	
 	private UserInformation userInformation;
+
+	@Key("_links")
+	private UserLinks links;
 
 	public User() {
 
@@ -87,4 +91,11 @@ public class User {
 		this.userInformation = userInformation;
 	}
 
+    public UserLinks getLinks() {
+        return links;
+    }
+
+    public void setLinks(UserLinks links) {
+        this.links = links;
+    }
 }

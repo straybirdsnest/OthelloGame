@@ -1,15 +1,19 @@
 package otakuplus.straybird.othellogame;
 
+import com.google.api.client.http.*;
 import org.eclipse.swt.widgets.Display;
 
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
+import otakuplus.straybird.othellogame.network.http.HttpRequestFactorySingleton;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClientSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
+import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.List;
 
 public class ApplicationContext {
@@ -38,6 +42,8 @@ public class ApplicationContext {
 		// Initialize Socket.io client
 		socketIOClient = SocketIOClientSingleton.getInstance();
 		socketIOClient.setupSocketIOClient();
+
+        currentCookie = null;
 	}
 
 	public void initialize() {
@@ -54,6 +60,10 @@ public class ApplicationContext {
 
 	public void enterGameHall() {
 		applicationState.enterGameHall();
+	}
+
+	public void leaveGameHall(){
+		applicationState.leaveGameHall();
 	}
 
 	public void enterGameTable() {
@@ -92,6 +102,30 @@ public class ApplicationContext {
 			}
 		}
 	}
+
+    public void updateCsrfToken(){
+        HttpRequestFactory requestFactory = HttpRequestFactorySingleton.getHttpRequestFactoryInstance();
+        GenericUrl genericUrl = new GenericUrl("http://localhost:8080/api/csrftoken");
+        HttpResponse response = null;
+        HttpRequest request;
+        try {
+            request = requestFactory.buildGetRequest(genericUrl);
+            if(currentCookie != null){
+                request.getHeaders().set("cookie", currentCookie);
+                List<HttpCookie> cookie = HttpCookie.parse(currentCookie.get(0));
+                request.getHeaders().set("X-XSRF-TOKEN", cookie.get(0).getValue());
+            }
+            response = request.execute();
+            if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
+                if(response.getHeaders().getHeaderStringValues("set-cookie").isEmpty() == false) {
+                    currentCookie = response.getHeaders().getHeaderStringValues("set-cookie");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
