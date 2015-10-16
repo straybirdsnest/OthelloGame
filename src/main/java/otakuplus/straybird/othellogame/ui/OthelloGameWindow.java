@@ -61,7 +61,7 @@ public class OthelloGameWindow {
 	}
 
 	protected void createContents() {
-		shell = new Shell(SWT.SHELL_TRIM);
+		shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText("OthelloGame");
 		shell.setLocation((Display.getDefault().getBounds().width - 400) / 2,
 				(Display.getDefault().getBounds().height - 400) / 2);

@@ -40,10 +40,14 @@ public class ApplicationIntializeState implements ApplicationState {
 	public void enterGameTable() {
 	}
 
-	public void destory() {
+	public void logout(){
+
 	}
 
 	public void disconnect() {
+	}
+
+	public void destory() {
 	}
 
 }

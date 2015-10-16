@@ -16,16 +16,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 import otakuplus.straybird.othellogame.ApplicationContextSingleton;
 
 public class GameHallWindow {
@@ -45,8 +36,13 @@ public class GameHallWindow {
 	}
 
 	public void createContents() {
-		shell = new Shell(display, SWT.SHELL_TRIM);
+        Monitor monitor = Display.getDefault().getPrimaryMonitor();
+
+        shell = new Shell(display, SWT.SHELL_TRIM);
 		shell.setText("游戏大厅");
+        shell.setSize(640, 480);
+        shell.setLocation((monitor.getBounds().width - 430) / 2,
+                (monitor.getBounds().height - 325) / 2);
 		shell.setLayout(new GridLayout());
 
 		SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
@@ -70,10 +66,10 @@ public class GameHallWindow {
 		tableCanvasGridData.widthHint = 420;
 		tableCanvasGridData.heightHint = 420;
 		gameTableCanvas.setLayoutData(tableCanvasGridData);
+        /*
 		gameTableCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent event) {
-				/*
 				ArrayList<GameTable> gameTableList = mainApplication
 						.getGameTableList();
 				if (gameTableList.size() > 0) {
@@ -126,10 +122,10 @@ public class GameHallWindow {
 						index++;
 					}
 				}
-				*/
 			}
 		});
-
+		*/
+        /*
 		gameTableCanvas.addMouseListener(new MouseListener() {
 
 			public void mouseUp(MouseEvent e) {
@@ -138,7 +134,6 @@ public class GameHallWindow {
 			}
 
 			public void mouseDown(MouseEvent e) {
-			/*
 					int x = e.x;
 				int y = e.y;
 				// index from 0
@@ -159,21 +154,20 @@ public class GameHallWindow {
 						mainApplication.takeGameTable(index + 1, 2);
 					}
 				}
-				*/
 			}
 
 			public void mouseDoubleClick(MouseEvent e) {
 				
 			}
 		});
-
+        */
 		Composite composite2 = new Composite(sashForm, SWT.NONE);
 		GridLayout composite2Layout = new GridLayout();
 		composite2Layout.numColumns = 3;
-		composite2.setLayout(composite2Layout);
+        composite2.setLayout(composite2Layout);
 		GridData composite2GridData = new GridData(GridData.FILL_BOTH);
 		composite2GridData.horizontalSpan = 3;
-		composite2GridData.widthHint = 400;
+        composite2GridData.widthHint = 400;
 		composite2GridData.heightHint = 200;
 		
 		userListTable = new Table(composite2, SWT.CENTER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
@@ -210,62 +204,6 @@ public class GameHallWindow {
 		}
 		
 		userListTable.setBounds(25, 25, 400, 200);
-		/*
-		userListTableViewer = new TableViewer(composite2, SWT.CENTER
-				| SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION
-				| SWT.BORDER);
-		Table table = userListTableViewer.getTable();
-		GridData tableViewerGridData = new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.GRAB_VERTICAL | GridData.FILL_BOTH);
-		tableViewerGridData.horizontalSpan = 3;
-		tableViewerGridData.widthHint = 400;
-		tableViewerGridData.heightHint = 200;
-		userListTableViewer.getControl().setLayoutData(tableViewerGridData);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		userListTableViewer.setContentProvider(ArrayContentProvider
-				.getInstance());
-
-		TableViewerColumn tableViewerColumn[] = new TableViewerColumn[6];
-		for (int i = 0; i < 6; i++) {
-			tableViewerColumn[i] = new TableViewerColumn(userListTableViewer,
-					SWT.CENTER, i);
-			switch (i) {
-			case 0:
-				tableViewerColumn[i].getColumn().setText("用户ID");
-				break;
-			case 1:
-				tableViewerColumn[i].getColumn().setText("昵称");
-				break;
-			case 2:
-				tableViewerColumn[i].getColumn().setText("胜利");
-				break;
-			case 3:
-				tableViewerColumn[i].getColumn().setText("平局");
-				break;
-			case 4:
-				tableViewerColumn[i].getColumn().setText("失败");
-				break;
-			case 5:
-				tableViewerColumn[i].getColumn().setText("积分");
-				break;
-			}
-		}
-
-		TableLayout tableLayout = new TableLayout();
-		tableLayout.addColumnData(new ColumnPixelData(60));
-		tableLayout.addColumnData(new ColumnPixelData(80));
-		tableLayout.addColumnData(new ColumnPixelData(50));
-		tableLayout.addColumnData(new ColumnPixelData(50));
-		tableLayout.addColumnData(new ColumnPixelData(50));
-		tableLayout.addColumnData(new ColumnPixelData(50));
-		table.setLayout(tableLayout);
-
-		userListTableViewer.setLabelProvider(new UserListLabelProvider());
-		userListTableViewer.setInput(mainApplication.getUserInformationList());
-		userListTableViewer.setSelection(new StructuredSelection(
-				mainApplication.getUserInformationList()));
-		*/
 
 		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
 		GridData gameHallGridData = new GridData();
@@ -299,7 +237,16 @@ public class GameHallWindow {
 
 		shell.addListener(SWT.Close, new Listener() {
 			public void handleEvent(Event event) {
-                ApplicationContextSingleton.getInstance().leaveGameHall();
+                event.doit = false;
+                MessageBox messageBox = new MessageBox(shell,
+                        SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+                messageBox.setText("确认注销");
+                messageBox.setMessage("注销并返回登录界面？");
+                int result = messageBox.open();
+                if (result == SWT.YES) {
+                    ApplicationContextSingleton.getInstance().leaveGameHall();
+                    event.doit = true;
+                }
 			}
 		});
 
@@ -335,9 +282,15 @@ public class GameHallWindow {
 	}
 
 	public void notifyUserListUpdate() {
-		if (userListTable != null) {
-			userListTable.redraw();
-		}
+        if (userListTable != null) {
+			for(int i=0; i< 1; i++) {
+                TableItem tableItem = new TableItem(userListTable, SWT.CENTER);
+                tableItem.setText(0, "1");
+                tableItem.setText(1, "hehe");
+            }
+            shell.pack();
+            userListTable.redraw();
+        }
 	}
 
 	public void notifyGameTableListUpdate() {
@@ -367,7 +320,5 @@ public class GameHallWindow {
 		gameHallChat.redraw();
 	}
 */
-	public static void main(String[] args) {
 
-	}
 }

@@ -6,8 +6,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+import otakuplus.straybird.othellogame.Application;
 import otakuplus.straybird.othellogame.ApplicationContext;
 import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.ApplicationState;
 
 public class LoginWindow {
 	protected Shell shell;
@@ -21,7 +23,8 @@ public class LoginWindow {
 	protected void createContents() {
 		Monitor monitor = Display.getDefault().getPrimaryMonitor();
 
-		shell = new Shell(SWT.SHELL_TRIM);
+		shell = new Shell(display, SWT.SHELL_TRIM);
+		ApplicationContextSingleton.getInstance().setLoginWindowShell(shell);
 		shell.setText("奥赛罗棋");
 		shell.setSize(430, 325);
 		shell.setLocation((monitor.getBounds().width - 430) / 2,
@@ -145,7 +148,11 @@ public class LoginWindow {
 		loginButton.addSelectionListener(new SelectionListener() {
 
 			public void widgetSelected(SelectionEvent e) {
-				login();
+                String username = userNameText.getText();
+                String password = passWordText.getText();
+                if (username.length() > 0 && password.length() > 0) {
+                    ApplicationContextSingleton.getInstance().login();
+                }
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -157,6 +164,21 @@ public class LoginWindow {
 		loginGridData.horizontalSpan = 3;
 		loginGridData.widthHint = 194;
 		loginButton.setLayoutData(loginGridData);
+
+		shell.addListener(SWT.Close, new Listener() {
+            public void handleEvent(Event event) {
+                event.doit = false;
+                MessageBox messageBox = new MessageBox(shell,
+                        SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+                messageBox.setText("确认退出");
+                messageBox.setMessage("确实要退出Othello游戏吗？");
+                int result = messageBox.open();
+                if (result == SWT.YES) {
+                    ApplicationContextSingleton.getInstance().disconnect();
+                    event.doit = true;
+                }
+            }
+        });
 
 		shell.pack();
 	}
@@ -175,10 +197,6 @@ public class LoginWindow {
 		shell.setVisible(true);
 	}
 
-	public void close() {
-		shell.close();
-	}
-
     public String getUsername(){
         return userNameText.getText();
     }
@@ -186,13 +204,5 @@ public class LoginWindow {
     public String getPassword(){
         return passWordText.getText();
     }
-
-	public void login() {
-		String username = userNameText.getText();
-		String password = passWordText.getText();
-		if (username.length() > 0 && password.length() > 0) {
-            ApplicationContextSingleton.getInstance().login();
-		}
-	}
 	
 }

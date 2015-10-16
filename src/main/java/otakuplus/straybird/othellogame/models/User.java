@@ -17,13 +17,11 @@ public class User {
 	private String password;
 	
 	@Key
-	private String createTime;
+    private String createTime;
 	
 	@Key
 	private boolean isActive = false;
 	
-	private UserInformation userInformation;
-
 	@Key("_links")
 	private UserLinks links;
 
@@ -81,14 +79,6 @@ public class User {
 
 	public void setIsActive(boolean isActive) {
 		this.isActive = isActive;
-	}
-
-	public UserInformation getUserInformation() {
-		return userInformation;
-	}
-
-	public void setUserInformation(UserInformation userInformation) {
-		this.userInformation = userInformation;
 	}
 
     public UserLinks getLinks() {

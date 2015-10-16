@@ -1,37 +1,49 @@
 package otakuplus.straybird.othellogame.models;
 
-import java.util.Date;
+import com.google.api.client.util.Key;
 
 public class UserInformation {
-	public static final String SEXUALITY_MALE = "male";
-	public static final String SEXUALITY_FEMALE = "female";
-	private int userId;
-	private String nickname = null;
-	private String sexuality = null;
-	private Date birthday = null;
-	private int gameWins = 0;
-	private int gameDraws = 0;
-	private int gameLosts = 0;
-	private int rankPoints = 0;
+    public static final String GENDER_MALE = "male";
+    public static final String GENDER_FEMALE = "female";
+    @Key
+	private Long userId;
+	@Key
+    private String nickname = null;
+	@Key
+    private String gender = null;
+	@Key
+    private String birthday = null;
+	@Key
+    private int gameWins = 0;
+	@Key
+    private int gameDraws = 0;
+	@Key
+    private int gameLosts = 0;
+	@Key
+    private int rankPoints = 0;
 
-	public int getUserId() {
+	public Long getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	public Date getBirthday() {
+    public void setBirthday(String birthday){
+        this.birthday = birthday;
+    }
+
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public String getSexuality() {
-		return sexuality;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setSexuality(String sexuality) {
-		this.sexuality = sexuality;
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 
 	public String getNickname() {
@@ -40,10 +52,6 @@ public class UserInformation {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
 	}
 
 	public int getGameWins() {

@@ -41,6 +41,15 @@ public class ApplicationStateSingleton {
 	public static ApplicationLeaveGameHallState getLeaveGameHallStateInstance() {
 		return LeaveGameHallStateHolder.INSTANCE;
 	}
+
+	private static class LogoutStateHolder{
+		static final ApplicationLogoutState INSTANCE = new ApplicationLogoutState();
+	}
+
+	public static ApplicationLogoutState getLogoutStateInstance(){
+		return LogoutStateHolder.INSTANCE;
+	}
+
 	private static class DisconnectStateHolder {
 		static final ApplicationDisconnectState INSTANCE = new ApplicationDisconnectState();
 	}

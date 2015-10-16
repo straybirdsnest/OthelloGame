@@ -23,13 +23,17 @@ public class ApplicationDisconnectState implements ApplicationState {
 	public void enterGameTable() {
 	}
 
+    public void logout(){
+
+    }
+
 	public void disconnect() {
-		ApplicationContext applicationContext = ApplicationContextSingleton
-				.getInstance();
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
 		SocketIOClient socketIOClient = applicationContext.socketIOClient;
 		socketIOClient.disconnect();
 		applicationContext.changeState(ApplicationStateSingleton
 				.getDestoryStateInstance());
+        applicationContext.destory();
 	}
 
 	public void destory() {

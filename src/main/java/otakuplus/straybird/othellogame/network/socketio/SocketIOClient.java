@@ -41,5 +41,13 @@ public class SocketIOClient {
 			socket.disconnect();
 		}
 	}
-	
+
+	public String getSocketId(){
+		String id = null;
+		if(socket != null){
+			id = socket.id();
+		}
+		return id;
+	}
+
 }

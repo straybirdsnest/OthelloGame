@@ -7,6 +7,8 @@ public class Login {
     private String username;
     @Key
     private String password;
+    @Key
+    private String socketIOId;
 
     public String getUsername() {
         return username;
@@ -24,4 +26,11 @@ public class Login {
         this.password = password;
     }
 
+    public String getSocketIOId() {
+        return socketIOId;
+    }
+
+    public void setSocketIOId(String socketIOId) {
+        this.socketIOId = socketIOId;
+    }
 }

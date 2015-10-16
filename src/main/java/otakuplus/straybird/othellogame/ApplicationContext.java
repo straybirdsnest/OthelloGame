@@ -1,11 +1,13 @@
 package otakuplus.straybird.othellogame;
 
-import com.google.api.client.http.*;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.HttpStatusCodes;
 import org.eclipse.swt.widgets.Display;
-
+import org.eclipse.swt.widgets.Shell;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
-import otakuplus.straybird.othellogame.network.http.HttpRequestFactorySingleton;
+import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClientSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
@@ -13,12 +15,12 @@ import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.util.List;
 
 public class ApplicationContext {
 	// UI Scope
 	protected Display display;
+	protected Shell loginWindowShell;
 	protected LoginWindow loginWindow;
 	protected GameHallWindow gameHallWindow;
 	protected OthelloGameWindow othelloGameWindow;
@@ -35,7 +37,7 @@ public class ApplicationContext {
 	public ApplicationContext() {
 		applicationState = ApplicationStateSingleton.getInitStateInstance();
 		// UI
-		display = Display.getDefault();
+        display = Display.getDefault();
 		loginWindow = new LoginWindow();
 		gameHallWindow = new GameHallWindow();
 		othelloGameWindow = new OthelloGameWindow();
@@ -70,7 +72,12 @@ public class ApplicationContext {
 		applicationState.enterGameTable();
 	}
 
+    public void logout(){
+        applicationState.logout();
+    }
+
 	public void disconnect() {
+        System.out.println("disconnect by "+applicationState.getClass());
 		applicationState.disconnect();
 	}
 
@@ -79,7 +86,9 @@ public class ApplicationContext {
 	}
 
 	public void changeState(ApplicationState applicationState) {
+        System.out.println("from state " + this.applicationState.getClass());
 		this.applicationState = applicationState;
+        System.out.println("change to "+this.applicationState.getClass());
     }
 
 	public LoginWindow getLoginWinodow() {
@@ -94,27 +103,33 @@ public class ApplicationContext {
 		return othelloGameWindow;
 	}
 
+	public SocketIOClient getSocketIOClient(){
+		return socketIOClient;
+	}
+
+	public List<String> getCurrentCookie(){
+		return currentCookie;
+	}
+
+    public void setLoginWindowShell(Shell shell){
+        loginWindowShell = shell;
+    }
+
 	public void startUp() {
 		// This is the main UI thread
-		while (!display.isDisposed()) {
+		while (!loginWindowShell.isDisposed()) {
 			if (!display.readAndDispatch()) {
-				display.sleep();
+                display.sleep();
 			}
 		}
 	}
 
     public void updateCsrfToken(){
-        HttpRequestFactory requestFactory = HttpRequestFactorySingleton.getHttpRequestFactoryInstance();
-        GenericUrl genericUrl = new GenericUrl("http://localhost:8080/api/csrftoken");
+        String url =HttpRequestUtil.HOST_BASE_URL+"/api/csrftoken";
         HttpResponse response = null;
         HttpRequest request;
         try {
-            request = requestFactory.buildGetRequest(genericUrl);
-            if(currentCookie != null){
-                request.getHeaders().set("cookie", currentCookie);
-                List<HttpCookie> cookie = HttpCookie.parse(currentCookie.get(0));
-                request.getHeaders().set("X-XSRF-TOKEN", cookie.get(0).getValue());
-            }
+            request = HttpRequestUtil.buildHttpGetRequest(url);
             response = request.execute();
             if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
                 if(response.getHeaders().getHeaderStringValues("set-cookie").isEmpty() == false) {
@@ -132,7 +147,5 @@ public class ApplicationContext {
 		applicationContext.initialize();
         applicationContext.connect();
 		applicationContext.startUp();
-        applicationContext.disconnect();
-        applicationContext.destory();
 	}
 }

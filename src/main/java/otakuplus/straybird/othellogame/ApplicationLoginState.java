@@ -1,19 +1,13 @@
 package otakuplus.straybird.othellogame;
 
-import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.json.JsonHttpContent;
-import otakuplus.straybird.othellogame.network.http.AuthorizationCode;
-import otakuplus.straybird.othellogame.network.http.HttpRequestFactorySingleton;
-import otakuplus.straybird.othellogame.network.http.JsonFactorySingleton;
+import otakuplus.straybird.othellogame.models.User;
+import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.http.Login;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 
 import java.io.IOException;
-import java.net.HttpCookie;
-import java.util.List;
 
 public class ApplicationLoginState implements ApplicationState {
 
@@ -24,9 +18,7 @@ public class ApplicationLoginState implements ApplicationState {
 	}
 
 	public void login() {
-
-        HttpRequestFactory requestFactory = HttpRequestFactorySingleton.getHttpRequestFactoryInstance();
-        GenericUrl genericUrl = new GenericUrl("http://localhost:8080/api/authorization");
+        String url = HttpRequestUtil.HOST_BASE_URL+"/api/authorization";
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
@@ -36,20 +28,22 @@ public class ApplicationLoginState implements ApplicationState {
             LoginWindow loginWindow = applicationContext.getLoginWinodow();
             login.setUsername(loginWindow.getUsername());
             login.setPassword(loginWindow.getPassword());
-            JsonHttpContent jsonHttpContent = new JsonHttpContent(JsonFactorySingleton.getJsonFactoryInstance() ,login);
+            System.out.println("socketId " + applicationContext.getSocketIOClient().getSocketId());
+            login.setSocketIOId(applicationContext.getSocketIOClient().getSocketId());
 
-            request = requestFactory.buildPostRequest(genericUrl,jsonHttpContent );
-            if(applicationContext.currentCookie != null) {
-                System.out.println("current Cookie: " + applicationContext.currentCookie);
-                request.getHeaders().set("cookie", applicationContext.currentCookie);
-                List<HttpCookie> cookie = HttpCookie.parse(applicationContext.currentCookie.get(0));
-                request.getHeaders().set("X-XSRF-TOKEN", cookie.get(0).getValue());
-            }
+            request = HttpRequestUtil.buildHttpPostRequest(url, login);
             response = request.execute();
 
+            /*
             AuthorizationCode authorizationCode = response.parseAs(AuthorizationCode.class);
             if(authorizationCode != null){
                 System.out.println("login with auth code "+authorizationCode.getAuthorizationCode());
+            }
+            */
+            User user = response.parseAs(User.class);
+            if(user != null && user.getUserId() != null) {
+                applicationContext.currentUser = user;
+                System.out.println("userId: "+user.getUserId());
             }
 
             // change to enter game hall state
@@ -70,7 +64,14 @@ public class ApplicationLoginState implements ApplicationState {
 	public void enterGameTable() {
 	}
 
+    public void logout(){
+
+    }
+
 	public void disconnect() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        applicationContext.changeState(ApplicationStateSingleton.getDisconnectStateInstance());
+        applicationContext.disconnect();
 	}
 
 	public void destory() {

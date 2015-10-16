@@ -21,11 +21,15 @@ public class ApplicationDestoryState implements ApplicationState {
 	public void enterGameTable() {
 	}
 
+    public void logout(){
+
+    }
+
 	public void disconnect() {
 	}
 
 	public void destory() {
-		
+        System.out.println("destory is called.");
 	}
 
 }

@@ -30,6 +30,10 @@ public class ApplicationConnectState implements ApplicationState {
 
 	}
 
+	public void logout(){
+
+	}
+
 	public void disconnect() {
 
 	}
