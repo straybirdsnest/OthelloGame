@@ -5,8 +5,8 @@ import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.json.JsonHttpContent;
-import otakuplus.straybird.othellogame.ApplicationContext;
-import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
 

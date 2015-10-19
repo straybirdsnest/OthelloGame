@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 public interface ApplicationState {
 
@@ -12,7 +12,9 @@ public interface ApplicationState {
 
 	public void leaveGameHall();
 
-	public void enterGameTable();
+	public void enterGameTable(Long gameTableId,Long seatId);
+
+	public void leaveGameTable(Long gameTableId,Long seatId);
 
 	public void logout();
 

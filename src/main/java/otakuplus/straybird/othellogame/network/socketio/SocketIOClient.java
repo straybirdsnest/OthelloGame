@@ -4,8 +4,8 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.json.JSONException;
 import org.json.JSONObject;
-import otakuplus.straybird.othellogame.ApplicationContext;
-import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.UserInformation;
 
 import java.time.ZoneId;

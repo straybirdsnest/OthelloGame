@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
@@ -37,9 +37,12 @@ public class ApplicationIntializeState implements ApplicationState {
 
 	}
 
-	public void enterGameTable() {
+	public void enterGameTable(Long gameTableId,Long seatId) {
 	}
 
+	public void leaveGameTable(Long gameTableId,Long seatId){
+
+	}
 	public void logout(){
 
 	}

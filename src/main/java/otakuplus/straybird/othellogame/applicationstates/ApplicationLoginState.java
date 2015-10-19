@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
@@ -63,8 +63,12 @@ public class ApplicationLoginState implements ApplicationState {
 
     }
 
-	public void enterGameTable() {
+	public void enterGameTable(Long gameTableId,Long seatId) {
 	}
+
+    public void leaveGameTable(Long gameTableId,Long seatId){
+
+    }
 
     public void logout(){
 

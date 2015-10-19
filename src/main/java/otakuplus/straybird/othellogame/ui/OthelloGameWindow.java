@@ -15,15 +15,10 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.*;
 
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
 
@@ -255,23 +250,19 @@ public class OthelloGameWindow {
 		shell.addListener(SWT.Close, new Listener() {
 
 			public void handleEvent(Event event) {
-				/*
-				if (mainApplication.getApplicationState().getState() != ApplicationState.DESTORY) {
-					MessageBox messageBox = new MessageBox(shell,
-							SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-					messageBox.setText("确认离开");
-					messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
-					int result = messageBox.open();
-					if (result == SWT.YES) {
-						mainApplication.leaveGameTable();
-					}
-					event.doit = false;
-				} else {
-					event.doit = true;
+				event.doit = false;
+				MessageBox messageBox = new MessageBox(shell,
+						SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+				messageBox.setText("确认离开");
+				messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
+				int result = messageBox.open();
+				if (result == SWT.YES) {
+                    ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                    applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
+                            applicationContext.getCurrentSeatId());
 				}
-				*/
-			}
-		});
+		}
+	});
 
 		shell.pack();
 	}

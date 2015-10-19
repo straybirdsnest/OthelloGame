@@ -2,31 +2,31 @@ package otakuplus.straybird.othellogame.models;
 
 public class GameTable {
 
-	private int gameTableId;
-	private Integer playerAId;
-	private Integer playerBId;
+	private Long gameTableId;
+	private Long playerAId;
+	private Long playerBId;
 
-	public int getGameTableId() {
+	public Long getGameTableId() {
 		return gameTableId;
 	}
 
-	public void setGameTableId(int gameTableId) {
+	public void setGameTableId(Long gameTableId) {
 		this.gameTableId = gameTableId;
 	}
 
-	public Integer getPlayerAId() {
+	public Long getPlayerAId() {
 		return playerAId;
 	}
 
-	public void setPlayerAId(Integer playerAId) {
+	public void setPlayerAId(Long playerAId) {
 		this.playerAId = playerAId;
 	}
 
-	public Integer getPlayerBId() {
+	public Long getPlayerBId() {
 		return playerBId;
 	}
 
-	public void setPlayerBId(Integer playerBId) {
+	public void setPlayerBId(Long playerBId) {
 		this.playerBId = playerBId;
 	}
 

@@ -4,8 +4,8 @@ import io.socket.emitter.Emitter.Listener;
 import org.eclipse.swt.widgets.Display;
 import org.json.JSONException;
 import org.json.JSONObject;
-import otakuplus.straybird.othellogame.ApplicationContext;
-import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 
 public class SendMessageListener implements Listener{

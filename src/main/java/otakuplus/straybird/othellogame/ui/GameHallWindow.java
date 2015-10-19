@@ -2,16 +2,13 @@ package otakuplus.straybird.othellogame.ui;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import otakuplus.straybird.othellogame.ApplicationContext;
-import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.UserInformation;
 import otakuplus.straybird.othellogame.network.socketio.SendMessage;
@@ -33,6 +30,7 @@ public class GameHallWindow {
 	protected Table userListTable;
 
 	protected Image tableMiniUserIcon;
+    protected Image tableEmptyIcon;
 
 	public GameHallWindow() {
 		
@@ -62,6 +60,7 @@ public class GameHallWindow {
 		composite.setData(compositeGridData);
 
 		tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
+        tableEmptyIcon = new Image(Display.getDefault(), "Empty-chair-icon.png");
 
 		gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
 		GridData tableCanvasGridData = new GridData();
@@ -91,7 +90,7 @@ public class GameHallWindow {
 								.getSystemColor(SWT.COLOR_WHITE));
 						event.gc.drawString(
 								"" + tempGameTable.getGameTableId(),
-								60 + widthOffset, 156 + heightOffset);
+								100 + widthOffset, 156 + heightOffset);
 						event.gc.setBackground(Display.getDefault()
 								.getSystemColor(SWT.COLOR_DARK_YELLOW));
 						event.gc.drawRectangle(56 + widthOffset,
@@ -104,9 +103,9 @@ public class GameHallWindow {
 									tableMiniUserIcon.getBounds().height,
 									4 + widthOffset, 80 + heightOffset, 48, 48);
 						} else {
-							event.gc.drawImage(tableMiniUserIcon, 0, 0,
-									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height,
+							event.gc.drawImage(tableEmptyIcon, 0, 0,
+									tableEmptyIcon.getBounds().width,
+									tableEmptyIcon.getBounds().height,
 									4 + widthOffset, 80 + heightOffset, 48, 48);
 						}
 						if (tempGameTable.getPlayerBId() != null) {
@@ -116,9 +115,9 @@ public class GameHallWindow {
 									156 + widthOffset, 80 + heightOffset, 48,
 									48);
 						} else {
-							event.gc.drawImage(tableMiniUserIcon, 0, 0,
-									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height,
+							event.gc.drawImage(tableEmptyIcon, 0, 0,
+									tableEmptyIcon.getBounds().width,
+									tableEmptyIcon.getBounds().height,
 									156 + widthOffset, 80 + heightOffset, 48,
 									48);
 						}
@@ -128,34 +127,27 @@ public class GameHallWindow {
 			}
 		});
 
-        /*
 		gameTableCanvas.addMouseListener(new MouseListener() {
 
 			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			public void mouseDown(MouseEvent e) {
-					int x = e.x;
-				int y = e.y;
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                long x = e.x;
+				long y = e.y;
 				// index from 0
-				int index = x / 208 + (y / 208) * 2;
-				int widthOffset = (index % 2) * 208;
-				int heightOffset = (index / 2) * 208;
+				long index = x / 208 + (y / 208) * 2;
+				long widthOffset = (index % 2) * 208;
+				long heightOffset = (index / 2) * 208;
 				if (x >= 4 + widthOffset && x <= 56 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					if (mainApplication.getCurrentGameTable() == null) {
-						// index from 0, so it should plus 1
-						mainApplication.takeGameTable(index + 1, 1);
-					}
+					applicationContext.enterGameTable(index+1, 0L);
 				}
 				if (x >= 156 + widthOffset && x <= 204 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					if (mainApplication.getCurrentGameTable() == null) {
-						// index from 0, so it should plus 1
-						mainApplication.takeGameTable(index + 1, 2);
-					}
+                    applicationContext.enterGameTable(index+1, 1L);
 				}
 			}
 
@@ -163,7 +155,7 @@ public class GameHallWindow {
 				
 			}
 		});
-        */
+
 		Composite composite2 = new Composite(sashForm, SWT.NONE);
 		GridLayout composite2Layout = new GridLayout();
 		composite2Layout.numColumns = 3;
@@ -275,6 +267,9 @@ public class GameHallWindow {
 		if (tableMiniUserIcon != null) {
 			tableMiniUserIcon.dispose();
 		}
+        if( tableEmptyIcon != null){
+            tableEmptyIcon.dispose();
+        }
 	}
 
 	public void close() {

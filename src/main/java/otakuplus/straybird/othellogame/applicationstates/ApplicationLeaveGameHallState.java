@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
@@ -30,10 +30,8 @@ public class ApplicationLeaveGameHallState implements ApplicationState{
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         LoginWindow loginWindow = applicationContext.getLoginWinodow();
         GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
-        gameHallWindow.hide();
-        loginWindow.show();
 
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gamehall/leave";
+        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gameHall/leave";
         HttpResponse response = null;
         HttpRequest request;
         applicationContext.updateCsrfToken();
@@ -43,6 +41,8 @@ public class ApplicationLeaveGameHallState implements ApplicationState{
             response = request.execute();
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
             {
+                gameHallWindow.hide();
+                loginWindow.show();
                 System.out.println("leave game hall");
                 applicationContext.changeState(ApplicationStateSingleton.getLogoutStateInstance());
                 applicationContext.logout();
@@ -52,7 +52,11 @@ public class ApplicationLeaveGameHallState implements ApplicationState{
         }
     }
 
-    public void enterGameTable() {
+    public void enterGameTable(Long gameTableId,Long seatId) {
+
+    }
+
+    public void leaveGameTable(Long gameTableId,Long seatId){
 
     }
 

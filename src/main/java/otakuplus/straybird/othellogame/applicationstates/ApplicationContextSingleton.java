@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 public class ApplicationContextSingleton {
 	private static class ApplicationContextHolder{

@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 public class ApplicationConnectState implements ApplicationState {
 
@@ -26,9 +26,13 @@ public class ApplicationConnectState implements ApplicationState {
 
 	}
 
-	public void enterGameTable() {
+	public void enterGameTable(Long gameTableId,Long seatId) {
 
 	}
+
+    public void leaveGameTable(Long gameTableId,Long seatId){
+
+    }
 
 	public void logout(){
 

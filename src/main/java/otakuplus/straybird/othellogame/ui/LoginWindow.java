@@ -6,10 +6,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-import otakuplus.straybird.othellogame.Application;
-import otakuplus.straybird.othellogame.ApplicationContext;
-import otakuplus.straybird.othellogame.ApplicationContextSingleton;
-import otakuplus.straybird.othellogame.ApplicationState;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 
 public class LoginWindow {
 	protected Shell shell;

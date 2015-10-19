@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
 
@@ -20,7 +20,11 @@ public class ApplicationDisconnectState implements ApplicationState {
 
 	}
 
-	public void enterGameTable() {
+	public void enterGameTable(Long gameTableId,Long seatId) {
+	}
+
+	public void leaveGameTable(Long gameTableId,Long seatId){
+
 	}
 
     public void logout(){

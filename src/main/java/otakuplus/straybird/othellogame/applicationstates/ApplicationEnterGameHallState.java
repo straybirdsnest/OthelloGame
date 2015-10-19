@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
@@ -32,11 +32,9 @@ public class ApplicationEnterGameHallState implements ApplicationState{
     public void enterGameHall() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         LoginWindow loginWindow = applicationContext.getLoginWinodow();
-        loginWindow.hide();
         GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
-        gameHallWindow.show();
 
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gamehall/enter";
+        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gameHall/enter";
         HttpResponse response = null;
         HttpRequest request;
         applicationContext.updateCsrfToken();
@@ -46,6 +44,8 @@ public class ApplicationEnterGameHallState implements ApplicationState{
             response = request.execute();
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
             {
+                loginWindow.hide();
+                gameHallWindow.show();
                 System.out.println("enter game hall");
             }
         } catch (IOException e){
@@ -62,7 +62,13 @@ public class ApplicationEnterGameHallState implements ApplicationState{
         applicationContext.leaveGameHall();
     }
 
-    public void enterGameTable() {
+    public void enterGameTable(Long gameTableId,Long seatId) {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        applicationContext.changeState(ApplicationStateSingleton.getEnterGameTableStateInstance());
+        applicationContext.enterGameTable(gameTableId, seatId);
+    }
+
+    public void leaveGameTable(Long gameTableId,Long seatId){
 
     }
 

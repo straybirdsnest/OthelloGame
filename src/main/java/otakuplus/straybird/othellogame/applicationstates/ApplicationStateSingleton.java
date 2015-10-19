@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 public class ApplicationStateSingleton {
 
@@ -42,7 +42,23 @@ public class ApplicationStateSingleton {
 		return LeaveGameHallStateHolder.INSTANCE;
 	}
 
-	private static class LogoutStateHolder{
+	private static class EnterGameTableStateHolder{
+        static final ApplicationEnterGameTableState INSTANCE = new ApplicationEnterGameTableState();
+    }
+
+    public static ApplicationEnterGameTableState getEnterGameTableStateInstance(){
+        return EnterGameTableStateHolder.INSTANCE;
+    }
+
+    private static class LeaveGameTableStateHolder{
+        static final ApplicationLeaveGameTableState INSTANCE = new ApplicationLeaveGameTableState();
+    }
+
+    public static ApplicationLeaveGameTableState getLeaveGameTableStateInstance(){
+        return LeaveGameTableStateHolder.INSTANCE;
+    }
+
+    private static class LogoutStateHolder{
 		static final ApplicationLogoutState INSTANCE = new ApplicationLogoutState();
 	}
 

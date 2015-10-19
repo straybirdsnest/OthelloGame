@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame;
+package otakuplus.straybird.othellogame.applicationstates;
 
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
@@ -29,6 +29,8 @@ public class ApplicationContext {
 	// Model Scope
 	protected User currentUser;
 	protected UserInformation currentUserInformation;
+    protected Long currentTableId;
+    protected Long currentSeatId;
 	protected ArrayList<GameTable> gameTableList;
     protected ArrayList<UserInformation> userInformationList;
 	// Network Scope
@@ -54,6 +56,11 @@ public class ApplicationContext {
         currentUserInformation = null;
         userInformationList = new ArrayList<UserInformation>();
         gameTableList = new ArrayList<GameTable>();
+        for(long i=1;i<=100;i++){
+            GameTable gameTable = new GameTable();
+            gameTable.setGameTableId(i);
+            gameTableList.add(gameTable);
+        }
 	}
 
 	public void initialize() {
@@ -76,9 +83,13 @@ public class ApplicationContext {
 		applicationState.leaveGameHall();
 	}
 
-	public void enterGameTable() {
-		applicationState.enterGameTable();
+	public void enterGameTable(Long gameTableId,Long seatId) {
+		applicationState.enterGameTable(gameTableId, seatId);
 	}
+
+    public void leaveGameTable(Long gameTableId,Long seatId){
+        applicationState.leaveGameTable(gameTableId, seatId);
+    }
 
     public void logout(){
         applicationState.logout();
@@ -133,6 +144,14 @@ public class ApplicationContext {
 
     public UserInformation getCurrentUserInformation(){
         return currentUserInformation;
+    }
+
+    public Long getCurrentTableId(){
+        return currentTableId;
+    }
+
+    public Long getCurrentSeatId(){
+        return currentSeatId;
     }
 
     public ArrayList<GameTable> getGameTableList(){
