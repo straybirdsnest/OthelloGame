@@ -1,6 +1,7 @@
 package otakuplus.straybird.othellogame.network.http;
 
 import com.google.api.client.util.Key;
+import otakuplus.straybird.othellogame.models.UserOnline;
 
 import java.util.ArrayList;
 

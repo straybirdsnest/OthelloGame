@@ -12,6 +12,12 @@ public class UserLinks {
     @Key
     private HalHrefLink userOnline;
 
+    @Key
+    private HalHrefLink gameRecords;
+
+    @Key
+    private HalHrefLink userGroupMembers;
+
     public HalHrefLink getSelf() {
         return self;
     }

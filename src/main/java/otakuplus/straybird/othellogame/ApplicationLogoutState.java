@@ -48,6 +48,7 @@ public class ApplicationLogoutState implements ApplicationState{
             if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
                 System.out.println("logout ok!");
                 applicationContext.changeState(ApplicationStateSingleton.getLoginStateInstance());
+                applicationContext.currentUser = null;
             }
         } catch (IOException e) {
             e.printStackTrace();

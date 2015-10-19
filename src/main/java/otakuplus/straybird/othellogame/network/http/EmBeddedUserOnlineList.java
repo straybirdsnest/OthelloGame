@@ -2,7 +2,7 @@ package otakuplus.straybird.othellogame.network.http;
 
 import com.google.api.client.util.Key;
 
-public class EmBededUserOnlineList {
+public class EmBeddedUserOnlineList {
 
     @Key("_embedded")
     private UserOnlineList userOnlineList;

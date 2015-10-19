@@ -1,6 +1,8 @@
-package otakuplus.straybird.othellogame.network.http;
+package otakuplus.straybird.othellogame.models;
 
 import com.google.api.client.util.Key;
+import otakuplus.straybird.othellogame.network.http.HalPages;
+import otakuplus.straybird.othellogame.network.http.UserOnlineLinks;
 
 public class UserOnline {
     public static final int ONLINE = 100;
@@ -14,6 +16,8 @@ public class UserOnline {
     private int onlineState;
     @Key("_links")
     private UserOnlineLinks links;
+    @Key("page")
+    private HalPages pages;
 
     public Long getUserId() {
         return userId;
@@ -37,5 +41,13 @@ public class UserOnline {
 
     public void setLinks(UserOnlineLinks links) {
         this.links = links;
+    }
+
+    public HalPages getPages() {
+        return pages;
+    }
+
+    public void setPages(HalPages pages) {
+        this.pages = pages;
     }
 }

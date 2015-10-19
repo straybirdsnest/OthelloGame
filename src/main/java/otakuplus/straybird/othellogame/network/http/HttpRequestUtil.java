@@ -3,9 +3,12 @@ package otakuplus.straybird.othellogame.network.http;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.json.JsonHttpContent;
 import otakuplus.straybird.othellogame.ApplicationContext;
 import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.models.User;
+import otakuplus.straybird.othellogame.models.UserInformation;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -51,5 +54,41 @@ public class HttpRequestUtil {
             e.printStackTrace();
         }
         return request;
+    }
+
+    public static User getUserByHref(String href){
+        User user = null;
+        if(href != null){
+            HttpRequest request = HttpRequestUtil.buildHttpGetRequest(href);
+            HttpResponse response;
+            try {
+                response =  request.execute();
+                user = response.parseAs(User.class);
+                if(user != null){
+                    System.out.println("UserInformation: " + user.getLinks().getUserInformation().getHref());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
+    public static UserInformation getUserInformationByHref(String href){
+        UserInformation userInformation = null;
+        if(href != null){
+            HttpRequest request = HttpRequestUtil.buildHttpGetRequest(href);
+            HttpResponse response;
+            try{
+                response = request.execute();
+                userInformation = response.parseAs(UserInformation.class);
+                if(userInformation !=null){
+                    System.out.println("UserNickName " + userInformation.getNickname());
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        return userInformation;
     }
 }

@@ -1,6 +1,8 @@
 package otakuplus.straybird.othellogame.models;
 
 import com.google.api.client.util.Key;
+import otakuplus.straybird.othellogame.network.http.HalPages;
+import otakuplus.straybird.othellogame.network.http.UserInformationLinks;
 
 public class UserInformation {
     public static final String GENDER_MALE = "male";
@@ -21,6 +23,10 @@ public class UserInformation {
     private int gameLosts = 0;
 	@Key
     private int rankPoints = 0;
+    @Key("_links")
+    private UserInformationLinks links;
+    @Key("page")
+    private HalPages pages;
 
 	public Long getUserId() {
 		return userId;
@@ -86,4 +92,19 @@ public class UserInformation {
 		this.rankPoints = rankPoints;
 	}
 
+    public UserInformationLinks getLinks() {
+        return links;
+    }
+
+    public void setLinks(UserInformationLinks links) {
+        this.links = links;
+    }
+
+    public HalPages getPages() {
+        return pages;
+    }
+
+    public void setPages(HalPages pages) {
+        this.pages = pages;
+    }
 }

@@ -2,10 +2,21 @@ package otakuplus.straybird.othellogame.network.socketio;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
+import org.json.JSONException;
+import org.json.JSONObject;
+import otakuplus.straybird.othellogame.ApplicationContext;
+import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.models.UserInformation;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class SocketIOClient {
 
 	public static final String SERVER_URI = "http://localhost:8081";
+    public static final String SEND_MESSAGE_EVENT = "sendMessage";
+    public static final String GAME_HALL_ROOM = "gamehall";
+
 	private Socket socket;
 	
 	public SocketIOClient() {
@@ -25,8 +36,7 @@ public class SocketIOClient {
 		{
 			socket.on(Socket.EVENT_CONNECT, new ClientConnectListener());
 			socket.on(Socket.EVENT_CONNECT_TIMEOUT, new ClientConnectTimeoutListener());
-			socket.on("LoginSuccessEvent", new ClientLoginSuccessListener());
-			socket.on("EnterHallEvent", new ClientEnterHallListener());
+            socket.on(SocketIOClient.SEND_MESSAGE_EVENT, new SendMessageListener());
 		}
 	}
 
@@ -49,5 +59,25 @@ public class SocketIOClient {
 		}
 		return id;
 	}
+
+	public void sendeMessage(String roomName, String message){
+        if(socket != null){
+            JSONObject jsonObject = new JSONObject();
+            ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+            UserInformation userInformation = applicationContext.getCurrentUserInformation();
+            if(userInformation != null){
+                try {
+                    ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
+                    jsonObject.put("nickname", userInformation.getNickname());
+                    jsonObject.put("message", message);
+                    jsonObject.put("sendTime", nowTime.toString());
+                    jsonObject.put("roomName", roomName);
+                    socket.emit(SEND_MESSAGE_EVENT, jsonObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
 }

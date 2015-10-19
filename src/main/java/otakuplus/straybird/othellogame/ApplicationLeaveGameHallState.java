@@ -39,7 +39,7 @@ public class ApplicationLeaveGameHallState implements ApplicationState{
         applicationContext.updateCsrfToken();
 
         try{
-            request = HttpRequestUtil.buildHttpPostRequest(url, 1L);
+            request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
             response = request.execute();
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
             {

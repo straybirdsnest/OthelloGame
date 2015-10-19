@@ -1,14 +1,7 @@
 package otakuplus.straybird.othellogame.ui;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -17,7 +10,17 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+import otakuplus.straybird.othellogame.ApplicationContext;
 import otakuplus.straybird.othellogame.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.models.GameTable;
+import otakuplus.straybird.othellogame.models.UserInformation;
+import otakuplus.straybird.othellogame.network.socketio.SendMessage;
+import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameHallWindow {
 
@@ -66,11 +69,11 @@ public class GameHallWindow {
 		tableCanvasGridData.widthHint = 420;
 		tableCanvasGridData.heightHint = 420;
 		gameTableCanvas.setLayoutData(tableCanvasGridData);
-        /*
+
 		gameTableCanvas.addPaintListener(new PaintListener() {
 
 			public void paintControl(PaintEvent event) {
-				ArrayList<GameTable> gameTableList = mainApplication
+				ArrayList<GameTable> gameTableList = ApplicationContextSingleton.getInstance()
 						.getGameTableList();
 				if (gameTableList.size() > 0) {
 					Iterator<GameTable> gameTableIterator = gameTableList
@@ -124,7 +127,7 @@ public class GameHallWindow {
 				}
 			}
 		});
-		*/
+
         /*
 		gameTableCanvas.addMouseListener(new MouseListener() {
 
@@ -174,32 +177,29 @@ public class GameHallWindow {
 		userListTable.setHeaderVisible(true);
 		
 		TableColumn tableColumn[] = new TableColumn[6];
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			tableColumn[i] = new TableColumn(userListTable,
 					SWT.CENTER);
 			switch (i) {
 			case 0:
-				tableColumn[i].setText("用户ID");
-				break;
-			case 1:
 				tableColumn[i].setText("昵称");
 				break;
-			case 2:
+			case 1:
 				tableColumn[i].setText("胜利");
 				break;
-			case 3:
+			case 2:
 				tableColumn[i].setText("平局");
 				break;
-			case 4:
+			case 3:
 				tableColumn[i].setText("失败");
 				break;
-			case 5:
+			case 4:
 				tableColumn[i].setText("积分");
 				break;
 			}
 		}
 		
-		for(int i=0;i<6;i++){
+		for(int i=0;i<5;i++){
 			userListTable.getColumn(i).pack();
 		}
 		
@@ -283,10 +283,20 @@ public class GameHallWindow {
 
 	public void notifyUserListUpdate() {
         if (userListTable != null) {
-			for(int i=0; i< 1; i++) {
-                TableItem tableItem = new TableItem(userListTable, SWT.CENTER);
-                tableItem.setText(0, "1");
-                tableItem.setText(1, "hehe");
+            ArrayList<UserInformation> userInformationList = ApplicationContextSingleton.getInstance().getUserInformationList();
+            if(userInformationList != null && userInformationList.isEmpty() == false){
+                userListTable.clearAll();
+                TableItem tableItem = null;
+                UserInformation userInformation = null;
+                for(int i=0; i< userInformationList.size(); i++) {
+                    tableItem = new TableItem(userListTable, SWT.CENTER);
+                    userInformation = userInformationList.get(i);
+                    tableItem.setText(0, userInformation.getNickname());
+                    tableItem.setText(1, ""+userInformation.getGameWins());
+                    tableItem.setText(2, ""+userInformation.getGameDraws());
+                    tableItem.setText(3, ""+userInformation.getGameLosts());
+                    tableItem.setText(4, ""+userInformation.getRankPoints());
+                }
             }
             shell.pack();
             userListTable.redraw();
@@ -300,25 +310,22 @@ public class GameHallWindow {
 	}
 
 	public void sendMessage() {
-		/*
-		String message = messageText.getText();
-		if (message != null && message.length() > 0) {
-			mainApplication.sendMessage(message);
-		}
-		*/
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        if(messageText.getText() != null) {
+            applicationContext.getSocketIOClient().sendeMessage(SocketIOClient.GAME_HALL_ROOM,messageText.getText());
+        }
 	}
-/*
+
 	public void receiveMessage(SendMessage sendMessage) {
-		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
-				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
-				ZoneId.systemDefault());
-		gameHallChat.append(localMessageTime.format(DateTimeFormatter
-				.ofPattern("hh:mm:ss"))
-				+ " "
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+		ZonedDateTime sendTime = ZonedDateTime.parse(sendMessage.getSendTime());
+        gameHallChat.append(
+                sendTime.format(formatter)
+                + " "
 				+ sendMessage.getNickname()
 				+ " : " + sendMessage.getMessage() + "\n");
 		gameHallChat.redraw();
 	}
-*/
+
 
 }

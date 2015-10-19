@@ -5,9 +5,9 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpStatusCodes;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
-import otakuplus.straybird.othellogame.network.http.EmBededUserOnlineList;
+import otakuplus.straybird.othellogame.network.http.EmBeddedUserOnlineList;
 import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
-import otakuplus.straybird.othellogame.network.http.UserOnline;
+import otakuplus.straybird.othellogame.models.UserOnline;
 import otakuplus.straybird.othellogame.network.http.UserOnlineList;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
@@ -42,7 +42,7 @@ public class ApplicationEnterGameHallState implements ApplicationState{
         applicationContext.updateCsrfToken();
 
         try{
-            request = HttpRequestUtil.buildHttpPostRequest(url, 1L);
+            request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
             response = request.execute();
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
             {
@@ -79,7 +79,9 @@ public class ApplicationEnterGameHallState implements ApplicationState{
     }
 
     private void getUserOnline(){
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/userOnlines/search/findByOnlineState?onlineState="+UserOnline.ONLINE;
+        String url = HttpRequestUtil.HOST_BASE_URL
+                +"/api/userOnlines/search/findByOnlineState?onlineState="
+                +UserOnline.ONLINE;
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
@@ -88,14 +90,16 @@ public class ApplicationEnterGameHallState implements ApplicationState{
             response = request.execute();
 
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
-                EmBededUserOnlineList embededUserOnlineList= response.parseAs(EmBededUserOnlineList.class);
-                if(embededUserOnlineList != null){
-                    UserOnlineList userOnlineList = embededUserOnlineList.getUserOnlineList();
+                EmBeddedUserOnlineList embeddedUserOnlineList = response.parseAs(EmBeddedUserOnlineList.class);
+                if(embeddedUserOnlineList != null){
+                    UserOnlineList userOnlineList = embeddedUserOnlineList.getUserOnlineList();
                     if(userOnlineList != null && userOnlineList.getUserOnlines() != null){
+                        applicationContext.userInformationList.clear();
                         ArrayList<UserOnline> userOnlines = userOnlineList.getUserOnlines();
                         for (int i=0; i<userOnlines.size();i++){
-                            User user = getUserByHref(userOnlines.get(i).getLinks().getUser().getHref());
-                            UserInformation userInformation = getUserInformationByHref(user.getLinks().getUserInformation().getHref());
+                            User user = HttpRequestUtil.getUserByHref(userOnlines.get(i).getLinks().getUser().getHref());
+                            UserInformation userInformation = HttpRequestUtil.getUserInformationByHref(user.getLinks().getUserInformation().getHref());
+                            applicationContext.userInformationList.add(userInformation);
                         }
                     }
                 }
@@ -105,40 +109,5 @@ public class ApplicationEnterGameHallState implements ApplicationState{
         }
     }
 
-    private User getUserByHref(String href){
-        User user = null;
-        if(href != null){
-            HttpRequest request = HttpRequestUtil.buildHttpGetRequest(href);
-            HttpResponse response;
-            try {
-                response =  request.execute();
-                user = response.parseAs(User.class);
-                if(user != null){
-                    System.out.println("UserInformation: " + user.getLinks().getUserInformation().getHref());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return user;
-    }
-
-    private UserInformation getUserInformationByHref(String href){
-        UserInformation userInformation = null;
-        if(href != null){
-            HttpRequest request = HttpRequestUtil.buildHttpGetRequest(href);
-            HttpResponse response;
-            try{
-                response = request.execute();
-                userInformation = response.parseAs(UserInformation.class);
-                if(userInformation !=null){
-                    System.out.println("UserNickName " + userInformation.getNickname());
-                }
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-        return userInformation;
-    }
 }
 

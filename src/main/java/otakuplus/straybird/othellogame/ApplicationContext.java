@@ -5,6 +5,7 @@ import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpStatusCodes;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
 import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
@@ -15,6 +16,7 @@ import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationContext {
@@ -27,6 +29,8 @@ public class ApplicationContext {
 	// Model Scope
 	protected User currentUser;
 	protected UserInformation currentUserInformation;
+	protected ArrayList<GameTable> gameTableList;
+    protected ArrayList<UserInformation> userInformationList;
 	// Network Scope
 	protected SocketIOClient socketIOClient;
 
@@ -44,8 +48,12 @@ public class ApplicationContext {
 		// Initialize Socket.io client
 		socketIOClient = SocketIOClientSingleton.getInstance();
 		socketIOClient.setupSocketIOClient();
-
+        // Model
         currentCookie = null;
+        currentUser = null;
+        currentUserInformation = null;
+        userInformationList = new ArrayList<UserInformation>();
+        gameTableList = new ArrayList<GameTable>();
 	}
 
 	public void initialize() {
@@ -91,6 +99,14 @@ public class ApplicationContext {
         System.out.println("change to "+this.applicationState.getClass());
     }
 
+    public void setLoginWindowShell(Shell shell){
+        loginWindowShell = shell;
+    }
+
+    public Display getDisplay(){
+        return display;
+    }
+
 	public LoginWindow getLoginWinodow() {
 		return loginWindow;
 	}
@@ -111,8 +127,20 @@ public class ApplicationContext {
 		return currentCookie;
 	}
 
-    public void setLoginWindowShell(Shell shell){
-        loginWindowShell = shell;
+    public User getCurrentUser(){
+        return currentUser;
+    }
+
+    public UserInformation getCurrentUserInformation(){
+        return currentUserInformation;
+    }
+
+    public ArrayList<GameTable> getGameTableList(){
+        return gameTableList;
+    }
+
+    public ArrayList<UserInformation> getUserInformationList(){
+        return userInformationList;
     }
 
 	public void startUp() {
