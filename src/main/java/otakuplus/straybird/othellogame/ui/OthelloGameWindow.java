@@ -1,26 +1,20 @@
 package otakuplus.straybird.othellogame.ui;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
-
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
+import otakuplus.straybird.othellogame.network.socketio.SendMessage;
+import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
+
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class OthelloGameWindow {
 	
@@ -287,26 +281,25 @@ public class OthelloGameWindow {
 	}
 
 	public void sendMessage() {
-		/*
-		String message = messageText.getText();
-		if (message != null && message.length() > 0) {
-			mainApplication.sendMessage(message);
-		}
-		*/
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        if(messageText.getText() != null) {
+            applicationContext.getSocketIOClient().sendeMessage(
+                    SocketIOClient.GAME_TABLE_ROOM+applicationContext.getCurrentTableId(),messageText.getText());
+        }
 	}
-/*
+
 	public void receiveMessage(SendMessage sendMessage) {
-		LocalDateTime localMessageTime = LocalDateTime.ofInstant(
-				Instant.ofEpochMilli(sendMessage.getMessageTime().getTime()),
-				ZoneId.systemDefault());
-		gameChat.append(localMessageTime.format(DateTimeFormatter
-				.ofPattern("hh:mm:ss"))
-				+ " "
-				+ sendMessage.getNickname()
-				+ " : " + sendMessage.getMessage() + "\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        ZonedDateTime sendTime = ZonedDateTime.parse(sendMessage.getSendTime());
+        gameChat.append(
+                sendTime.format(formatter)
+                        + " "
+                        + sendMessage.getNickname()
+                        + " : " + sendMessage.getMessage() + "\n");
+        gameChat.redraw();
 		gameChat.redraw();
 	}
-*/
+
 	public void destoryResource() {
 		if (chessBoardImage != null) {
 			chessBoardImage.dispose();

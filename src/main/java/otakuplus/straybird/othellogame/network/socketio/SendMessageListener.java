@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
+import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class SendMessageListener implements Listener{
 
@@ -35,6 +36,9 @@ public class SendMessageListener implements Listener{
                         if(sendMessage.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)) {
                             GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
                             gameHallWindow.receiveMessage(SendMessageListener.this.sendMessage);
+                        }else if(sendMessage.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM+applicationContext.getCurrentTableId())){
+                            OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+                            othelloGameWindow.receiveMessage(sendMessage);
                         }
                     }
                 });

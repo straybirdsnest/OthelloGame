@@ -51,6 +51,8 @@ public class ApplicationLeaveGameTableState implements ApplicationState{
             if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
             {
                 othelloGameWindow.hide();
+                applicationContext.currentTableId = null;
+                applicationContext.currentSeatId = null;
                 System.out.println("leave game table");
                 applicationContext.changeState(ApplicationStateSingleton.getLeaveGameHallStateInstance());
             }

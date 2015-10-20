@@ -16,6 +16,7 @@ public class SocketIOClient {
 	public static final String SERVER_URI = "http://localhost:8081";
     public static final String SEND_MESSAGE_EVENT = "sendMessage";
     public static final String GAME_HALL_ROOM = "gamehall";
+    public static final String GAME_TABLE_ROOM = "gametable";
 
 	private Socket socket;
 	
