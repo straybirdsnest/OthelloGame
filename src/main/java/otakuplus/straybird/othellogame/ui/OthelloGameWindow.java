@@ -10,6 +10,7 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
+import otakuplus.straybird.othellogame.network.socketio.GameOperation;
 import otakuplus.straybird.othellogame.network.socketio.SendMessage;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
 
@@ -187,7 +188,7 @@ public class OthelloGameWindow {
 		takeBackButton.setText("悔棋");
 		takeBackButton.setLayoutData(takeBackGridData);
 
-		gameChat = new Text(shell, SWT.MULTI | SWT.V_SCROLL);
+		gameChat = new Text(shell, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		GridData gameHallGridData = new GridData();
 		gameHallGridData.horizontalSpan = 3;
 		gameHallGridData.widthHint = 200;
@@ -205,6 +206,15 @@ public class OthelloGameWindow {
 		standByGridData.horizontalSpan = 2;
 		standByButton.setLayoutData(standByGridData);
 		standByButton.setText("准备");
+        standByButton.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                standBy();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {
+
+            }
+        });
 
 		fastMatchButton = new Button(shell, SWT.PUSH | SWT.FILL);
 		GridData fastMatchGridData = new GridData();
@@ -217,6 +227,7 @@ public class OthelloGameWindow {
 		messageTextGridData.horizontalSpan = 2;
 		messageTextGridData.widthHint = 150;
 		messageText.setText("请输入聊天信息");
+		messageText.setFocus();
 		messageText.setLayoutData(messageTextGridData);
 
 		sendMessageButton = new Button(shell, SWT.PUSH);
@@ -269,10 +280,14 @@ public class OthelloGameWindow {
 
 	public void close() {
 		destoryResource();
-		shell.close();
+		shell.dispose();
 	}
 
 	public void hide() {
+        // reset resource
+        chessBoard.initChessboard();
+        chessBoard.searchSuggestedChessmanPosition();
+        gameChat.setText("");
 		shell.setVisible(false);
 	}
 
@@ -306,4 +321,11 @@ public class OthelloGameWindow {
 		}
 	}
 
+    public void standBy(){
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameOperation gameOperation = new GameOperation();
+        gameOperation.setStandBy(true);
+        socketIOClient.doGameOperation(gameOperation);
+    }
 }

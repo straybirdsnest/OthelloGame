@@ -181,7 +181,6 @@ public class ChessBoard {
 						return result;
 					}
 				}
-
 			}
 			if (findDifferent == true
 					&& chessmen[x][y].getChessman() == currentChessman

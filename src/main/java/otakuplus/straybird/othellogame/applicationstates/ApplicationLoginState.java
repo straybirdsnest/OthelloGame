@@ -35,24 +35,27 @@ public class ApplicationLoginState implements ApplicationState {
 
             request = HttpRequestUtil.buildHttpPostRequest(url, login);
             response = request.execute();
+            if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                User user = response.parseAs(User.class);
+                if (user != null && user.getUserId() != null) {
+                    applicationContext.currentUser = user;
+                    System.out.println("userId: " + user.getUserId());
+                    request = HttpRequestUtil.buildHttpGetRequest(
+                            HttpRequestUtil.HOST_BASE_URL + "/api/userInformations/" + user.getUserId());
+                    response = request.execute();
+                    if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                        applicationContext.currentUserInformation = response.parseAs(UserInformation.class);
 
-            User user = response.parseAs(User.class);
-            if(user != null && user.getUserId() != null) {
-                applicationContext.currentUser = user;
-                System.out.println("userId: "+user.getUserId());
-                request = HttpRequestUtil.buildHttpGetRequest(
-                        HttpRequestUtil.HOST_BASE_URL+"/api/userInformations/"+user.getUserId());
-                response = request.execute();
-                if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
-                    applicationContext.currentUserInformation = response.parseAs(UserInformation.class);
+                        // change to enter game hall state
+                        applicationContext.changeState(ApplicationStateSingleton.getEnterGameHallStateInstance());
+                        applicationContext.enterGameHall();
+                    }
                 }
             }
-
-            // change to enter game hall state
-            applicationContext.changeState(ApplicationStateSingleton.getEnterGameHallStateInstance());
-            applicationContext.enterGameHall();
         } catch (IOException e) {
             e.printStackTrace();
+            LoginWindow loginWindow = applicationContext.getLoginWinodow();
+            loginWindow.showLoginFailureMessage();
         }
 	}
 

@@ -197,7 +197,7 @@ public class GameHallWindow {
 		
 		userListTable.setBounds(25, 25, 400, 200);
 
-		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL);
+		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
 		GridData gameHallGridData = new GridData();
 		gameHallGridData.horizontalSpan = 3;
 		gameHallGridData.widthHint = 400;
@@ -209,6 +209,7 @@ public class GameHallWindow {
 		messageTextGridData.horizontalSpan = 2;
 		messageTextGridData.widthHint = 200;
 		messageText.setText("请输入聊天信息");
+		messageText.setFocus();
 		messageText.setLayoutData(messageTextGridData);
 
 		Button sendMessageButton = new Button(composite2, SWT.PUSH);
@@ -237,7 +238,6 @@ public class GameHallWindow {
                 int result = messageBox.open();
                 if (result == SWT.YES) {
                     ApplicationContextSingleton.getInstance().leaveGameHall();
-                    event.doit = true;
                 }
 			}
 		});
@@ -252,15 +252,13 @@ public class GameHallWindow {
 	}
 
 	public void hide() {
+        // reset resource
+        gameHallChat.setText("");
 		shell.setVisible(false);
 	}
 
 	public void show() {
-		if (shell == null) {
-			System.out.println("Warning!");
-			System.out.println("Shell is null!");
-		}
-		shell.setVisible(true);
+        shell.setVisible(true);
 	}
 
 	public void destoryResources() {
@@ -273,7 +271,8 @@ public class GameHallWindow {
 	}
 
 	public void close() {
-		shell.close();
+		destoryResources();
+        shell.dispose();
 	}
 
 	public void notifyUserListUpdate() {

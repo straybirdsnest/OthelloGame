@@ -54,7 +54,7 @@ public class ApplicationLeaveGameTableState implements ApplicationState{
                 applicationContext.currentTableId = null;
                 applicationContext.currentSeatId = null;
                 System.out.println("leave game table");
-                applicationContext.changeState(ApplicationStateSingleton.getLeaveGameHallStateInstance());
+                applicationContext.changeState(ApplicationStateSingleton.getEnterGameHallStateInstance());
             }
         } catch (IOException e){
             e.printStackTrace();

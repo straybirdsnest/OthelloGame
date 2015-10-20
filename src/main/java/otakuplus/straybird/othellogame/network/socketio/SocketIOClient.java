@@ -15,6 +15,7 @@ public class SocketIOClient {
 
 	public static final String SERVER_URI = "http://localhost:8081";
     public static final String SEND_MESSAGE_EVENT = "sendMessage";
+	public static final String GAME_OPERATION_EVENT = "gameOperation";
     public static final String GAME_HALL_ROOM = "gamehall";
     public static final String GAME_TABLE_ROOM = "gametable";
 
@@ -38,6 +39,7 @@ public class SocketIOClient {
 			socket.on(Socket.EVENT_CONNECT, new ClientConnectListener());
 			socket.on(Socket.EVENT_CONNECT_TIMEOUT, new ClientConnectTimeoutListener());
             socket.on(SocketIOClient.SEND_MESSAGE_EVENT, new SendMessageListener());
+			socket.on(SocketIOClient.GAME_OPERATION_EVENT, new GameOperationListener());
 		}
 	}
 
@@ -80,5 +82,24 @@ public class SocketIOClient {
             }
         }
     }
+
+	public void doGameOperation(GameOperation gameOperation){
+		if(socket!= null){
+			JSONObject jsonObject = new JSONObject();
+			ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+			try {
+				if(applicationContext.getCurrentTableId() != null && applicationContext.getCurrentSeatId() != null) {
+					jsonObject.put("roomName", GAME_TABLE_ROOM+applicationContext.getCurrentTableId());
+					jsonObject.put("seatId", applicationContext.getCurrentSeatId());
+					jsonObject.put("setX",gameOperation.getSetX() );
+					jsonObject.put("setY", gameOperation.getSetY());
+					jsonObject.put("standBy", gameOperation.getStandBy());
+					socket.emit(GAME_OPERATION_EVENT,jsonObject);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }

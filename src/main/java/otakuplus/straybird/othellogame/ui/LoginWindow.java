@@ -194,6 +194,10 @@ public class LoginWindow {
 		shell.setVisible(true);
 	}
 
+    public void close(){
+        shell.dispose();
+    }
+
     public String getUsername(){
         return userNameText.getText();
     }
@@ -201,5 +205,12 @@ public class LoginWindow {
     public String getPassword(){
         return passWordText.getText();
     }
-	
+
+	public void showLoginFailureMessage(){
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("登录失败");
+        messageBox.setMessage("用户名或密码错误，请检查是否填写错误");
+        messageBox.open();
+    }
 }
