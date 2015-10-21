@@ -96,8 +96,7 @@ public class ApplicationContext {
     }
 
 	public void disconnect() {
-        System.out.println("disconnect by "+applicationState.getClass());
-		applicationState.disconnect();
+        applicationState.disconnect();
 	}
 
 	public void destory() {

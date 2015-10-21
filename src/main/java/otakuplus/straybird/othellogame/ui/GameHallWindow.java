@@ -278,7 +278,7 @@ public class GameHallWindow {
 	public void notifyUserListUpdate() {
         if (userListTable != null) {
             ArrayList<UserInformation> userInformationList = ApplicationContextSingleton.getInstance().getUserInformationList();
-            if(userInformationList != null && userInformationList.isEmpty() == false){
+            if(userInformationList != null && !userInformationList.isEmpty()){
                 userListTable.clearAll();
                 TableItem tableItem = null;
                 UserInformation userInformation = null;
@@ -320,6 +320,5 @@ public class GameHallWindow {
 				+ " : " + sendMessage.getMessage() + "\n");
 		gameHallChat.redraw();
 	}
-
 
 }

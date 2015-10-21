@@ -156,8 +156,8 @@ public class OthelloGameWindow {
 			public void mouseDown(MouseEvent e) {
 				int x = e.x;
 				int y = e.y;
-				if (chessBoard.checkHasNext() == true) {
-					if (chessBoard.setChessman(y / 40, x / 40) == true) {
+				if (chessBoard.checkHasNext()) {
+					if (chessBoard.setChessman(y / 40, x / 40)) {
 						chessBoard.turnEnd();
 						chessBoard.searchSuggestedChessmanPosition();
 					} else {
@@ -325,7 +325,7 @@ public class OthelloGameWindow {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
         GameOperation gameOperation = new GameOperation();
-        gameOperation.setStandBy(true);
+        gameOperation.setOperation(GameOperation.STAND_BY);
         socketIOClient.doGameOperation(gameOperation);
     }
 }

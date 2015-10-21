@@ -51,9 +51,6 @@ public class ApplicationEnterGameHallState implements ApplicationState{
         } catch (IOException e){
             e.printStackTrace();
         }
-
-        getUserOnline();
-        gameHallWindow.notifyUserListUpdate();
     }
 
     public void leaveGameHall(){
@@ -83,37 +80,5 @@ public class ApplicationEnterGameHallState implements ApplicationState{
     public void destory() {
 
     }
-
-    private void getUserOnline(){
-        String url = HttpRequestUtil.HOST_BASE_URL
-                +"/api/userOnlines/search/findByOnlineState?onlineState="
-                +UserOnline.ONLINE;
-        HttpResponse response = null;
-        HttpRequest request;
-        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        try{
-            request = HttpRequestUtil.buildHttpGetRequest(url);
-            response = request.execute();
-
-            if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
-                EmBeddedUserOnlineList embeddedUserOnlineList = response.parseAs(EmBeddedUserOnlineList.class);
-                if(embeddedUserOnlineList != null){
-                    UserOnlineList userOnlineList = embeddedUserOnlineList.getUserOnlineList();
-                    if(userOnlineList != null && userOnlineList.getUserOnlines() != null){
-                        applicationContext.userInformationList.clear();
-                        ArrayList<UserOnline> userOnlines = userOnlineList.getUserOnlines();
-                        for (int i=0; i<userOnlines.size();i++){
-                            User user = HttpRequestUtil.getUserByHref(userOnlines.get(i).getLinks().getUser().getHref());
-                            UserInformation userInformation = HttpRequestUtil.getUserInformationByHref(user.getLinks().getUserInformation().getHref());
-                            applicationContext.userInformationList.add(userInformation);
-                        }
-                    }
-                }
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
 }
 

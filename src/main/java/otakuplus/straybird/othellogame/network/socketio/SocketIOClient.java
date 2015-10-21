@@ -18,6 +18,7 @@ public class SocketIOClient {
 	public static final String GAME_OPERATION_EVENT = "gameOperation";
     public static final String GAME_HALL_ROOM = "gamehall";
     public static final String GAME_TABLE_ROOM = "gametable";
+	public static final String NOTIFY_USER_INFORMATIONS_UPDATE = "notifyUserInformationsUpdate";
 
 	private Socket socket;
 	
@@ -40,6 +41,7 @@ public class SocketIOClient {
 			socket.on(Socket.EVENT_CONNECT_TIMEOUT, new ClientConnectTimeoutListener());
             socket.on(SocketIOClient.SEND_MESSAGE_EVENT, new SendMessageListener());
 			socket.on(SocketIOClient.GAME_OPERATION_EVENT, new GameOperationListener());
+			socket.on(NOTIFY_USER_INFORMATIONS_UPDATE, new NotifyUpdateUserInformationsListener());
 		}
 	}
 
@@ -93,7 +95,7 @@ public class SocketIOClient {
 					jsonObject.put("seatId", applicationContext.getCurrentSeatId());
 					jsonObject.put("setX",gameOperation.getSetX() );
 					jsonObject.put("setY", gameOperation.getSetY());
-					jsonObject.put("standBy", gameOperation.getStandBy());
+					jsonObject.put("operation", gameOperation.getOperation());
 					socket.emit(GAME_OPERATION_EVENT,jsonObject);
 				}
 			} catch (JSONException e) {
