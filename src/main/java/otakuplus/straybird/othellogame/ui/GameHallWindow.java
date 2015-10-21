@@ -97,7 +97,7 @@ public class GameHallWindow {
 								56 + heightOffset, 96, 96);
 						event.gc.fillRectangle(57 + widthOffset,
 								57 + heightOffset, 95, 95);
-						if (tempGameTable.getPlayerAId() != null) {
+						if (tempGameTable.getPlayerA() != null) {
 							event.gc.drawImage(tableMiniUserIcon, 0, 0,
 									tableMiniUserIcon.getBounds().width,
 									tableMiniUserIcon.getBounds().height,
@@ -108,7 +108,7 @@ public class GameHallWindow {
 									tableEmptyIcon.getBounds().height,
 									4 + widthOffset, 80 + heightOffset, 48, 48);
 						}
-						if (tempGameTable.getPlayerBId() != null) {
+						if (tempGameTable.getPlayerB() != null) {
 							event.gc.drawImage(tableMiniUserIcon, 0, 0,
 									tableMiniUserIcon.getBounds().width,
 									tableMiniUserIcon.getBounds().height,

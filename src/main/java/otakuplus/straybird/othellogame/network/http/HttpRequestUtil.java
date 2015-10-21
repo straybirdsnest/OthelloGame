@@ -4,6 +4,7 @@ import com.google.api.client.http.*;
 import com.google.api.client.http.json.JsonHttpContent;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
 import otakuplus.straybird.othellogame.models.UserOnline;
@@ -113,6 +114,40 @@ public class HttpRequestUtil {
                             User user = HttpRequestUtil.getUserByHref(userOnlines.get(i).getLinks().getUser().getHref());
                             UserInformation userInformation = HttpRequestUtil.getUserInformationByHref(user.getLinks().getUserInformation().getHref());
                             applicationContext.getUserInformationList().add(userInformation);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateGameTableList(){
+        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gameTables";
+        HttpResponse response = null;
+        HttpRequest request;
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        try{
+            request = HttpRequestUtil.buildHttpGetRequest(url);
+            response = request.execute();
+
+            if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
+                EmBeddedGameTableList embeddedGameTableList = response.parseAs(EmBeddedGameTableList.class);
+                if(embeddedGameTableList != null){
+                    GameTableList gameTableList = embeddedGameTableList.getGameTableList();
+                    if(gameTableList != null && gameTableList.getGameTables() != null){
+                        applicationContext.getGameTableList().clear();
+                        ArrayList<GameTable> gameTables = gameTableList.getGameTables();
+                        for (int i=0; i<gameTables.size();i++){
+                            gameTables.get(i).setGameTableId(new Long(i+1));
+                            User user = HttpRequestUtil.getUserByHref(gameTables.get(i)
+                                    .getLinks().getPlayerA().getHref());
+                            gameTables.get(i).setPlayerA(user);
+                            user = HttpRequestUtil.getUserByHref(gameTables.get(i)
+                                    .getLinks().getPlayerB().getHref());
+                            gameTables.get(i).setPlayerB(user);
+                            applicationContext.getGameTableList().add(gameTables.get(i));
                         }
                     }
                 }

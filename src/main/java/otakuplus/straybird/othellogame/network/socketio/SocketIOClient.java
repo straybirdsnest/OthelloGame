@@ -19,6 +19,7 @@ public class SocketIOClient {
     public static final String GAME_HALL_ROOM = "gamehall";
     public static final String GAME_TABLE_ROOM = "gametable";
 	public static final String NOTIFY_USER_INFORMATIONS_UPDATE = "notifyUserInformationsUpdate";
+	public static final String NOTIFY_GAME_TABLES_UPDATE="notifyGameTablesUpdate";
 
 	private Socket socket;
 	
@@ -42,6 +43,7 @@ public class SocketIOClient {
             socket.on(SocketIOClient.SEND_MESSAGE_EVENT, new SendMessageListener());
 			socket.on(SocketIOClient.GAME_OPERATION_EVENT, new GameOperationListener());
 			socket.on(NOTIFY_USER_INFORMATIONS_UPDATE, new NotifyUpdateUserInformationsListener());
+			socket.on(NOTIFY_GAME_TABLES_UPDATE, new NotifyUpdateGameTablesListener());
 		}
 	}
 
