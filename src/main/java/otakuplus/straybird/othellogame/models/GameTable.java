@@ -8,7 +8,7 @@ import otakuplus.straybird.othellogame.network.http.UserLinks;
 public class GameTable {
 
 	@Key
-	private Long gameTableId;
+	private Integer gameTableId;
     @Key
 	private User playerA;
 	@Key
@@ -19,11 +19,11 @@ public class GameTable {
     @Key("page")
     private HalPages pages;
 
-	public Long getGameTableId() {
+	public Integer getGameTableId() {
 		return gameTableId;
 	}
 
-	public void setGameTableId(Long gameTableId) {
+	public void setGameTableId(Integer gameTableId) {
 		this.gameTableId = gameTableId;
 	}
 

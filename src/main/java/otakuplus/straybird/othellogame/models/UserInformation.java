@@ -8,7 +8,7 @@ public class UserInformation {
     public static final String GENDER_MALE = "male";
     public static final String GENDER_FEMALE = "female";
     @Key
-	private Long userId;
+	private Integer userId;
 	@Key
     private String nickname = null;
 	@Key
@@ -28,11 +28,11 @@ public class UserInformation {
     @Key("page")
     private HalPages pages;
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 

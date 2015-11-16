@@ -11,7 +11,7 @@ public class UserOnline {
     public static final int OFFLINE= 199;
 
     @Key
-    private Long userId;
+    private Integer userId;
     @Key
     private int onlineState;
     @Key("_links")
@@ -19,11 +19,11 @@ public class UserOnline {
     @Key("page")
     private HalPages pages;
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

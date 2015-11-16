@@ -53,9 +53,12 @@ public class ApplicationLoginState implements ApplicationState {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            LoginWindow loginWindow = applicationContext.getLoginWinodow();
-            loginWindow.showLoginFailureMessage();
+            if(e.getMessage().equals("400 Bad Request")) {
+                LoginWindow loginWindow = applicationContext.getLoginWinodow();
+                loginWindow.showLoginFailureMessage();
+            }else{
+                e.printStackTrace();
+            }
         }
 	}
 

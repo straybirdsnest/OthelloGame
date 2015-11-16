@@ -8,7 +8,7 @@ import otakuplus.straybird.othellogame.network.http.UserOnlineLinks;
 public class User {
 	
 	@Key
-	private Long userId;
+	private Integer userId;
 	
 	@Key
 	private String username;
@@ -34,15 +34,15 @@ public class User {
 
 	}
 
-	public User(Long userId) {
+	public User(Integer userId) {
 		this.userId = userId;
 	}
 
-	public Long getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Long userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
