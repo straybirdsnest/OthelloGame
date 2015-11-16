@@ -135,19 +135,19 @@ public class GameHallWindow {
 
 			public void mouseDown(MouseEvent e) {
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                long x = e.x;
-				long y = e.y;
+                int x = e.x;
+				int y = e.y;
 				// index from 0
-				long index = x / 208 + (y / 208) * 2;
-				long widthOffset = (index % 2) * 208;
-				long heightOffset = (index / 2) * 208;
+				int index = x / 208 + (y / 208) * 2;
+				int widthOffset = (index % 2) * 208;
+				int heightOffset = (index / 2) * 208;
 				if (x >= 4 + widthOffset && x <= 56 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					applicationContext.enterGameTable(index+1, 0L);
+					applicationContext.enterGameTable(index+1, 0);
 				}
 				if (x >= 156 + widthOffset && x <= 204 + widthOffset
 						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-                    applicationContext.enterGameTable(index+1, 1L);
+                    applicationContext.enterGameTable(index+1, 1);
 				}
 			}
 

@@ -12,9 +12,9 @@ public interface ApplicationState {
 
 	public void leaveGameHall();
 
-	public void enterGameTable(Long gameTableId,Long seatId);
+	public void enterGameTable(Integer gameTableId,Integer seatId);
 
-	public void leaveGameTable(Long gameTableId,Long seatId);
+	public void leaveGameTable(Integer gameTableId,Integer seatId);
 
 	public void logout();
 

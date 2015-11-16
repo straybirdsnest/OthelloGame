@@ -31,11 +31,11 @@ public class ApplicationLeaveGameTableState implements ApplicationState{
 
     }
 
-    public void enterGameTable(Long gameTableId,Long seatId) {
+    public void enterGameTable(Integer gameTableId,Integer seatId) {
 
     }
 
-    public void leaveGameTable(Long gameTableId,Long seatId) {
+    public void leaveGameTable(Integer gameTableId,Integer seatId) {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 

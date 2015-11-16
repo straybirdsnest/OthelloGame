@@ -29,8 +29,8 @@ public class ApplicationContext {
 	// Model Scope
 	protected User currentUser;
 	protected UserInformation currentUserInformation;
-    protected Long currentTableId;
-    protected Long currentSeatId;
+    protected Integer currentTableId;
+    protected Integer currentSeatId;
 	protected ArrayList<GameTable> gameTableList;
     protected ArrayList<UserInformation> userInformationList;
 	// Network Scope
@@ -56,7 +56,7 @@ public class ApplicationContext {
         currentUserInformation = null;
         userInformationList = new ArrayList<UserInformation>();
         gameTableList = new ArrayList<GameTable>();
-        for(long i=1;i<=100;i++){
+        for(int i=1;i<=100;i++){
             GameTable gameTable = new GameTable();
             gameTable.setGameTableId(i);
             gameTableList.add(gameTable);
@@ -83,11 +83,11 @@ public class ApplicationContext {
 		applicationState.leaveGameHall();
 	}
 
-	public void enterGameTable(Long gameTableId,Long seatId) {
+	public void enterGameTable(Integer gameTableId,Integer seatId) {
 		applicationState.enterGameTable(gameTableId, seatId);
 	}
 
-    public void leaveGameTable(Long gameTableId,Long seatId){
+    public void leaveGameTable(Integer gameTableId,Integer seatId){
         applicationState.leaveGameTable(gameTableId, seatId);
     }
 
@@ -145,11 +145,11 @@ public class ApplicationContext {
         return currentUserInformation;
     }
 
-    public Long getCurrentTableId(){
+    public Integer getCurrentTableId(){
         return currentTableId;
     }
 
-    public Long getCurrentSeatId(){
+    public Integer getCurrentSeatId(){
         return currentSeatId;
     }
 

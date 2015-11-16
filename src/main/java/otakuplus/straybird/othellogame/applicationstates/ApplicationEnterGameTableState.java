@@ -32,7 +32,7 @@ public class ApplicationEnterGameTableState implements ApplicationState{
 
     }
 
-    public void enterGameTable(Long gameTableId, Long seatId) {
+    public void enterGameTable(Integer gameTableId, Integer seatId) {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
@@ -57,7 +57,7 @@ public class ApplicationEnterGameTableState implements ApplicationState{
         }
     }
 
-    public void leaveGameTable(Long gameTableId,Long seatId) {
+    public void leaveGameTable(Integer gameTableId,Integer seatId) {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         applicationContext.changeState(ApplicationStateSingleton.getLeaveGameTableStateInstance());
         applicationContext.leaveGameTable(gameTableId, seatId);

@@ -69,10 +69,10 @@ public class ApplicationLoginState implements ApplicationState {
 
     }
 
-	public void enterGameTable(Long gameTableId,Long seatId) {
+	public void enterGameTable(Integer gameTableId,Integer seatId) {
 	}
 
-    public void leaveGameTable(Long gameTableId,Long seatId){
+    public void leaveGameTable(Integer gameTableId,Integer seatId){
 
     }
 

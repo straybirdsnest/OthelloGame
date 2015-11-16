@@ -59,13 +59,13 @@ public class ApplicationEnterGameHallState implements ApplicationState{
         applicationContext.leaveGameHall();
     }
 
-    public void enterGameTable(Long gameTableId,Long seatId) {
+    public void enterGameTable(Integer gameTableId,Integer seatId) {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         applicationContext.changeState(ApplicationStateSingleton.getEnterGameTableStateInstance());
         applicationContext.enterGameTable(gameTableId, seatId);
     }
 
-    public void leaveGameTable(Long gameTableId,Long seatId){
+    public void leaveGameTable(Integer gameTableId,Integer seatId){
 
     }
 
