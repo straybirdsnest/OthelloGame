@@ -21,215 +21,215 @@ import java.util.Iterator;
 
 public class GameHallWindow {
 
-	protected Shell shell;
-	protected Display display;
+    protected Shell shell;
+    protected Display display;
 
-	protected Text gameHallChat;
-	protected Text messageText;
-	protected Canvas gameTableCanvas;
-	protected Table userListTable;
+    protected Text gameHallChat;
+    protected Text messageText;
+    protected Canvas gameTableCanvas;
+    protected Table userListTable;
 
-	protected Image tableMiniUserIcon;
+    protected Image tableMiniUserIcon;
     protected Image tableEmptyIcon;
 
-	public GameHallWindow() {
-		
-	}
+    public GameHallWindow() {
 
-	public void createContents() {
+    }
+
+    public void createContents() {
         Monitor monitor = Display.getDefault().getPrimaryMonitor();
 
         shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setText("游戏大厅");
+        shell.setText("游戏大厅");
         shell.setSize(640, 480);
         shell.setLocation((monitor.getBounds().width - 430) / 2,
                 (monitor.getBounds().height - 325) / 2);
-		shell.setLayout(new GridLayout());
+        shell.setLayout(new GridLayout());
 
-		SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
-		GridLayout sashGridLayout = new GridLayout();
-		sashGridLayout.numColumns = 6;
-		sashForm.setLayout(sashGridLayout);
+        SashForm sashForm = new SashForm(shell, SWT.HORIZONTAL | SWT.BORDER);
+        GridLayout sashGridLayout = new GridLayout();
+        sashGridLayout.numColumns = 6;
+        sashForm.setLayout(sashGridLayout);
 
-		Composite composite = new Composite(sashForm, SWT.NONE);
-		GridData compositeGridData = new GridData();
-		compositeGridData.horizontalSpan = 3;
-		compositeGridData.widthHint = 420;
-		compositeGridData.heightHint = 420;
-		composite.setLayout(new GridLayout());
-		composite.setData(compositeGridData);
+        Composite composite = new Composite(sashForm, SWT.NONE);
+        GridData compositeGridData = new GridData();
+        compositeGridData.horizontalSpan = 3;
+        compositeGridData.widthHint = 420;
+        compositeGridData.heightHint = 420;
+        composite.setLayout(new GridLayout());
+        composite.setData(compositeGridData);
 
-		tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
+        tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
         tableEmptyIcon = new Image(Display.getDefault(), "Empty-chair-icon.png");
 
-		gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
-		GridData tableCanvasGridData = new GridData();
-		tableCanvasGridData.horizontalSpan = 3;
-		tableCanvasGridData.widthHint = 420;
-		tableCanvasGridData.heightHint = 420;
-		gameTableCanvas.setLayoutData(tableCanvasGridData);
+        gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
+        GridData tableCanvasGridData = new GridData();
+        tableCanvasGridData.horizontalSpan = 3;
+        tableCanvasGridData.widthHint = 420;
+        tableCanvasGridData.heightHint = 420;
+        gameTableCanvas.setLayoutData(tableCanvasGridData);
 
-		gameTableCanvas.addPaintListener(new PaintListener() {
+        gameTableCanvas.addPaintListener(new PaintListener() {
 
-			public void paintControl(PaintEvent event) {
-				ArrayList<GameTable> gameTableList = ApplicationContextSingleton.getInstance()
-						.getGameTableList();
-				if (gameTableList.size() > 0) {
-					Iterator<GameTable> gameTableIterator = gameTableList
-							.iterator();
-					GameTable tempGameTable = null;
-					int index = 0;
-					int widthOffset, heightOffset = 0;
-					while (gameTableIterator.hasNext()) {
-						tempGameTable = gameTableIterator.next();
-						widthOffset = (index % 2) * 208;
-						heightOffset = index / 2 * 208;
-						event.gc.setForeground(Display.getDefault()
-								.getSystemColor(SWT.COLOR_BLACK));
-						event.gc.setBackground(Display.getDefault()
-								.getSystemColor(SWT.COLOR_WHITE));
-						event.gc.drawString(
-								"" + tempGameTable.getGameTableId(),
-								100 + widthOffset, 156 + heightOffset);
-						event.gc.setBackground(Display.getDefault()
-								.getSystemColor(SWT.COLOR_DARK_YELLOW));
-						event.gc.drawRectangle(56 + widthOffset,
-								56 + heightOffset, 96, 96);
-						event.gc.fillRectangle(57 + widthOffset,
-								57 + heightOffset, 95, 95);
-						if (tempGameTable.getPlayerA() != null) {
-							event.gc.drawImage(tableMiniUserIcon, 0, 0,
-									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height,
-									4 + widthOffset, 80 + heightOffset, 48, 48);
-						} else {
-							event.gc.drawImage(tableEmptyIcon, 0, 0,
-									tableEmptyIcon.getBounds().width,
-									tableEmptyIcon.getBounds().height,
-									4 + widthOffset, 80 + heightOffset, 48, 48);
-						}
-						if (tempGameTable.getPlayerB() != null) {
-							event.gc.drawImage(tableMiniUserIcon, 0, 0,
-									tableMiniUserIcon.getBounds().width,
-									tableMiniUserIcon.getBounds().height,
-									156 + widthOffset, 80 + heightOffset, 48,
-									48);
-						} else {
-							event.gc.drawImage(tableEmptyIcon, 0, 0,
-									tableEmptyIcon.getBounds().width,
-									tableEmptyIcon.getBounds().height,
-									156 + widthOffset, 80 + heightOffset, 48,
-									48);
-						}
-						index++;
-					}
-				}
-			}
-		});
+            public void paintControl(PaintEvent event) {
+                ArrayList<GameTable> gameTableList = ApplicationContextSingleton.getInstance()
+                        .getGameTableList();
+                if (gameTableList.size() > 0) {
+                    Iterator<GameTable> gameTableIterator = gameTableList
+                            .iterator();
+                    GameTable tempGameTable = null;
+                    int index = 0;
+                    int widthOffset, heightOffset = 0;
+                    while (gameTableIterator.hasNext()) {
+                        tempGameTable = gameTableIterator.next();
+                        widthOffset = (index % 2) * 208;
+                        heightOffset = index / 2 * 208;
+                        event.gc.setForeground(Display.getDefault()
+                                .getSystemColor(SWT.COLOR_BLACK));
+                        event.gc.setBackground(Display.getDefault()
+                                .getSystemColor(SWT.COLOR_WHITE));
+                        event.gc.drawString(
+                                "" + tempGameTable.getGameTableId(),
+                                100 + widthOffset, 156 + heightOffset);
+                        event.gc.setBackground(Display.getDefault()
+                                .getSystemColor(SWT.COLOR_DARK_YELLOW));
+                        event.gc.drawRectangle(56 + widthOffset,
+                                56 + heightOffset, 96, 96);
+                        event.gc.fillRectangle(57 + widthOffset,
+                                57 + heightOffset, 95, 95);
+                        if (tempGameTable.getPlayerA() != null) {
+                            event.gc.drawImage(tableMiniUserIcon, 0, 0,
+                                    tableMiniUserIcon.getBounds().width,
+                                    tableMiniUserIcon.getBounds().height,
+                                    4 + widthOffset, 80 + heightOffset, 48, 48);
+                        } else {
+                            event.gc.drawImage(tableEmptyIcon, 0, 0,
+                                    tableEmptyIcon.getBounds().width,
+                                    tableEmptyIcon.getBounds().height,
+                                    4 + widthOffset, 80 + heightOffset, 48, 48);
+                        }
+                        if (tempGameTable.getPlayerB() != null) {
+                            event.gc.drawImage(tableMiniUserIcon, 0, 0,
+                                    tableMiniUserIcon.getBounds().width,
+                                    tableMiniUserIcon.getBounds().height,
+                                    156 + widthOffset, 80 + heightOffset, 48,
+                                    48);
+                        } else {
+                            event.gc.drawImage(tableEmptyIcon, 0, 0,
+                                    tableEmptyIcon.getBounds().width,
+                                    tableEmptyIcon.getBounds().height,
+                                    156 + widthOffset, 80 + heightOffset, 48,
+                                    48);
+                        }
+                        index++;
+                    }
+                }
+            }
+        });
 
-		gameTableCanvas.addMouseListener(new MouseListener() {
+        gameTableCanvas.addMouseListener(new MouseListener() {
 
-			public void mouseUp(MouseEvent e) {
+            public void mouseUp(MouseEvent e) {
 
-			}
+            }
 
-			public void mouseDown(MouseEvent e) {
+            public void mouseDown(MouseEvent e) {
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                 int x = e.x;
-				int y = e.y;
-				// index from 0
-				int index = x / 208 + (y / 208) * 2;
-				int widthOffset = (index % 2) * 208;
-				int heightOffset = (index / 2) * 208;
-				if (x >= 4 + widthOffset && x <= 56 + widthOffset
-						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-					applicationContext.enterGameTable(index+1, 0);
-				}
-				if (x >= 156 + widthOffset && x <= 204 + widthOffset
-						&& y <= 128 + heightOffset && y >= 80 + heightOffset) {
-                    applicationContext.enterGameTable(index+1, 1);
-				}
-			}
+                int y = e.y;
+                // index from 0
+                int index = x / 208 + (y / 208) * 2;
+                int widthOffset = (index % 2) * 208;
+                int heightOffset = (index / 2) * 208;
+                if (x >= 4 + widthOffset && x <= 56 + widthOffset
+                        && y <= 128 + heightOffset && y >= 80 + heightOffset) {
+                    applicationContext.enterGameTable(index + 1, 0);
+                }
+                if (x >= 156 + widthOffset && x <= 204 + widthOffset
+                        && y <= 128 + heightOffset && y >= 80 + heightOffset) {
+                    applicationContext.enterGameTable(index + 1, 1);
+                }
+            }
 
-			public void mouseDoubleClick(MouseEvent e) {
-				
-			}
-		});
+            public void mouseDoubleClick(MouseEvent e) {
 
-		Composite composite2 = new Composite(sashForm, SWT.NONE);
-		GridLayout composite2Layout = new GridLayout();
-		composite2Layout.numColumns = 3;
+            }
+        });
+
+        Composite composite2 = new Composite(sashForm, SWT.NONE);
+        GridLayout composite2Layout = new GridLayout();
+        composite2Layout.numColumns = 3;
         composite2.setLayout(composite2Layout);
-		GridData composite2GridData = new GridData(GridData.FILL_BOTH);
-		composite2GridData.horizontalSpan = 3;
+        GridData composite2GridData = new GridData(GridData.FILL_BOTH);
+        composite2GridData.horizontalSpan = 3;
         composite2GridData.widthHint = 400;
-		composite2GridData.heightHint = 200;
-		
-		userListTable = new Table(composite2, SWT.CENTER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-		userListTable.setHeaderVisible(true);
-		
-		TableColumn tableColumn[] = new TableColumn[6];
-		for (int i = 0; i < 5; i++) {
-			tableColumn[i] = new TableColumn(userListTable,
-					SWT.CENTER);
-			switch (i) {
-			case 0:
-				tableColumn[i].setText("昵称");
-				break;
-			case 1:
-				tableColumn[i].setText("胜利");
-				break;
-			case 2:
-				tableColumn[i].setText("平局");
-				break;
-			case 3:
-				tableColumn[i].setText("失败");
-				break;
-			case 4:
-				tableColumn[i].setText("积分");
-				break;
-			}
-		}
-		
-		for(int i=0;i<5;i++){
-			userListTable.getColumn(i).pack();
-		}
-		
-		userListTable.setBounds(25, 25, 400, 200);
+        composite2GridData.heightHint = 200;
 
-		gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
-		GridData gameHallGridData = new GridData();
-		gameHallGridData.horizontalSpan = 3;
-		gameHallGridData.widthHint = 400;
-		gameHallGridData.heightHint = 200;
-		gameHallChat.setLayoutData(gameHallGridData);
+        userListTable = new Table(composite2, SWT.CENTER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        userListTable.setHeaderVisible(true);
 
-		messageText = new Text(composite2, SWT.NONE);
-		GridData messageTextGridData = new GridData();
-		messageTextGridData.horizontalSpan = 2;
-		messageTextGridData.widthHint = 200;
-		messageText.setText("请输入聊天信息");
-		messageText.setFocus();
-		messageText.setLayoutData(messageTextGridData);
+        TableColumn tableColumn[] = new TableColumn[6];
+        for (int i = 0; i < 5; i++) {
+            tableColumn[i] = new TableColumn(userListTable,
+                    SWT.CENTER);
+            switch (i) {
+                case 0:
+                    tableColumn[i].setText("昵称");
+                    break;
+                case 1:
+                    tableColumn[i].setText("胜利");
+                    break;
+                case 2:
+                    tableColumn[i].setText("平局");
+                    break;
+                case 3:
+                    tableColumn[i].setText("失败");
+                    break;
+                case 4:
+                    tableColumn[i].setText("积分");
+                    break;
+            }
+        }
 
-		Button sendMessageButton = new Button(composite2, SWT.PUSH);
-		GridData sendMessageGridData = new GridData();
-		sendMessageGridData.horizontalSpan = 1;
-		sendMessageButton.setLayoutData(sendMessageGridData);
-		sendMessageButton.setText("发送");
-		sendMessageButton.addSelectionListener(new SelectionListener() {
+        for (int i = 0; i < 5; i++) {
+            userListTable.getColumn(i).pack();
+        }
 
-			public void widgetSelected(SelectionEvent e) {
-				sendMessage();
-			}
+        userListTable.setBounds(25, 25, 400, 200);
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+        gameHallChat = new Text(composite2, SWT.MULTI | SWT.V_SCROLL | SWT.WRAP);
+        GridData gameHallGridData = new GridData();
+        gameHallGridData.horizontalSpan = 3;
+        gameHallGridData.widthHint = 400;
+        gameHallGridData.heightHint = 200;
+        gameHallChat.setLayoutData(gameHallGridData);
 
-			}
-		});
+        messageText = new Text(composite2, SWT.NONE);
+        GridData messageTextGridData = new GridData();
+        messageTextGridData.horizontalSpan = 2;
+        messageTextGridData.widthHint = 200;
+        messageText.setText("请输入聊天信息");
+        messageText.setFocus();
+        messageText.setLayoutData(messageTextGridData);
 
-		shell.addListener(SWT.Close, new Listener() {
-			public void handleEvent(Event event) {
+        Button sendMessageButton = new Button(composite2, SWT.PUSH);
+        GridData sendMessageGridData = new GridData();
+        sendMessageGridData.horizontalSpan = 1;
+        sendMessageButton.setLayoutData(sendMessageGridData);
+        sendMessageButton.setText("发送");
+        sendMessageButton.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent e) {
+                sendMessage();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent e) {
+
+            }
+        });
+
+        shell.addListener(SWT.Close, new Listener() {
+            public void handleEvent(Event event) {
                 event.doit = false;
                 MessageBox messageBox = new MessageBox(shell,
                         SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
@@ -239,86 +239,86 @@ public class GameHallWindow {
                 if (result == SWT.YES) {
                     ApplicationContextSingleton.getInstance().leaveGameHall();
                 }
-			}
-		});
+            }
+        });
 
-		shell.pack();
-	}
+        shell.pack();
+    }
 
-	public void open() {
-		display = Display.getDefault();
-		createContents();
-		shell.open();
-	}
+    public void open() {
+        display = Display.getDefault();
+        createContents();
+        shell.open();
+    }
 
-	public void hide() {
+    public void hide() {
         // reset resource
         gameHallChat.setText("");
-		shell.setVisible(false);
-	}
+        shell.setVisible(false);
+    }
 
-	public void show() {
+    public void show() {
         shell.setVisible(true);
-	}
+    }
 
-	public void destoryResources() {
-		if (tableMiniUserIcon != null) {
-			tableMiniUserIcon.dispose();
-		}
-        if( tableEmptyIcon != null){
+    public void destoryResources() {
+        if (tableMiniUserIcon != null) {
+            tableMiniUserIcon.dispose();
+        }
+        if (tableEmptyIcon != null) {
             tableEmptyIcon.dispose();
         }
-	}
+    }
 
-	public void close() {
-		destoryResources();
+    public void close() {
+        destoryResources();
         shell.dispose();
-	}
+    }
 
-	public void notifyUserListUpdate() {
+    public void notifyUserListUpdate() {
         if (userListTable != null) {
             ArrayList<UserInformation> userInformationList = ApplicationContextSingleton.getInstance().getUserInformationList();
-            if(userInformationList != null && !userInformationList.isEmpty()){
+            if (userInformationList != null && !userInformationList.isEmpty()) {
                 userListTable.clearAll();
                 TableItem tableItem = null;
                 UserInformation userInformation = null;
-                for(int i=0; i< userInformationList.size(); i++) {
+                for (int i = 0; i < userInformationList.size(); i++) {
                     tableItem = new TableItem(userListTable, SWT.CENTER);
                     userInformation = userInformationList.get(i);
                     tableItem.setText(0, userInformation.getNickname());
-                    tableItem.setText(1, ""+userInformation.getGameWins());
-                    tableItem.setText(2, ""+userInformation.getGameDraws());
-                    tableItem.setText(3, ""+userInformation.getGameLosts());
-                    tableItem.setText(4, ""+userInformation.getRankPoints());
+                    tableItem.setText(1, "" + userInformation.getGameWins());
+                    tableItem.setText(2, "" + userInformation.getGameDraws());
+                    tableItem.setText(3, "" + userInformation.getGameLosts());
+                    tableItem.setText(4, "" + userInformation.getRankPoints());
                 }
             }
             shell.pack();
             userListTable.redraw();
         }
-	}
+    }
 
-	public void notifyGameTableListUpdate() {
-		if (gameTableCanvas != null) {
-			gameTableCanvas.redraw();
-		}
-	}
-
-	public void sendMessage() {
-        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        if(messageText.getText() != null) {
-            applicationContext.getSocketIOClient().sendeMessage(SocketIOClient.GAME_HALL_ROOM,messageText.getText());
+    public void notifyGameTableListUpdate() {
+        if (gameTableCanvas != null) {
+            gameTableCanvas.redraw();
         }
-	}
+    }
 
-	public void receiveMessage(SendMessage sendMessage) {
+    public void sendMessage() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        if (messageText.getText() != null) {
+            applicationContext.getSocketIOClient().sendeMessage(SocketIOClient.GAME_HALL_ROOM, messageText.getText());
+        }
+    }
+
+    public void receiveMessage(SendMessage sendMessage) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-		ZonedDateTime sendTime = ZonedDateTime.parse(sendMessage.getSendTime());
+        ZonedDateTime sendTime = ZonedDateTime.parse(sendMessage.getSendTime());
         gameHallChat.append(
                 sendTime.format(formatter)
-                + " "
-				+ sendMessage.getNickname()
-				+ " : " + sendMessage.getMessage() + "\n");
-		gameHallChat.redraw();
-	}
+                        + " "
+                        + sendMessage.getNickname()
+                        + " : " + sendMessage.getMessage() + "\n");
+        gameHallChat.redraw();
+    }
 
 }

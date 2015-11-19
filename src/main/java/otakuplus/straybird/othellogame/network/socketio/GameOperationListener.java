@@ -4,27 +4,42 @@ import io.socket.emitter.Emitter;
 import org.eclipse.swt.widgets.Display;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.applicationstates.GameContext;
 import otakuplus.straybird.othellogame.applicationstates.GameContextSigleton;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
-public class GameOperationListener implements Emitter.Listener{
+public class GameOperationListener implements Emitter.Listener {
+
+    private static final Logger logger = LoggerFactory.getLogger(GameOperationListener.class);
+
     private GameOperation gameOperation = new GameOperation();
 
     public void call(Object... objects) {
-        System.out.println("game operation event.");
+        logger.info("receive game operation event");
         int count = objects.length;
-        System.out.println("object number :" + count);
+        logger.info("event number " + count);
+        //ObjectMapper objectMapper = ObjectMapperSingleton.getObjectMapperInstance();
         JSONObject jsonObject = null;
-        for(int i=0; i< count; i++){
+        Integer setX = null;
+        Integer setY = null;
+        for (int i = 0; i < count; i++) {
             jsonObject = (JSONObject) objects[i];
+            logger.info("json object" + jsonObject.toString());
             try {
                 String roomName = (String) jsonObject.get("roomName");
-                Long seatId = (Long) jsonObject.get("seatId");
-                Long setX = (Long) jsonObject.get("setX");
-                Long setY = (Long) jsonObject.get("setY");
+                Integer seatId = (Integer) jsonObject.get("seatId");
+                // Json.org 's lib can not read null
+                if (!jsonObject.isNull("setX")) {
+                    setX = (Integer) jsonObject.get("setX");
+                }
+                if (!jsonObject.isNull("setY")) {
+                    setY = (Integer) jsonObject.get("setY");
+
+                }
                 String operation = (String) jsonObject.get("operation");
                 gameOperation.setRoomName(roomName);
                 gameOperation.setSeatId(seatId);
@@ -35,14 +50,14 @@ public class GameOperationListener implements Emitter.Listener{
                 display.asyncExec(new Runnable() {
                     public void run() {
                         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                        if(gameOperation.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM+applicationContext.getCurrentTableId())){
+                        if (gameOperation.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
-                            if(gameOperation.getOperation().equals(GameOperation.STAND_BY)){
+                            if (gameOperation.getOperation().equals(GameOperation.STAND_BY)) {
                                 GameContext gameContext = GameContextSigleton.getGameContextInstance();
-                                if(gameOperation.getSeatId() == 0L){
+                                if (gameOperation.getSeatId() == 0) {
                                     gameContext.whiteStandBy();
                                 }
-                                if(gameOperation.getSeatId() == 1L){
+                                if (gameOperation.getSeatId() == 1) {
                                     gameContext.blackStandBy();
                                 }
                             }

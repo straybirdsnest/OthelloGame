@@ -8,89 +8,89 @@ public class UserInformation {
     public static final String GENDER_MALE = "male";
     public static final String GENDER_FEMALE = "female";
     @Key
-	private Integer userId;
-	@Key
+    private Integer userId;
+    @Key
     private String nickname = null;
-	@Key
+    @Key
     private String gender = null;
-	@Key
+    @Key
     private String birthday = null;
-	@Key
+    @Key
     private int gameWins = 0;
-	@Key
+    @Key
     private int gameDraws = 0;
-	@Key
+    @Key
     private int gameLosts = 0;
-	@Key
+    @Key
     private int rankPoints = 0;
     @Key("_links")
     private UserInformationLinks links;
     @Key("page")
     private HalPages pages;
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-    public void setBirthday(String birthday){
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 
-	public String getBirthday() {
-		return birthday;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public String getNickname() {
+        return nickname;
+    }
 
-	public String getNickname() {
-		return nickname;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    public int getGameWins() {
+        return gameWins;
+    }
 
-	public int getGameWins() {
-		return gameWins;
-	}
+    public void setGameWins(int gameWins) {
+        this.gameWins = gameWins;
+    }
 
-	public void setGameWins(int gameWins) {
-		this.gameWins = gameWins;
-	}
+    public int getGameDraws() {
+        return gameDraws;
+    }
 
-	public int getGameDraws() {
-		return gameDraws;
-	}
+    public void setGameDraws(int gameDraws) {
+        this.gameDraws = gameDraws;
+    }
 
-	public void setGameDraws(int gameDraws) {
-		this.gameDraws = gameDraws;
-	}
+    public int getGameLosts() {
+        return gameLosts;
+    }
 
-	public int getGameLosts() {
-		return gameLosts;
-	}
+    public void setGameLosts(int gameLosts) {
+        this.gameLosts = gameLosts;
+    }
 
-	public void setGameLosts(int gameLosts) {
-		this.gameLosts = gameLosts;
-	}
+    public int getRankPoints() {
+        return rankPoints;
+    }
 
-	public int getRankPoints() {
-		return rankPoints;
-	}
-
-	public void setRankPoints(int rankPoints) {
-		this.rankPoints = rankPoints;
-	}
+    public void setRankPoints(int rankPoints) {
+        this.rankPoints = rankPoints;
+    }
 
     public UserInformationLinks getLinks() {
         return links;

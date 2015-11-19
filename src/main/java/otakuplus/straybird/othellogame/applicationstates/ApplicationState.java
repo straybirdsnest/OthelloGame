@@ -2,24 +2,24 @@ package otakuplus.straybird.othellogame.applicationstates;
 
 public interface ApplicationState {
 
-	public void initialize();
-	
-	public void connect();
-	
-	public void login();
+    public void initialize();
 
-	public void enterGameHall();
+    public void connect();
 
-	public void leaveGameHall();
+    public void login();
 
-	public void enterGameTable(Integer gameTableId,Integer seatId);
+    public void enterGameHall();
 
-	public void leaveGameTable(Integer gameTableId,Integer seatId);
+    public void leaveGameHall();
 
-	public void logout();
+    public void enterGameTable(Integer gameTableId, Integer seatId);
 
-	public void disconnect();
-	
-	public void destory();
+    public void leaveGameTable(Integer gameTableId, Integer seatId);
+
+    public void logout();
+
+    public void disconnect();
+
+    public void destory();
 
 }

@@ -4,11 +4,11 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 
 public class HttpTransportSingleton {
-    private static class HttpTransportHolder{
-        static final HttpTransport INSTANCE = new NetHttpTransport();
+    public static HttpTransport getHttpTransportInstance() {
+        return HttpTransportHolder.INSTANCE;
     }
 
-    public static HttpTransport getHttpTransportInstance(){
-        return HttpTransportHolder.INSTANCE;
+    private static class HttpTransportHolder {
+        static final HttpTransport INSTANCE = new NetHttpTransport();
     }
 }

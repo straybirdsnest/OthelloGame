@@ -4,68 +4,68 @@ import java.util.Date;
 
 public class GameRecord {
 
-	private int gameRecordId = 0;
-	private int playerAId = 0;
-	private int playerBId = 0;
-	private Date gameBeginTime;
-	private Date gameEndTIme;
-	private int whiteNumber = 0;
-	private int blackNumber = 0;
-	
-	public int getGameRecordId() {
-		return gameRecordId;
-	}
+    private int gameRecordId = 0;
+    private int playerAId = 0;
+    private int playerBId = 0;
+    private Date gameBeginTime;
+    private Date gameEndTIme;
+    private int whiteNumber = 0;
+    private int blackNumber = 0;
 
-	public void setGameRecordId(int gameRecordId) {
-		this.gameRecordId = gameRecordId;
-	}
+    public int getGameRecordId() {
+        return gameRecordId;
+    }
 
-	public int getPlayerAId() {
-		return playerAId;
-	}
+    public void setGameRecordId(int gameRecordId) {
+        this.gameRecordId = gameRecordId;
+    }
 
-	public void setPlayerAId(int playerAId) {
-		this.playerAId = playerAId;
-	}
+    public int getPlayerAId() {
+        return playerAId;
+    }
 
-	public int getPlayerBId() {
-		return playerBId;
-	}
+    public void setPlayerAId(int playerAId) {
+        this.playerAId = playerAId;
+    }
 
-	public void setPlayerBId(int playerBId) {
-		this.playerBId = playerBId;
-	}
+    public int getPlayerBId() {
+        return playerBId;
+    }
 
-	public Date getGameBeginTime() {
-		return gameBeginTime;
-	}
+    public void setPlayerBId(int playerBId) {
+        this.playerBId = playerBId;
+    }
 
-	public void setGameBeginTime(Date gameBeginTime) {
-		this.gameBeginTime = gameBeginTime;
-	}
+    public Date getGameBeginTime() {
+        return gameBeginTime;
+    }
 
-	public Date getGameEndTIme() {
-		return gameEndTIme;
-	}
+    public void setGameBeginTime(Date gameBeginTime) {
+        this.gameBeginTime = gameBeginTime;
+    }
 
-	public void setGameEndTIme(Date gameEndTIme) {
-		this.gameEndTIme = gameEndTIme;
-	}
+    public Date getGameEndTIme() {
+        return gameEndTIme;
+    }
 
-	public int getWhiteNumber() {
-		return whiteNumber;
-	}
+    public void setGameEndTIme(Date gameEndTIme) {
+        this.gameEndTIme = gameEndTIme;
+    }
 
-	public void setWhiteNumber(int whiteNumber) {
-		this.whiteNumber = whiteNumber;
-	}
+    public int getWhiteNumber() {
+        return whiteNumber;
+    }
 
-	public int getBlackNumber() {
-		return blackNumber;
-	}
+    public void setWhiteNumber(int whiteNumber) {
+        this.whiteNumber = whiteNumber;
+    }
 
-	public void setBlackNumber(int blackNumber) {
-		this.blackNumber = blackNumber;
-	}
+    public int getBlackNumber() {
+        return blackNumber;
+    }
+
+    public void setBlackNumber(int blackNumber) {
+        this.blackNumber = blackNumber;
+    }
 
 }

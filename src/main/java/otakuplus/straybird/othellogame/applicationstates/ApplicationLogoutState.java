@@ -8,7 +8,7 @@ import otakuplus.straybird.othellogame.network.http.Logout;
 
 import java.io.IOException;
 
-public class ApplicationLogoutState implements ApplicationState{
+public class ApplicationLogoutState implements ApplicationState {
     public void initialize() {
 
     }
@@ -29,16 +29,16 @@ public class ApplicationLogoutState implements ApplicationState{
 
     }
 
-    public void enterGameTable(Integer gameTableId,Integer seatId) {
+    public void enterGameTable(Integer gameTableId, Integer seatId) {
 
     }
 
-    public void leaveGameTable(Integer gameTableId,Integer seatId){
+    public void leaveGameTable(Integer gameTableId, Integer seatId) {
 
     }
 
     public void logout() {
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/logout";
+        String url = HttpRequestUtil.HOST_BASE_URL + "/api/logout";
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
@@ -49,7 +49,7 @@ public class ApplicationLogoutState implements ApplicationState{
 
             request = HttpRequestUtil.buildHttpPostRequest(url, logout);
             response = request.execute();
-            if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK){
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 System.out.println("logout ok!");
                 applicationContext.changeState(ApplicationStateSingleton.getLoginStateInstance());
                 applicationContext.currentUser = null;

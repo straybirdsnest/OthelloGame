@@ -9,17 +9,17 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingl
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
-public class SendMessageListener implements Listener{
+public class SendMessageListener implements Listener {
 
     private SendMessage sendMessage = new SendMessage();
 
-	public void call(Object... object) {
-		System.out.print("send message event.");
-		int count = object.length;
-		System.out.print("object number :"+count);
-		JSONObject jsonObject = null;
-		for(int i=0; i< count; i++){
-            jsonObject = (JSONObject)object[i];
+    public void call(Object... object) {
+        System.out.print("send message event.");
+        int count = object.length;
+        System.out.print("object number :" + count);
+        JSONObject jsonObject = null;
+        for (int i = 0; i < count; i++) {
+            jsonObject = (JSONObject) object[i];
             try {
                 String nickname = (String) jsonObject.get("nickname");
                 String message = (String) jsonObject.get("message");
@@ -33,10 +33,10 @@ public class SendMessageListener implements Listener{
                 display.asyncExec(new Runnable() {
                     public void run() {
                         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                        if(sendMessage.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)) {
+                        if (sendMessage.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)) {
                             GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
                             gameHallWindow.receiveMessage(SendMessageListener.this.sendMessage);
-                        }else if(sendMessage.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM+applicationContext.getCurrentTableId())){
+                        } else if (sendMessage.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
                             othelloGameWindow.receiveMessage(sendMessage);
                         }
@@ -45,7 +45,7 @@ public class SendMessageListener implements Listener{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-		}
-	}
+        }
+    }
 
 }

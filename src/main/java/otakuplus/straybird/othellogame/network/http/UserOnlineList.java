@@ -9,11 +9,11 @@ public class UserOnlineList {
     @Key
     private ArrayList<UserOnline> userOnlines;
 
-    public void setUserOnlines(ArrayList<UserOnline> userOnlines){
-        this.userOnlines = userOnlines;
+    public ArrayList<UserOnline> getUserOnlines() {
+        return userOnlines;
     }
 
-    public ArrayList<UserOnline> getUserOnlines(){
-        return userOnlines;
+    public void setUserOnlines(ArrayList<UserOnline> userOnlines) {
+        this.userOnlines = userOnlines;
     }
 }

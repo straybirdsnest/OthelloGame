@@ -9,16 +9,16 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingl
 import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 
-public class NotifyUpdateUserInformationsListener implements Emitter.Listener{
+public class NotifyUpdateUserInformationsListener implements Emitter.Listener {
 
     private NotifyUpdateUserInformations notifyUpdateUserInformations = new NotifyUpdateUserInformations();
 
     public void call(Object... objects) {
         System.out.print("notify userinformations message event.");
         int count = objects.length;
-        System.out.print("object number :"+count);
+        System.out.print("object number :" + count);
         JSONObject jsonObject = null;
-        for(int i=0; i< count; i++) {
+        for (int i = 0; i < count; i++) {
             jsonObject = (JSONObject) objects[i];
             try {
                 String roomName = (String) jsonObject.get("roomName");
@@ -27,7 +27,7 @@ public class NotifyUpdateUserInformationsListener implements Emitter.Listener{
                 display.asyncExec(new Runnable() {
                     public void run() {
                         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                        if(notifyUpdateUserInformations.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)){
+                        if (notifyUpdateUserInformations.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)) {
                             GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
                             HttpRequestUtil.updateUserOnlineList();
                             gameHallWindow.notifyUserListUpdate();

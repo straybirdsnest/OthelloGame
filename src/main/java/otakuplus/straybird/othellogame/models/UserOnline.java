@@ -8,7 +8,7 @@ public class UserOnline {
     public static final int ONLINE = 100;
     public static final int STAND_BY = 101;
     public static final int GAMING = 102;
-    public static final int OFFLINE= 199;
+    public static final int OFFLINE = 199;
 
     @Key
     private Integer userId;

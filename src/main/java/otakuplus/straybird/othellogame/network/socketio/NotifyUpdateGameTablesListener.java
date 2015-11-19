@@ -15,9 +15,9 @@ public class NotifyUpdateGameTablesListener implements Emitter.Listener {
     public void call(Object... objects) {
         System.out.print("notify gameTables message event.");
         int count = objects.length;
-        System.out.print("object number :"+count);
+        System.out.print("object number :" + count);
         JSONObject jsonObject = null;
-        for(int i=0; i< count; i++) {
+        for (int i = 0; i < count; i++) {
             jsonObject = (JSONObject) objects[i];
             try {
                 String roomName = (String) jsonObject.get("roomName");
@@ -26,7 +26,7 @@ public class NotifyUpdateGameTablesListener implements Emitter.Listener {
                 display.asyncExec(new Runnable() {
                     public void run() {
                         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                        if(notifyUpdateGameTables.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)){
+                        if (notifyUpdateGameTables.getRoomName().equals(SocketIOClient.GAME_HALL_ROOM)) {
                             GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
                             HttpRequestUtil.updateGameTableList();
                             gameHallWindow.notifyGameTableListUpdate();

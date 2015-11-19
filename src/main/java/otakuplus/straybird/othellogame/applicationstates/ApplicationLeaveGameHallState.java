@@ -9,7 +9,7 @@ import otakuplus.straybird.othellogame.ui.LoginWindow;
 
 import java.io.IOException;
 
-public class ApplicationLeaveGameHallState implements ApplicationState{
+public class ApplicationLeaveGameHallState implements ApplicationState {
     public void initialize() {
 
     }
@@ -31,36 +31,35 @@ public class ApplicationLeaveGameHallState implements ApplicationState{
         LoginWindow loginWindow = applicationContext.getLoginWinodow();
         GameHallWindow gameHallWindow = applicationContext.getGameHallWindow();
 
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/gameHall/leave";
+        String url = HttpRequestUtil.HOST_BASE_URL + "/api/gameHall/leave";
         HttpResponse response = null;
         HttpRequest request;
         applicationContext.updateCsrfToken();
 
-        try{
+        try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
             response = request.execute();
-            if(response!= null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK)
-            {
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 gameHallWindow.hide();
                 loginWindow.show();
                 System.out.println("leave game hall");
                 applicationContext.changeState(ApplicationStateSingleton.getLogoutStateInstance());
                 applicationContext.logout();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void enterGameTable(Integer gameTableId,Integer seatId) {
+    public void enterGameTable(Integer gameTableId, Integer seatId) {
 
     }
 
-    public void leaveGameTable(Integer gameTableId,Integer seatId){
+    public void leaveGameTable(Integer gameTableId, Integer seatId) {
 
     }
 
-    public void logout(){
+    public void logout() {
 
     }
 

@@ -6,16 +6,16 @@ import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.JsonObjectParser;
 
 public class HttpRequestFactorySingleton {
-    private static class HttpRequestFactoryHolder{
-        static final HttpRequestFactory INSTANCE = HttpTransportSingleton.getHttpTransportInstance()
-                .createRequestFactory(new HttpRequestInitializer() {
-            public void initialize(HttpRequest request) {
-                request.setParser(new JsonObjectParser(JsonFactorySingleton.getJsonFactoryInstance()));
-            }
-        });
+    public static HttpRequestFactory getHttpRequestFactoryInstance() {
+        return HttpRequestFactoryHolder.INSTANCE;
     }
 
-    public static HttpRequestFactory getHttpRequestFactoryInstance(){
-        return HttpRequestFactoryHolder.INSTANCE;
+    private static class HttpRequestFactoryHolder {
+        static final HttpRequestFactory INSTANCE = HttpTransportSingleton.getHttpTransportInstance()
+                .createRequestFactory(new HttpRequestInitializer() {
+                    public void initialize(HttpRequest request) {
+                        request.setParser(new JsonObjectParser(JsonFactorySingleton.getJsonFactoryInstance()));
+                    }
+                });
     }
 }

@@ -13,14 +13,14 @@ import java.io.IOException;
 
 public class ApplicationLoginState implements ApplicationState {
 
-	public void initialize() {
-	}
+    public void initialize() {
+    }
 
-	public void connect() {
-	}
+    public void connect() {
+    }
 
-	public void login() {
-        String url = HttpRequestUtil.HOST_BASE_URL+"/api/authorization";
+    public void login() {
+        String url = HttpRequestUtil.HOST_BASE_URL + "/api/authorization";
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
@@ -35,7 +35,7 @@ public class ApplicationLoginState implements ApplicationState {
 
             request = HttpRequestUtil.buildHttpPostRequest(url, login);
             response = request.execute();
-            if(response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 User user = response.parseAs(User.class);
                 if (user != null && user.getUserId() != null) {
                     applicationContext.currentUser = user;
@@ -53,40 +53,40 @@ public class ApplicationLoginState implements ApplicationState {
                 }
             }
         } catch (IOException e) {
-            if(e.getMessage().equals("400 Bad Request")) {
+            if (e.getMessage().equals("400 Bad Request")) {
                 LoginWindow loginWindow = applicationContext.getLoginWinodow();
                 loginWindow.showLoginFailureMessage();
-            }else{
+            } else {
                 e.printStackTrace();
             }
         }
-	}
+    }
 
-	public void enterGameHall() {
-	}
+    public void enterGameHall() {
+    }
 
-    public void leaveGameHall(){
+    public void leaveGameHall() {
 
     }
 
-	public void enterGameTable(Integer gameTableId,Integer seatId) {
-	}
+    public void enterGameTable(Integer gameTableId, Integer seatId) {
+    }
 
-    public void leaveGameTable(Integer gameTableId,Integer seatId){
+    public void leaveGameTable(Integer gameTableId, Integer seatId) {
 
     }
 
-    public void logout(){
+    public void logout() {
 
     }
 
-	public void disconnect() {
+    public void disconnect() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         applicationContext.changeState(ApplicationStateSingleton.getDisconnectStateInstance());
         applicationContext.disconnect();
-	}
+    }
 
-	public void destory() {
-	}
+    public void destory() {
+    }
 
 }

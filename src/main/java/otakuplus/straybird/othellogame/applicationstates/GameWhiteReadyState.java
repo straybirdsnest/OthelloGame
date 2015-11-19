@@ -1,6 +1,6 @@
 package otakuplus.straybird.othellogame.applicationstates;
 
-public class GameWhiteReadyState implements GameState{
+public class GameWhiteReadyState implements GameState {
     public void whiteStandBy() {
 
     }

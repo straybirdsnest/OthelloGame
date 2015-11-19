@@ -1,6 +1,6 @@
 package otakuplus.straybird.othellogame.applicationstates;
 
-public class GameNoReadyState implements GameState{
+public class GameNoReadyState implements GameState {
     public void whiteStandBy() {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         gameContext.changeState(GameStateSingleton.getGameWhiteReadyStateInstance());
