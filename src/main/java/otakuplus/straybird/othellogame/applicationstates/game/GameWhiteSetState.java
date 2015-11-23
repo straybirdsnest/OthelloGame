@@ -38,7 +38,7 @@ public class GameWhiteSetState implements GameState {
             chessBoard.turnEnd();
             chessBoard.searchSuggestedChessmanPosition();
         }
-        gameContext.changeState(GameStateSingleton.getGameWhiteSetStateInstance());
+        gameContext.changeState(GameStateSingleton.getGameBlackSetStateInstance());
     }
 
     public void blackSet(Integer x, Integer y) {

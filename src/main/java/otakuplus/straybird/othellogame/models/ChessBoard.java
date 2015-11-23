@@ -357,4 +357,8 @@ public class ChessBoard {
         return suggestedPosition;
     }
 
+    public Chessman getCurrentChessman(){
+        return currentChessman;
+    }
+
 }

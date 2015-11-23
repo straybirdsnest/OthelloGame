@@ -10,8 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
-import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
-import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
+import otakuplus.straybird.othellogame.applicationstates.game.*;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
 import otakuplus.straybird.othellogame.network.socketio.GameOperation;
@@ -139,15 +138,22 @@ public class OthelloGameWindow {
                 }
 
                 // drawing suggested position
-                int suggestedPosition[] = chessBoard.getSuggestedPosition();
-                e.gc.setBackground(Display.getDefault().getSystemColor(
-                        SWT.COLOR_CYAN));
-                for (i = 0; i < suggestedPosition.length; i++) {
-                    if (suggestedPosition[i] == 1) {
-                        e.gc.drawRectangle((i % 8) * 40 + 4, i / 8 * 40 + 4,
-                                32, 32);
-                        e.gc.fillRectangle((i % 8) * 40 + 5, i / 8 * 40 + 5,
-                                31, 31);
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                Integer seatId = applicationContext.getCurrentSeatId();
+                if (seatId != null) {
+                    Chessman current = chessBoard.getCurrentChessman();
+                    if ((current.getChessman() == Chessman.CHESSMAN_BLACK && seatId == 1) || (current.getChessman() == Chessman.CHESSMAN_WHITE && seatId == 0)) {
+                        int suggestedPosition[] = chessBoard.getSuggestedPosition();
+                        e.gc.setBackground(Display.getDefault().getSystemColor(
+                                SWT.COLOR_CYAN));
+                        for (i = 0; i < suggestedPosition.length; i++) {
+                            if (suggestedPosition[i] == 1) {
+                                e.gc.drawRectangle((i % 8) * 40 + 4, i / 8 * 40 + 4,
+                                        32, 32);
+                                e.gc.fillRectangle((i % 8) * 40 + 5, i / 8 * 40 + 5,
+                                        31, 31);
+                            }
+                        }
                     }
                 }
             }
@@ -163,18 +169,21 @@ public class OthelloGameWindow {
                 int y = e.y;
 
                 GameOperation gameOperation = new GameOperation();
-                gameOperation.setSetX(y/40);
-                gameOperation.setSetY(x/40);
+                gameOperation.setSetX(y / 40);
+                gameOperation.setSetY(x / 40);
 
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                 SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
-                if(applicationContext.getCurrentSeatId() == 0){
+                GameContext gameContext = GameContextSigleton.getGameContextInstance();
+                GameState gameState = gameContext.getGameState();
+                if (applicationContext.getCurrentSeatId() == 0 && gameState instanceof GameWhiteSetState) {
                     gameOperation.setOperation(GameOperation.WHITE_SET);
+                    socketIOClient.doGameOperation(gameOperation);
                 }
-                if(applicationContext.getCurrentSeatId() == 1){
+                if (applicationContext.getCurrentSeatId() == 1 && gameState instanceof GameBlackSetState) {
                     gameOperation.setOperation(GameOperation.BLACK_SET);
+                    socketIOClient.doGameOperation(gameOperation);
                 }
-                socketIOClient.doGameOperation(gameOperation);
             }
 
             public void mouseUp(MouseEvent e) {
@@ -328,7 +337,7 @@ public class OthelloGameWindow {
         socketIOClient.doGameOperation(gameOperation);
     }
 
-    public void redrawChessBoard(){
+    public void redrawChessBoard() {
         blackLabel.setText("Black: " + chessBoard.getBlackNumber());
         whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
         blackLabel.redraw();

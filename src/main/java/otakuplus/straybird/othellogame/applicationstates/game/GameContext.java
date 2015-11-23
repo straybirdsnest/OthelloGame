@@ -56,4 +56,8 @@ public class GameContext {
     public ChessBoard getChessBoard(){
         return chessBoard;
     }
+
+    public GameState getGameState(){
+        return gameState;
+    }
 }
