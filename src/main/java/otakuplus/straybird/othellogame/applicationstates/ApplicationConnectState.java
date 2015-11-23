@@ -34,6 +34,10 @@ public class ApplicationConnectState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

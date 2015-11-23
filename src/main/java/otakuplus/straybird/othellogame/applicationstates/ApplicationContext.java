@@ -99,6 +99,10 @@ public class ApplicationContext {
         applicationState.leaveGameTable(gameTableId, seatId);
     }
 
+    public void giveUp() {
+        applicationState.giveUp();
+    }
+
     public void logout() {
         applicationState.logout();
     }

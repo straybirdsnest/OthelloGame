@@ -35,4 +35,8 @@ public class GameNoReadyState implements GameState {
     public void endGame() {
 
     }
+
+    public void giveUp() {
+
+    }
 }

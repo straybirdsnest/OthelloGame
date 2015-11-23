@@ -48,16 +48,20 @@ public class GameContext {
         gameState.whiteSet(x, y);
     }
 
+    public void giveUp() {
+        gameState.giveUp();
+    }
+
     public void changeState(GameState gameState) {
         this.gameState = gameState;
         logger.info("change to" + gameState);
     }
 
-    public ChessBoard getChessBoard(){
+    public ChessBoard getChessBoard() {
         return chessBoard;
     }
 
-    public GameState getGameState(){
+    public GameState getGameState() {
         return gameState;
     }
 }

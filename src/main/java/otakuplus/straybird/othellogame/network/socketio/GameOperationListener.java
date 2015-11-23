@@ -10,6 +10,7 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
+import otakuplus.straybird.othellogame.applicationstates.game.GameStateSingleton;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class GameOperationListener implements Emitter.Listener {
@@ -82,6 +83,12 @@ public class GameOperationListener implements Emitter.Listener {
                             if(gameOperation.getOperation().equals(GameOperation.WHITE_SET)){
                                 if(gameOperation.getSetX() != null && gameOperation.getSetY() != null){
                                     gameContext.whiteSet(gameOperation.getSetX(), gameOperation.getSetY());
+                                    othelloGameWindow.redrawChessBoard();
+                                }
+                            }
+                            if(gameOperation.getOperation().equals(GameOperation.GIVE_UP)){
+                                if(gameOperation.getSeatId() != null){
+                                    gameContext.giveUp();
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }

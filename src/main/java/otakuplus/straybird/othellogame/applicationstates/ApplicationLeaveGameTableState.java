@@ -58,6 +58,10 @@ public class ApplicationLeaveGameTableState implements ApplicationState {
         }
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

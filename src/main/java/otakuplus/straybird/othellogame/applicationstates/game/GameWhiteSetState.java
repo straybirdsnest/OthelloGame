@@ -48,4 +48,8 @@ public class GameWhiteSetState implements GameState {
     public void endGame() {
 
     }
+
+    public void giveUp() {
+
+    }
 }

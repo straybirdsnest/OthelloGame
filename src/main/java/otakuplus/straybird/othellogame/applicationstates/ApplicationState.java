@@ -16,6 +16,8 @@ public interface ApplicationState {
 
     public void leaveGameTable(Integer gameTableId, Integer seatId);
 
+    public void giveUp();
+
     public void logout();
 
     public void disconnect();

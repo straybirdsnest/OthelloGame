@@ -48,4 +48,8 @@ public class GameBlackSetState implements GameState {
     public void endGame() {
 
     }
+
+    public void giveUp() {
+
+    }
 }

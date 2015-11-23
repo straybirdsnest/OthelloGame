@@ -29,6 +29,10 @@ public class ApplicationDestoryState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

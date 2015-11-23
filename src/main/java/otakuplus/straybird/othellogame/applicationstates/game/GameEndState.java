@@ -32,4 +32,8 @@ public class GameEndState implements GameState {
     public void endGame() {
 
     }
+
+    public void giveUp() {
+
+    }
 }

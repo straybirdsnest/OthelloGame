@@ -44,6 +44,10 @@ public class ApplicationIntializeState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

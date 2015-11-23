@@ -16,4 +16,6 @@ public interface GameState {
     public void blackSet(Integer x, Integer y);
 
     public void endGame();
+
+    public void giveUp();
 }

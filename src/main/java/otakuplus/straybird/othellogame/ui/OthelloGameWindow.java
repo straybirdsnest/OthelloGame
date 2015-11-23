@@ -13,6 +13,7 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingl
 import otakuplus.straybird.othellogame.applicationstates.game.*;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
+import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.socketio.GameOperation;
 import otakuplus.straybird.othellogame.network.socketio.SendMessage;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
@@ -261,6 +262,16 @@ public class OthelloGameWindow {
         giveUpButton.setText("认输");
         giveUpButton.setLayoutData(giveUpGridData);
 
+        giveUpButton.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                giveUp();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {
+
+            }
+        });
+
         shell.addListener(SWT.Close, new Listener() {
 
             public void handleEvent(Event event) {
@@ -332,9 +343,43 @@ public class OthelloGameWindow {
     public void standByOrCancel() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        GameState gameState = gameContext.getGameState();
         GameOperation gameOperation = new GameOperation();
-        gameOperation.setOperation(GameOperation.STAND_BY);
+        if(gameState instanceof GameNoReadyState){
+            standByButton.setText("取消准备");
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        }else if(gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1){
+            standByButton.setText("准备");
+            gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        }else if(gameState instanceof GameWhiteReadyState && applicationContext.getCurrentSeatId() == 0){
+            standByButton.setText("准备");
+            gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        }else{
+            standByButton.setText("取消准备");
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        }
+    }
+
+    public void giveUp(){
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameOperation gameOperation = new GameOperation();
+        gameOperation.setOperation(GameOperation.GIVE_UP);
         socketIOClient.doGameOperation(gameOperation);
+        applicationContext.giveUp();
     }
 
     public void redrawChessBoard() {

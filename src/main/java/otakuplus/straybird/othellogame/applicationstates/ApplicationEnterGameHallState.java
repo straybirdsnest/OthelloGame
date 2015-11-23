@@ -62,6 +62,10 @@ public class ApplicationEnterGameHallState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

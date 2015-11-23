@@ -37,6 +37,10 @@ public class ApplicationLogoutState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
         String url = HttpRequestUtil.HOST_BASE_URL + "/api/logout";
         HttpResponse response = null;

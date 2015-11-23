@@ -59,6 +59,10 @@ public class ApplicationLeaveGameHallState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }

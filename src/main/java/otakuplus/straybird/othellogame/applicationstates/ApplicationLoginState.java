@@ -76,6 +76,10 @@ public class ApplicationLoginState implements ApplicationState {
 
     }
 
+    public void giveUp() {
+
+    }
+
     public void logout() {
 
     }
