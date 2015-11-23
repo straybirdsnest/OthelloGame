@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.applicationstates;
+package otakuplus.straybird.othellogame.applicationstates.game;
 
 public class GameContextSigleton {
     public static GameContext getGameContextInstance() {

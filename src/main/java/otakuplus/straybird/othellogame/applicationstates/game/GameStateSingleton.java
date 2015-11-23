@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.applicationstates;
+package otakuplus.straybird.othellogame.applicationstates.game;
 
 public class GameStateSingleton {
     public static GameNoReadyState getGameNoReadyStateInstance() {

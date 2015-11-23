@@ -68,7 +68,11 @@ public class HttpRequestUtil {
                     System.out.println("UserInformation: " + user.getLinks().getUserInformation().getHref());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                if (e.getMessage().equals("404 Not Found")) {
+                    return null;
+                } else {
+                    e.printStackTrace();
+                }
             }
         }
         return user;
@@ -86,7 +90,11 @@ public class HttpRequestUtil {
                     System.out.println("UserNickName " + userInformation.getNickname());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                if (e.getMessage().equals("404 Not Found")) {
+                    return null;
+                } else {
+                    e.printStackTrace();
+                }
             }
         }
         return userInformation;
@@ -119,7 +127,11 @@ public class HttpRequestUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("404 Not Found")) {
+                return;
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -153,7 +165,11 @@ public class HttpRequestUtil {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            if (e.getMessage().equals("404 Not Found")) {
+                return;
+            } else {
+                e.printStackTrace();
+            }
         }
     }
 }

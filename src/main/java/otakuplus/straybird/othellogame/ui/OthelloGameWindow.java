@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
+import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
+import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
 import otakuplus.straybird.othellogame.network.socketio.GameOperation;
@@ -46,12 +48,11 @@ public class OthelloGameWindow {
     protected Button giveUpButton;
 
     protected ChessBoard chessBoard;
+    protected GameContext gameContext;
 
     public OthelloGameWindow() {
-        if (chessBoard == null) {
-            chessBoard = new ChessBoard();
-            chessBoard.searchSuggestedChessmanPosition();
-        }
+        gameContext = GameContextSigleton.getGameContextInstance();
+        chessBoard = gameContext.getChessBoard();
     }
 
     protected void createContents() {
@@ -160,25 +161,20 @@ public class OthelloGameWindow {
             public void mouseDown(MouseEvent e) {
                 int x = e.x;
                 int y = e.y;
-                if (chessBoard.checkHasNext()) {
-                    if (chessBoard.setChessman(y / 40, x / 40)) {
-                        chessBoard.turnEnd();
-                        chessBoard.searchSuggestedChessmanPosition();
-                    } else {
-                        System.out.println("You must set your chessman.");
-                    }
-                } else {
-                    System.out.println("The current player have to pass.");
-                    chessBoard.turnEnd();
-                    chessBoard.searchSuggestedChessmanPosition();
+
+                GameOperation gameOperation = new GameOperation();
+                gameOperation.setSetX(y/40);
+                gameOperation.setSetY(x/40);
+
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+                if(applicationContext.getCurrentSeatId() == 0){
+                    gameOperation.setOperation(GameOperation.WHITE_SET);
                 }
-
-                blackLabel.setText("Black: " + chessBoard.getBlackNumber());
-                whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
-                blackLabel.redraw();
-                whiteLabel.redraw();
-
-                chessBoardCanvas.redraw();
+                if(applicationContext.getCurrentSeatId() == 1){
+                    gameOperation.setOperation(GameOperation.BLACK_SET);
+                }
+                socketIOClient.doGameOperation(gameOperation);
             }
 
             public void mouseUp(MouseEvent e) {
@@ -212,7 +208,7 @@ public class OthelloGameWindow {
         standByButton.setText("准备");
         standByButton.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent selectionEvent) {
-                standBy();
+                standByOrCancel();
             }
 
             public void widgetDefaultSelected(SelectionEvent selectionEvent) {
@@ -324,11 +320,19 @@ public class OthelloGameWindow {
         }
     }
 
-    public void standBy() {
+    public void standByOrCancel() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
         GameOperation gameOperation = new GameOperation();
         gameOperation.setOperation(GameOperation.STAND_BY);
         socketIOClient.doGameOperation(gameOperation);
+    }
+
+    public void redrawChessBoard(){
+        blackLabel.setText("Black: " + chessBoard.getBlackNumber());
+        whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
+        blackLabel.redraw();
+        whiteLabel.redraw();
+        chessBoardCanvas.redraw();
     }
 }

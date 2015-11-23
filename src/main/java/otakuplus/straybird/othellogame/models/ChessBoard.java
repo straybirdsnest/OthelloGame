@@ -273,7 +273,7 @@ public class ChessBoard {
         if (chessmen != null) {
             if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH
                     && chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
-                if (checkChessmanPosition(x, y) == true) {
+                if (checkChessmanPosition(x, y)) {
                     testAllDirection(x, y, true);
                     chessmen[x][y].setChessman(currentChessman.getChessman());
                     return true;
@@ -298,6 +298,25 @@ public class ChessBoard {
                 flag = true;
             }
         }
+        return flag;
+    }
+
+    public boolean checkGameOver(){
+        int backup = currentChessman.getChessman();
+        boolean flag = true;
+        if(checkHasNext()){
+            flag = false;
+        }
+        if (backup == Chessman.CHESSMAN_BLACK){
+            currentChessman.setChessman(Chessman.CHESSMAN_WHITE);
+        }
+        if(backup == Chessman.CHESSMAN_WHITE){
+            currentChessman.setChessman(Chessman.CHESSMAN_BLACK);
+        }
+        if(checkHasNext()){
+            flag = false;
+        }
+        currentChessman.setChessman(backup);
         return flag;
     }
 

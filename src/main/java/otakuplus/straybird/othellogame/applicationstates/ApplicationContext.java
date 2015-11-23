@@ -40,8 +40,6 @@ public class ApplicationContext {
 
     private ApplicationState applicationState;
 
-    private GameContext gameContext;
-
     public ApplicationContext() {
         applicationState = ApplicationStateSingleton.getInitStateInstance();
         // UI
@@ -63,6 +61,7 @@ public class ApplicationContext {
             gameTable.setGameTableId(i);
             gameTableList.add(gameTable);
         }
+
     }
 
     public static void main(String[] args) {
@@ -168,14 +167,6 @@ public class ApplicationContext {
 
     public ArrayList<UserInformation> getUserInformationList() {
         return userInformationList;
-    }
-
-    public GameContext getGameContext() {
-        return gameContext;
-    }
-
-    public void setGameContext(GameContext gameContext) {
-        this.gameContext = gameContext;
     }
 
     public void startUp() {

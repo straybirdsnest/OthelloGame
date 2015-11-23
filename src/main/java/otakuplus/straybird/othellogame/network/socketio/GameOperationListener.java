@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
-import otakuplus.straybird.othellogame.applicationstates.GameContext;
-import otakuplus.straybird.othellogame.applicationstates.GameContextSigleton;
+import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
+import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class GameOperationListener implements Emitter.Listener {
@@ -52,13 +52,33 @@ public class GameOperationListener implements Emitter.Listener {
                         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                         if (gameOperation.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+                            GameContext gameContext = GameContextSigleton.getGameContextInstance();
                             if (gameOperation.getOperation().equals(GameOperation.STAND_BY)) {
-                                GameContext gameContext = GameContextSigleton.getGameContextInstance();
                                 if (gameOperation.getSeatId() == 0) {
                                     gameContext.whiteStandBy();
                                 }
                                 if (gameOperation.getSeatId() == 1) {
                                     gameContext.blackStandBy();
+                                }
+                            }
+                            if(gameOperation.getOperation().equals(GameOperation.STAND_BY_CANCLE)){
+                                if (gameOperation.getSeatId() == 0) {
+                                    gameContext.whiteStandByCancel();
+                                }
+                                if (gameOperation.getSeatId() == 1) {
+                                    gameContext.blackStandByCancel();
+                                }
+                            }
+                            if(gameOperation.getOperation().equals(GameOperation.BLACK_SET)){
+                                if(gameOperation.getSetX() != null && gameOperation.getSetY() != null){
+                                    gameContext.blackSet(gameOperation.getSetX(), gameOperation.getSetY());
+                                    othelloGameWindow.redrawChessBoard();
+                                }
+                            }
+                            if(gameOperation.getOperation().equals(GameOperation.WHITE_SET)){
+                                if(gameOperation.getSetX() != null && gameOperation.getSetY() != null){
+                                    gameContext.whiteSet(gameOperation.getSetX(), gameOperation.getSetY());
+                                    othelloGameWindow.redrawChessBoard();
                                 }
                             }
                         }

@@ -1,4 +1,4 @@
-package otakuplus.straybird.othellogame.applicationstates;
+package otakuplus.straybird.othellogame.applicationstates.game;
 
 public class GameBlackReadyState implements GameState {
     public void whiteStandBy() {
@@ -6,7 +6,7 @@ public class GameBlackReadyState implements GameState {
         gameContext.changeState(GameStateSingleton.getGameWhiteSetStateInstance());
     }
 
-    public void whiteStandByCancle() {
+    public void whiteStandByCancel() {
 
     }
 
@@ -14,7 +14,7 @@ public class GameBlackReadyState implements GameState {
 
     }
 
-    public void blackStandByCancle() {
+    public void blackStandByCancel() {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         gameContext.changeState(GameStateSingleton.getGameNoReadyStateInstance());
     }
@@ -23,11 +23,11 @@ public class GameBlackReadyState implements GameState {
 
     }
 
-    public void whiteSet(Long x, Long y) {
+    public void whiteSet(Integer x, Integer y) {
 
     }
 
-    public void blackSet(Long x, Long y) {
+    public void blackSet(Integer x, Integer y) {
 
     }
 
