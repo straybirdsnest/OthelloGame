@@ -90,6 +90,48 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         }
     }
 
+    public void draw(){
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+
+        String url = HttpRequestUtil.HOST_BASE_URL
+                + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/draw";
+        HttpResponse response = null;
+        HttpRequest request;
+        applicationContext.updateCsrfToken();
+
+        try {
+            request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
+            response = request.execute();
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                logger.info("draw");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void win() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+
+        String url = HttpRequestUtil.HOST_BASE_URL
+                + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/win";
+        HttpResponse response = null;
+        HttpRequest request;
+        applicationContext.updateCsrfToken();
+
+        try {
+            request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
+            response = request.execute();
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                logger.info("win");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void logout() {
 
     }

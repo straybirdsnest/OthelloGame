@@ -38,6 +38,14 @@ public class ApplicationConnectState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
     public void logout() {
 
     }

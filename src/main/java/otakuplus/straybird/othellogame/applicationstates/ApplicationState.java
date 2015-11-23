@@ -18,6 +18,10 @@ public interface ApplicationState {
 
     public void giveUp();
 
+    public void draw();
+
+    public void win();
+
     public void logout();
 
     public void disconnect();

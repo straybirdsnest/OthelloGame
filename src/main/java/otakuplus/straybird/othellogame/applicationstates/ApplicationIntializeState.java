@@ -48,6 +48,14 @@ public class ApplicationIntializeState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
     public void logout() {
 
     }

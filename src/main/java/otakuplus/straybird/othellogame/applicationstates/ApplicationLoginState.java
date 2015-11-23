@@ -80,6 +80,15 @@ public class ApplicationLoginState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
+
     public void logout() {
 
     }

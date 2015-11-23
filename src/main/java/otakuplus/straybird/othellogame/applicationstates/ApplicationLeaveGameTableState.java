@@ -62,6 +62,14 @@ public class ApplicationLeaveGameTableState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
     public void logout() {
 
     }

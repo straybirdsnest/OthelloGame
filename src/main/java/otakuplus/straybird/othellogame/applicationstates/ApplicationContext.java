@@ -103,6 +103,14 @@ public class ApplicationContext {
         applicationState.giveUp();
     }
 
+    public void draw(){
+        applicationState.draw();
+    }
+
+    public void win(){
+        applicationState.win();
+    }
+
     public void logout() {
         applicationState.logout();
     }

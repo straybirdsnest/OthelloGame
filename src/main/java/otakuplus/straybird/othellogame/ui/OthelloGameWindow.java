@@ -13,7 +13,6 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingl
 import otakuplus.straybird.othellogame.applicationstates.game.*;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.models.Chessman;
-import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.socketio.GameOperation;
 import otakuplus.straybird.othellogame.network.socketio.SendMessage;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
@@ -210,6 +209,15 @@ public class OthelloGameWindow {
         drawGridData.horizontalSpan = 3;
         drawButton.setText("和棋");
         drawButton.setLayoutData(drawGridData);
+        drawButton.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent selectionEvent) {
+                draw();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent selectionEvent) {
+
+            }
+        });
 
         standByButton = new Button(shell, SWT.PUSH | SWT.FILL);
         GridData standByGridData = new GridData();
@@ -346,25 +354,25 @@ public class OthelloGameWindow {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         GameState gameState = gameContext.getGameState();
         GameOperation gameOperation = new GameOperation();
-        if(gameState instanceof GameNoReadyState){
+        if (gameState instanceof GameNoReadyState) {
             standByButton.setText("取消准备");
             gameOperation.setOperation(GameOperation.STAND_BY);
             socketIOClient.doGameOperation(gameOperation);
             shell.pack();
             shell.redraw();
-        }else if(gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1){
+        } else if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1) {
             standByButton.setText("准备");
             gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
             socketIOClient.doGameOperation(gameOperation);
             shell.pack();
             shell.redraw();
-        }else if(gameState instanceof GameWhiteReadyState && applicationContext.getCurrentSeatId() == 0){
+        } else if (gameState instanceof GameWhiteReadyState && applicationContext.getCurrentSeatId() == 0) {
             standByButton.setText("准备");
             gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
             socketIOClient.doGameOperation(gameOperation);
             shell.pack();
             shell.redraw();
-        }else{
+        } else {
             standByButton.setText("取消准备");
             gameOperation.setOperation(GameOperation.STAND_BY);
             socketIOClient.doGameOperation(gameOperation);
@@ -373,7 +381,7 @@ public class OthelloGameWindow {
         }
     }
 
-    public void giveUp(){
+    public void giveUp() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
         GameOperation gameOperation = new GameOperation();
@@ -382,11 +390,47 @@ public class OthelloGameWindow {
         applicationContext.giveUp();
     }
 
+    public void draw() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameOperation gameOperation = new GameOperation();
+        gameOperation.setOperation(GameOperation.DRAW);
+        socketIOClient.doGameOperation(gameOperation);
+    }
+
     public void redrawChessBoard() {
         blackLabel.setText("Black: " + chessBoard.getBlackNumber());
         whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
         blackLabel.redraw();
         whiteLabel.redraw();
         chessBoardCanvas.redraw();
+    }
+
+    public void showGiveUpMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("玩家认输");
+        messageBox.setMessage("对面玩家认输，恭喜您获胜");
+        messageBox.open();
+    }
+
+    public void showDrawMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+        messageBox.setText("玩家求和");
+        messageBox.setMessage("对面玩家请求和棋，请问您同意吗？");
+        int buttonID = messageBox.open();
+        switch (buttonID) {
+            case SWT.YES:
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+                GameOperation gameOperation = new GameOperation();
+                gameOperation.setOperation(GameOperation.DRAW_AGREE);
+                socketIOClient.doGameOperation(gameOperation);
+                applicationContext.draw();
+                break;
+            case SWT.NO:
+                break;
+        }
     }
 }

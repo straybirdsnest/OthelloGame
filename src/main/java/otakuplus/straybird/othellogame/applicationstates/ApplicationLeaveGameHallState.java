@@ -63,6 +63,14 @@ public class ApplicationLeaveGameHallState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
     public void logout() {
 
     }

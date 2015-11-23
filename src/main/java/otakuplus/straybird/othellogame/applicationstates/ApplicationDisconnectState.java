@@ -31,6 +31,14 @@ public class ApplicationDisconnectState implements ApplicationState {
 
     }
 
+    public void draw(){
+
+    }
+
+    public void win() {
+
+    }
+
     public void logout() {
 
     }

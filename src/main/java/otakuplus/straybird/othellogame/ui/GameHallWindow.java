@@ -293,7 +293,7 @@ public class GameHallWindow {
                 }
             }
             shell.pack();
-            userListTable.redraw();
+            shell.redraw();
         }
     }
 

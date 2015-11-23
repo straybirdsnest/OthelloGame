@@ -10,7 +10,6 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
-import otakuplus.straybird.othellogame.applicationstates.game.GameStateSingleton;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class GameOperationListener implements Emitter.Listener {
@@ -64,7 +63,7 @@ public class GameOperationListener implements Emitter.Listener {
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
-                            if(gameOperation.getOperation().equals(GameOperation.STAND_BY_CANCLE)){
+                            if (gameOperation.getOperation().equals(GameOperation.STAND_BY_CANCLE)) {
                                 if (gameOperation.getSeatId() == 0) {
                                     gameContext.whiteStandByCancel();
                                     othelloGameWindow.redrawChessBoard();
@@ -74,20 +73,38 @@ public class GameOperationListener implements Emitter.Listener {
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
-                            if(gameOperation.getOperation().equals(GameOperation.BLACK_SET)){
-                                if(gameOperation.getSetX() != null && gameOperation.getSetY() != null){
+                            if (gameOperation.getOperation().equals(GameOperation.BLACK_SET)) {
+                                if (gameOperation.getSetX() != null && gameOperation.getSetY() != null) {
                                     gameContext.blackSet(gameOperation.getSetX(), gameOperation.getSetY());
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
-                            if(gameOperation.getOperation().equals(GameOperation.WHITE_SET)){
-                                if(gameOperation.getSetX() != null && gameOperation.getSetY() != null){
+                            if (gameOperation.getOperation().equals(GameOperation.WHITE_SET)) {
+                                if (gameOperation.getSetX() != null && gameOperation.getSetY() != null) {
                                     gameContext.whiteSet(gameOperation.getSetX(), gameOperation.getSetY());
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
-                            if(gameOperation.getOperation().equals(GameOperation.GIVE_UP)){
-                                if(gameOperation.getSeatId() != null){
+                            if (gameOperation.getOperation().equals(GameOperation.GIVE_UP)) {
+                                if (gameOperation.getSeatId() != null) {
+                                    gameContext.giveUp();
+                                    othelloGameWindow.redrawChessBoard();
+                                    if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
+                                        othelloGameWindow.showGiveUpMessage();
+                                    }
+                                }
+                            }
+                            if (gameOperation.getOperation().equals(GameOperation.DRAW)) {
+                                if (gameOperation.getSeatId() != null) {
+                                    othelloGameWindow.redrawChessBoard();
+                                    if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
+                                        othelloGameWindow.showDrawMessage();
+                                    }
+                                }
+                            }
+                            if (gameOperation.getOperation().equals(GameOperation.DRAW_AGREE)) {
+                                if (gameOperation.getSeatId() != null) {
+                                    othelloGameWindow.redrawChessBoard();
                                     gameContext.giveUp();
                                     othelloGameWindow.redrawChessBoard();
                                 }
