@@ -49,7 +49,10 @@ public class GameBlackSetState implements GameState {
 
     }
 
-    public void giveUp() {
-
+    public void reboot() {
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        chessBoard.initChessboard();
+        gameContext.changeState(GameStateSingleton.getGameNoReadyStateInstance());
     }
 }

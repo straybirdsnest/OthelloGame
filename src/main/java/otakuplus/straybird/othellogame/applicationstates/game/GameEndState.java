@@ -33,7 +33,7 @@ public class GameEndState implements GameState {
 
     }
 
-    public void giveUp() {
+    public void reboot() {
 
     }
 }

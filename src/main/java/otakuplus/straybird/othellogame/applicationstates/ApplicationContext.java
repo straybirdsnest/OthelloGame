@@ -1,25 +1,26 @@
 package otakuplus.straybird.othellogame.applicationstates;
 
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpStatusCodes;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
-import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
-import otakuplus.straybird.othellogame.network.socketio.SocketIOClientSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class ApplicationContext {
+
+    public static final String SERVER_NAME = "servername";
+    public static final String SERVER_PORT = "serverport";
+    public static final String SOCKET_PORT = "socketport";
+
     // UI Scope
     protected Display display;
     protected Shell loginWindowShell;
@@ -34,6 +35,10 @@ public class ApplicationContext {
     protected ArrayList<GameTable> gameTableList;
     protected ArrayList<UserInformation> userInformationList;
     // Network Scope
+    protected String serverName;
+    protected String serverPort;
+    protected String socketPort;
+
     protected SocketIOClient socketIOClient;
 
     protected List<String> currentCookie;
@@ -47,9 +52,6 @@ public class ApplicationContext {
         loginWindow = new LoginWindow();
         gameHallWindow = new GameHallWindow();
         othelloGameWindow = new OthelloGameWindow();
-        // Initialize Socket.io client
-        socketIOClient = SocketIOClientSingleton.getInstance();
-        socketIOClient.setupSocketIOClient();
         // Model
         currentCookie = null;
         currentUser = null;
@@ -64,8 +66,44 @@ public class ApplicationContext {
 
     }
 
+    public void loadPropertiesFromEnv(){
+        String serverNameEnv = System.getenv(SERVER_NAME);
+        String serverPortEnv = System.getenv(SERVER_PORT);
+        String socketPortEnv = System.getenv(SOCKET_PORT);
+        if(serverName == null){
+            serverName = serverNameEnv;
+        }
+        if(serverPort == null){
+            serverPort = serverPortEnv;
+        }
+        if(socketPort == null){
+            socketPort = socketPortEnv;
+        }
+    }
+
+    public void loadPropertiesFromCommandLineArguments(String[] args){
+        if (args == null) return;
+        Optional<String> _serverName = Arrays.stream(args)
+                .filter(e -> e.contains(SERVER_NAME)).findFirst();
+        if (_serverName.isPresent()) {
+            serverName = _serverName.get().split("=")[1];
+        }
+        Optional<String> _serverPort = Arrays.stream(args)
+                .filter(e -> e.contains(SERVER_PORT)).findFirst();
+        if (_serverPort.isPresent()) {
+            serverPort = _serverPort.get().split("=")[1];
+        }
+        Optional<String> _socketPort = Arrays.stream(args)
+                .filter(e -> e.contains(SOCKET_PORT)).findFirst();
+        if (_socketPort.isPresent()) {
+            socketPort = _socketPort.get().split("=")[1];
+        }
+    }
+
     public static void main(String[] args) {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        applicationContext.loadPropertiesFromEnv();
+        applicationContext.loadPropertiesFromCommandLineArguments(args);
         applicationContext.initialize();
         applicationContext.connect();
         applicationContext.startUp();
@@ -153,10 +191,6 @@ public class ApplicationContext {
         return socketIOClient;
     }
 
-    public List<String> getCurrentCookie() {
-        return currentCookie;
-    }
-
     public User getCurrentUser() {
         return currentUser;
     }
@@ -190,20 +224,24 @@ public class ApplicationContext {
         }
     }
 
-    public void updateCsrfToken() {
-        String url = HttpRequestUtil.HOST_BASE_URL + "/api/csrftoken";
-        HttpResponse response = null;
-        HttpRequest request;
-        try {
-            request = HttpRequestUtil.buildHttpGetRequest(url);
-            response = request.execute();
-            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
-                if (response.getHeaders().getHeaderStringValues("set-cookie").isEmpty() == false) {
-                    currentCookie = response.getHeaders().getHeaderStringValues("set-cookie");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public String getSocketPort() {
+        return socketPort;
     }
+
+    public String getServerPort() {
+        return serverPort;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setCurrentCookie(List<String> currentCookie) {
+        this.currentCookie = currentCookie;
+    }
+
+    public List<String> getCurrentCookie() {
+        return currentCookie;
+    }
+
 }

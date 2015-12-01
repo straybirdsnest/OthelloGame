@@ -15,7 +15,6 @@ import java.time.ZonedDateTime;
 
 public class SocketIOClient {
 
-    public static final String SERVER_URI = "http://localhost:8081";
     public static final String SEND_MESSAGE_EVENT = "sendMessage";
     public static final String GAME_OPERATION_EVENT = "gameOperation";
     public static final String GAME_HALL_ROOM = "gamehall";
@@ -27,11 +26,14 @@ public class SocketIOClient {
 
     public SocketIOClient() {
         createSocketIOClient();
+        setupSocketIOClient();
     }
 
     public void createSocketIOClient() {
         try {
-            socket = IO.socket(SERVER_URI);
+            ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+            String serverUri = "http://"+applicationContext.getServerName()+":"+applicationContext.getSocketPort();
+            socket = IO.socket(serverUri);
         } catch (java.net.URISyntaxException urisyntaxexception) {
 
         }

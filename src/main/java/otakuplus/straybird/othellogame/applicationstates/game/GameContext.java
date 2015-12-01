@@ -48,8 +48,18 @@ public class GameContext {
         gameState.whiteSet(x, y);
     }
 
-    public void giveUp() {
-        gameState.giveUp();
+    public void reboot() {
+        gameState.reboot();
+    }
+
+    public void takeBack(){
+        chessBoard.takeBack();
+        if(chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_BLACK){
+            changeState(GameStateSingleton.getGameBlackSetStateInstance());
+        }
+        if(chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_WHITE){
+            changeState(GameStateSingleton.getGameWhiteSetStateInstance());
+        }
     }
 
     public void changeState(GameState gameState) {

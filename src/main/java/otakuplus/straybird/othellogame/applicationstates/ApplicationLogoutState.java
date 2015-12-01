@@ -55,7 +55,7 @@ public class ApplicationLogoutState implements ApplicationState {
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        applicationContext.updateCsrfToken();
+
         try {
             Logout logout = new Logout();
             logout.setUserId(applicationContext.currentUser.getUserId());

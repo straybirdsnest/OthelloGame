@@ -17,5 +17,5 @@ public interface GameState {
 
     public void endGame();
 
-    public void giveUp();
+    public void reboot();
 }

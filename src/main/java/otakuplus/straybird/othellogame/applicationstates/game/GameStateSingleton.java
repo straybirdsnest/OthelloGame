@@ -21,10 +21,6 @@ public class GameStateSingleton {
         return BlackSetHolder.INSTANCE;
     }
 
-    public static GameGiveUpState getGameGiveUpStateInstance() {
-        return GiveUpHolder.INSTANCE;
-    }
-
     private static class NoReadyHolder {
         static final GameNoReadyState INSTANCE = new GameNoReadyState();
     }
@@ -45,7 +41,4 @@ public class GameStateSingleton {
         static final GameBlackSetState INSTANCE = new GameBlackSetState();
     }
 
-    private static class GiveUpHolder {
-        static final GameGiveUpState INSTANCE = new GameGiveUpState();
-    }
 }

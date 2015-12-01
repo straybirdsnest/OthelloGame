@@ -34,7 +34,6 @@ public class ApplicationLeaveGameHallState implements ApplicationState {
         String url = HttpRequestUtil.HOST_BASE_URL + "/api/gameHall/leave";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());

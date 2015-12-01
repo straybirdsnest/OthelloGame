@@ -87,7 +87,7 @@ public class GameOperationListener implements Emitter.Listener {
                             }
                             if (gameOperation.getOperation().equals(GameOperation.GIVE_UP)) {
                                 if (gameOperation.getSeatId() != null) {
-                                    gameContext.giveUp();
+                                    gameContext.reboot();
                                     othelloGameWindow.redrawChessBoard();
                                     if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
                                         othelloGameWindow.showGiveUpMessage();
@@ -105,7 +105,22 @@ public class GameOperationListener implements Emitter.Listener {
                             if (gameOperation.getOperation().equals(GameOperation.DRAW_AGREE)) {
                                 if (gameOperation.getSeatId() != null) {
                                     othelloGameWindow.redrawChessBoard();
-                                    gameContext.giveUp();
+                                    gameContext.reboot();
+                                    othelloGameWindow.redrawChessBoard();
+                                }
+                            }
+                            if (gameOperation.getOperation().equals(GameOperation.TAKE_BACK)) {
+                                if (gameOperation.getSeatId() != null) {
+                                    othelloGameWindow.redrawChessBoard();
+                                    if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
+                                        othelloGameWindow.showTakeBackMessage();
+                                    }
+                                }
+                            }
+                            if (gameOperation.getOperation().equals(GameOperation.TAKE_BACK_AGREE)) {
+                                if (gameOperation.getSeatId() != null) {
+                                    othelloGameWindow.redrawChessBoard();
+                                    gameContext.takeBack();
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }

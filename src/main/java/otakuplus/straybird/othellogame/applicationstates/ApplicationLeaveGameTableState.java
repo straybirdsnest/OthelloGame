@@ -41,7 +41,6 @@ public class ApplicationLeaveGameTableState implements ApplicationState {
                 + "/api/gameTables/" + gameTableId + "/seats/" + seatId + "/leave";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());

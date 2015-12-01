@@ -45,7 +45,6 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 + "/api/gameTables/" + gameTableId + "/seats/" + seatId + "/enter";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
@@ -77,7 +76,6 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/giveUp";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
@@ -98,7 +96,6 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/draw";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
@@ -119,7 +116,6 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/win";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());

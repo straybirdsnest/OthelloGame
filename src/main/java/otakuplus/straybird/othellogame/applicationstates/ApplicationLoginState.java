@@ -24,7 +24,7 @@ public class ApplicationLoginState implements ApplicationState {
         HttpResponse response = null;
         HttpRequest request;
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        applicationContext.updateCsrfToken();
+
         try {
             Login login = new Login();
             LoginWindow loginWindow = applicationContext.getLoginWinodow();

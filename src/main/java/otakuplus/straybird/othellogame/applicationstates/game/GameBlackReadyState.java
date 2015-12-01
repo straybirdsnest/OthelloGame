@@ -35,7 +35,7 @@ public class GameBlackReadyState implements GameState {
 
     }
 
-    public void giveUp() {
+    public void reboot() {
 
     }
 }

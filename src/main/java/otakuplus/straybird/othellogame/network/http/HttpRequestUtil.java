@@ -15,7 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpRequestUtil {
-    public static final String HOST_BASE_URL = "http://localhost:8080";
+    public static String HOST_BASE_URL = "http://localhost:8080";
+
+    public static void setUpHostBaseUrl(){
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        HOST_BASE_URL = "http://"+applicationContext.getServerName()+":"+applicationContext.getServerPort();
+    }
 
     public static HttpRequest buildHttpGetRequest(String url) {
         HttpRequestFactory requestFactory = HttpRequestFactorySingleton.getHttpRequestFactoryInstance();
@@ -37,6 +42,9 @@ public class HttpRequestUtil {
     }
 
     public static HttpRequest buildHttpPostRequest(String url, Object object) {
+
+        updateCsrfToken();
+
         HttpRequestFactory requestFactory = HttpRequestFactorySingleton.getHttpRequestFactoryInstance();
         GenericUrl genericUrl = new GenericUrl(url);
         HttpRequest request = null;
@@ -170,6 +178,24 @@ public class HttpRequestUtil {
             } else {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void updateCsrfToken() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        String url = HttpRequestUtil.HOST_BASE_URL + "/api/csrftoken";
+        HttpResponse response = null;
+        HttpRequest request;
+        try {
+            request = HttpRequestUtil.buildHttpGetRequest(url);
+            response = request.execute();
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                if (response.getHeaders().getHeaderStringValues("set-cookie").isEmpty() == false) {
+                    applicationContext.setCurrentCookie(response.getHeaders().getHeaderStringValues("set-cookie"));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -36,7 +36,7 @@ public class GameNoReadyState implements GameState {
 
     }
 
-    public void giveUp() {
+    public void reboot() {
 
     }
 }

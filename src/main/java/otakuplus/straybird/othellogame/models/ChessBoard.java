@@ -8,6 +8,11 @@ public class ChessBoard {
      * if a chessman is legal to be set to one position.
      */
     public static final int BOARDWIDTH = 8;
+    public static final int STEP_SIZE = 64;
+
+    public static final int CHESSMAN_NONE = 0;
+    public static final int CHESSMAN_BLACK = 1;
+    public static final int CHESSMAN_WHITE = 2;
 
     private static final int DIRECTION_TOP = 1;
     private static final int DIRECTION_LEFT = 2;
@@ -18,28 +23,21 @@ public class ChessBoard {
     private static final int DIRECTION_LEFTBUTTOM = 7;
     private static final int DIRECTION_RIGHTBUTTOM = 8;
 
-    private Chessman chessmen[][] = null;
+    private int chessmen[][][] = null;
+    private int currentStep = 1;
+
     private int suggestedPosition[] = null;
-    private Chessman currentChessman = null;
+    private int currentChessman = CHESSMAN_BLACK;
 
     private int blackNumber = 0;
     private int whiteNumber = 0;
 
     public ChessBoard() {
-        if (currentChessman == null) {
-            currentChessman = new Chessman();
-        }
         if (suggestedPosition == null) {
             suggestedPosition = new int[64];
         }
         if (chessmen == null) {
-            chessmen = new Chessman[BOARDWIDTH][BOARDWIDTH];
-            int i = 0, j = 0;
-            for (i = 0; i < BOARDWIDTH; i++) {
-                for (j = 0; j < BOARDWIDTH; j++) {
-                    chessmen[i][j] = new Chessman();
-                }
-            }
+            chessmen = new int[STEP_SIZE][BOARDWIDTH][BOARDWIDTH];
         }
         initChessboard();
     }
@@ -58,7 +56,7 @@ public class ChessBoard {
         System.out.println("The chessboard:");
         for (i = 0; i < ChessBoard.BOARDWIDTH; i++) {
             for (j = 0; j < ChessBoard.BOARDWIDTH; j++) {
-                if (chessBoard.getChessman(i, j).getChessman() == Chessman.CHESSMAN_NONE) {
+                if (chessBoard.getChessman(i, j) == CHESSMAN_NONE) {
                     if (suggestedPosition[i * 8 + j] == 1) {
                         System.out.print("SUGGESTED ");
                     } else {
@@ -76,26 +74,36 @@ public class ChessBoard {
      * initChessboard funtion resets the chessboard.
      */
     public void initChessboard() {
-        int i = 0, j = 0;
+        int i = 0, j = 0, k=0;
+        currentStep = 1;
+
         if (chessmen == null) {
             System.err.println("Chessboard initialization failed!");
             return;
         }
         // Clean the chessboard
-        for (i = 0; i < BOARDWIDTH; i++) {
-            for (j = 0; j < BOARDWIDTH; j++) {
-                chessmen[i][j].setChessman(Chessman.CHESSMAN_NONE);
+        for(k=0;k<STEP_SIZE;k++){
+            for (i = 0; i < BOARDWIDTH; i++) {
+                for (j = 0; j < BOARDWIDTH; j++) {
+                    chessmen[k][i][j] = CHESSMAN_NONE;
+                }
             }
         }
         // Set four chessmen
-        chessmen[3][3].setChessman(Chessman.CHESSMAN_WHITE);
-        chessmen[3][4].setChessman(Chessman.CHESSMAN_BLACK);
-        chessmen[4][3].setChessman(Chessman.CHESSMAN_BLACK);
-        chessmen[4][4].setChessman(Chessman.CHESSMAN_WHITE);
+        chessmen[0][3][3] = CHESSMAN_WHITE;
+        chessmen[0][3][4] = CHESSMAN_BLACK;
+        chessmen[0][4][3] = CHESSMAN_BLACK;
+        chessmen[0][4][4] = CHESSMAN_WHITE;
+
+        chessmen[1][3][3] = CHESSMAN_WHITE;
+        chessmen[1][3][4] = CHESSMAN_BLACK;
+        chessmen[1][4][3] = CHESSMAN_BLACK;
+        chessmen[1][4][4] = CHESSMAN_WHITE;
 
         // Set Player's current chessman to black
-        currentChessman.setChessman(Chessman.CHESSMAN_BLACK);
+        currentChessman = CHESSMAN_BLACK;
 
+        searchSuggestedChessmanPosition();
         calculateChessmenNumber();
     }
 
@@ -105,9 +113,9 @@ public class ChessBoard {
         whiteNumber = 0;
         for (i = 0; i < ChessBoard.BOARDWIDTH; i++) {
             for (j = 0; j < ChessBoard.BOARDWIDTH; j++) {
-                if (chessmen[i][j].getChessman() == Chessman.CHESSMAN_BLACK) {
+                if (chessmen[currentStep][i][j] == CHESSMAN_BLACK) {
                     blackNumber++;
-                } else if (chessmen[i][j].getChessman() == Chessman.CHESSMAN_WHITE) {
+                } else if (chessmen[currentStep][i][j] == CHESSMAN_WHITE) {
                     whiteNumber++;
                 }
             }
@@ -137,16 +145,15 @@ public class ChessBoard {
                               int direction, boolean flip) {
         int result = 0;
         if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH) {
-            if (chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
+            if (chessmen[currentStep][x][y] == CHESSMAN_NONE) {
                 return 0;
             } else {
-                if (chessmen[x][y].getChessman() != currentChessman
-                        .getChessman()) {
+                if (chessmen[currentStep][x][y] != currentChessman) {
                     if (direction == DIRECTION_TOP) {
                         result = stepDirection(x - 1, y, true, DIRECTION_TOP,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -154,7 +161,7 @@ public class ChessBoard {
                         result = stepDirection(x, y - 1, true, DIRECTION_LEFT,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -162,7 +169,7 @@ public class ChessBoard {
                         result = stepDirection(x, y + 1, true, DIRECTION_RIGHT,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -170,7 +177,7 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y, true,
                                 DIRECTION_BUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -178,7 +185,7 @@ public class ChessBoard {
                         result = stepDirection(x - 1, y - 1, true,
                                 DIRECTION_LEFTTOP, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -186,7 +193,7 @@ public class ChessBoard {
                         result = stepDirection(x - 1, y + 1, true,
                                 DIRECTION_RIGHTTOP, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -194,7 +201,7 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y - 1, true,
                                 DIRECTION_LEFTBUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -202,15 +209,14 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y + 1, true,
                                 DIRECTION_RIGHTBUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[x][y].flip();
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
                         }
                         return result;
                     }
                 }
             }
             if (findDifferent == true
-                    && chessmen[x][y].getChessman() == currentChessman
-                    .getChessman()) {
+                    && chessmen[currentStep][x][y] == currentChessman) {
                 return 1;
             }
         } else {
@@ -253,7 +259,7 @@ public class ChessBoard {
         for (i = 0; i < BOARDWIDTH; i++) {
             for (j = 0; j < BOARDWIDTH; j++) {
                 position = i * 8 + j;
-                if (chessmen[i][j].getChessman() != Chessman.CHESSMAN_NONE) {
+                if (chessmen[currentStep][i][j] != CHESSMAN_NONE) {
                     suggestedPosition[position] = 0;
                 } else {
                     testAllDirection(i, j, false);
@@ -272,10 +278,10 @@ public class ChessBoard {
     public boolean setChessman(int x, int y) {
         if (chessmen != null) {
             if (0 <= x && x < BOARDWIDTH && 0 <= y && y < BOARDWIDTH
-                    && chessmen[x][y].getChessman() == Chessman.CHESSMAN_NONE) {
+                    && chessmen[currentStep][x][y] == CHESSMAN_NONE) {
                 if (checkChessmanPosition(x, y)) {
                     testAllDirection(x, y, true);
-                    chessmen[x][y].setChessman(currentChessman.getChessman());
+                    chessmen[currentStep][x][y]=currentChessman;
                     return true;
                 }
             }
@@ -302,29 +308,61 @@ public class ChessBoard {
     }
 
     public boolean checkGameOver(){
-        int backup = currentChessman.getChessman();
+        int backup = currentChessman;
         boolean flag = true;
+        searchSuggestedChessmanPosition();
         if(checkHasNext()){
             flag = false;
         }
-        if (backup == Chessman.CHESSMAN_BLACK){
-            currentChessman.setChessman(Chessman.CHESSMAN_WHITE);
+        if (backup == CHESSMAN_BLACK){
+            currentChessman = CHESSMAN_WHITE;
         }
-        if(backup == Chessman.CHESSMAN_WHITE){
-            currentChessman.setChessman(Chessman.CHESSMAN_BLACK);
+        if(backup == CHESSMAN_WHITE){
+            currentChessman = CHESSMAN_BLACK;
         }
+        searchSuggestedChessmanPosition();
         if(checkHasNext()){
             flag = false;
         }
-        currentChessman.setChessman(backup);
+        currentChessman = backup;
+        searchSuggestedChessmanPosition();
         return flag;
+    }
+
+    public void takeBack(){
+        if (currentStep < 3){
+            // 最开始的第一步没下不能悔棋
+            return;
+        }
+        currentStep -= 2;
+        int j = 0, k = 0;
+        for(j = 0; j <BOARDWIDTH;j++) {
+            for (k = 0; k < BOARDWIDTH; k++) {
+                chessmen[currentStep][j][k] = chessmen[currentStep-1][j][k];
+            }
+        }
+
+        calculateChessmenNumber();
+        searchSuggestedChessmanPosition();
     }
 
     public void turnEnd() {
         if (checkHasNext() == true) {
-            currentChessman.flip();
+            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+            currentStep++;
+            for(int i=0;i<BOARDWIDTH;i++){
+                for(int j=0;j<BOARDWIDTH;j++){
+                    chessmen[currentStep][i][j] = chessmen[currentStep-1][i][j];
+                }
+            }
         } else {
-            currentChessman.flip();
+            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+            currentStep++;
+            for(int i=0;i<BOARDWIDTH;i++){
+                for(int j=0;j<BOARDWIDTH;j++){
+                    chessmen[currentStep][i][j] = chessmen[currentStep-1][i][j];
+                }
+            }
         }
         calculateChessmenNumber();
     }
@@ -336,12 +374,12 @@ public class ChessBoard {
      * @param y the column position of the chessman, from 0 to BOARDWIDTH - 1
      * @return the chessman of position (x,y);
      */
-    public Chessman getChessman(int x, int y) {
+    public int getChessman(int x, int y) {
         if (0 <= x && x < 8 && 0 <= y && y < 8) {
-            return chessmen[x][y];
+            return chessmen[currentStep][x][y];
         } else {
             System.err.println("out of index.");
-            return null;
+            return -1;
         }
     }
 
@@ -357,8 +395,12 @@ public class ChessBoard {
         return suggestedPosition;
     }
 
-    public Chessman getCurrentChessman(){
+    public int getCurrentChessman(){
         return currentChessman;
+    }
+
+    public int getCurrentStep(){
+        return currentStep;
     }
 
 }

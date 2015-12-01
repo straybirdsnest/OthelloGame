@@ -31,7 +31,6 @@ public class ApplicationEnterGameHallState implements ApplicationState {
         String url = HttpRequestUtil.HOST_BASE_URL + "/api/gameHall/enter";
         HttpResponse response = null;
         HttpRequest request;
-        applicationContext.updateCsrfToken();
 
         try {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
