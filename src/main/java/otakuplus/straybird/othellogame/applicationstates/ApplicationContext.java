@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Shell;
 import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
+import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.network.socketio.SocketIOClient;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
 import otakuplus.straybird.othellogame.ui.LoginWindow;
@@ -20,6 +21,8 @@ public class ApplicationContext {
     public static final String SERVER_NAME = "servername";
     public static final String SERVER_PORT = "serverport";
     public static final String SOCKET_PORT = "socketport";
+
+    public static final int REFRESH_TIME= 10000;
 
     // UI Scope
     protected Display display;
@@ -38,6 +41,21 @@ public class ApplicationContext {
     protected String serverName;
     protected String serverPort;
     protected String socketPort;
+
+    protected Runnable timer = new Runnable() {
+        @Override
+        public void run() {
+            HttpRequestUtil.updateGameTableList();
+            HttpRequestUtil.updateUserOnlineList();
+            display.asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    gameHallWindow.notifyGameTableListUpdate();
+                    gameHallWindow.notifyUserListUpdate();
+                }
+            });
+        }
+    };
 
     protected SocketIOClient socketIOClient;
 
@@ -242,6 +260,14 @@ public class ApplicationContext {
 
     public List<String> getCurrentCookie() {
         return currentCookie;
+    }
+
+    public void startRefresh(){
+        display.timerExec(REFRESH_TIME , timer);
+    }
+
+    public void stopRefresh(){
+        display.timerExec(-1, timer);
     }
 
 }

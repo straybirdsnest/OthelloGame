@@ -39,6 +39,7 @@ public class ApplicationEnterGameHallState implements ApplicationState {
                 loginWindow.hide();
                 gameHallWindow.show();
                 System.out.println("enter game hall");
+                applicationContext.startRefresh();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,6 +49,7 @@ public class ApplicationEnterGameHallState implements ApplicationState {
     public void leaveGameHall() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         applicationContext.changeState(ApplicationStateSingleton.getLeaveGameHallStateInstance());
+        applicationContext.stopRefresh();
         applicationContext.leaveGameHall();
     }
 

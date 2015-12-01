@@ -10,6 +10,7 @@ import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
+import otakuplus.straybird.othellogame.models.ChessBoard;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class GameOperationListener implements Emitter.Listener {
@@ -53,6 +54,7 @@ public class GameOperationListener implements Emitter.Listener {
                         if (gameOperation.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
                             GameContext gameContext = GameContextSigleton.getGameContextInstance();
+                            ChessBoard chessBoard = gameContext.getChessBoard();
                             if (gameOperation.getOperation().equals(GameOperation.STAND_BY)) {
                                 if (gameOperation.getSeatId() == 0) {
                                     gameContext.whiteStandBy();
@@ -124,6 +126,13 @@ public class GameOperationListener implements Emitter.Listener {
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
+
+                            if(chessBoard.checkGameOver()){
+                                if(chessBoard.getBlackNumber()> chessBoard.getWhiteNumber()){
+
+                                }
+                            }
+
                         }
                     }
                 });
