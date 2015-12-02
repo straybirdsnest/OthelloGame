@@ -294,16 +294,21 @@ public class OthelloGameWindow {
 
             public void handleEvent(Event event) {
                 event.doit = false;
-                MessageBox messageBox = new MessageBox(shell,
-                        SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
-                messageBox.setText("确认离开");
-                messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
-                int result = messageBox.open();
-                if (result == SWT.YES) {
-                    ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-                    applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
-                            applicationContext.getCurrentSeatId());
+                GameContext gameContext = GameContextSigleton.getGameContextInstance();
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                GameState gameState = gameContext.getGameState();
+                if (gameState instanceof GameWhiteSetState || gameState instanceof GameBlackSetState) {
+                    MessageBox messageBox = new MessageBox(shell,
+                            SWT.APPLICATION_MODAL | SWT.YES | SWT.NO);
+                    messageBox.setText("确认离开");
+                    messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
+                    int result = messageBox.open();
+                    if (result == SWT.YES) {
+                        giveUp();
+                    }
                 }
+                applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
+                        applicationContext.getCurrentSeatId());
             }
         });
 
@@ -335,9 +340,11 @@ public class OthelloGameWindow {
 
     public void sendMessage() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        if (messageText.getText() != null) {
+        if (messageText.getText().length()>0) {
             applicationContext.getSocketIOClient().sendeMessage(
                     SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId(), messageText.getText());
+            messageText.setText("");
+            messageText.redraw();
         }
     }
 
@@ -408,7 +415,7 @@ public class OthelloGameWindow {
         socketIOClient.doGameOperation(gameOperation);
     }
 
-    public void takeBack(){
+    public void takeBack() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
         GameOperation gameOperation = new GameOperation();
@@ -421,18 +428,18 @@ public class OthelloGameWindow {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         GameState gameState = gameContext.getGameState();
-        if(gameState instanceof GameBlackSetState || gameState instanceof GameWhiteSetState){
+        if (gameState instanceof GameBlackSetState || gameState instanceof GameWhiteSetState) {
             standByButton.setEnabled(false);
             giveUpButton.setEnabled(true);
             drawButton.setEnabled(true);
-            if(gameState instanceof GameBlackSetState && applicationContext.getCurrentSeatId() == 1){
+            if (gameState instanceof GameBlackSetState && applicationContext.getCurrentSeatId() == 1) {
                 takeBackButton.setEnabled(true);
-            }else if(gameState instanceof GameWhiteSetState && applicationContext.getCurrentSeatId() == 0){
+            } else if (gameState instanceof GameWhiteSetState && applicationContext.getCurrentSeatId() == 0) {
                 takeBackButton.setEnabled(true);
-            }else{
+            } else {
                 takeBackButton.setEnabled(false);
             }
-        }else{
+        } else {
             standByButton.setEnabled(true);
             giveUpButton.setEnabled(false);
             drawButton.setEnabled(false);

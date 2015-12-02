@@ -128,9 +128,23 @@ public class GameOperationListener implements Emitter.Listener {
                             }
 
                             if(chessBoard.checkGameOver()){
-                                if(chessBoard.getBlackNumber()> chessBoard.getWhiteNumber()){
-
+                                int white = chessBoard.getWhiteNumber();
+                                int black = chessBoard.getBlackNumber();
+                                if(black > white){
+                                    if(applicationContext.getCurrentSeatId() == 1){
+                                        applicationContext.win();
+                                    }
+                                }else if(white > black){
+                                    if(applicationContext.getCurrentSeatId() == 0){
+                                        applicationContext.win();
+                                    }
+                                }else{
+                                    if(applicationContext.getCurrentSeatId() == 1){
+                                        applicationContext.draw();
+                                    }
                                 }
+                            }else if(chessBoard.checkHasNext() == false) {
+
                             }
 
                         }

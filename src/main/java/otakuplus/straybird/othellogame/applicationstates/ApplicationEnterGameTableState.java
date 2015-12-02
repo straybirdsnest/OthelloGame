@@ -58,6 +58,9 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 logger.debug("enter game table");
             }
         } catch (IOException e) {
+            if(e.getMessage().equals("400 Bad Request")){
+                logger.info("error while enter table");
+            }
             e.printStackTrace();
         }
     }

@@ -305,8 +305,10 @@ public class GameHallWindow {
 
     public void sendMessage() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        if (messageText.getText() != null) {
+        if (messageText.getText().length()>0) {
             applicationContext.getSocketIOClient().sendeMessage(SocketIOClient.GAME_HALL_ROOM, messageText.getText());
+            messageText.setText("");
+            messageText.redraw();
         }
     }
 
