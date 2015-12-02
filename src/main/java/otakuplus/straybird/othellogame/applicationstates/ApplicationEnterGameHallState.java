@@ -36,6 +36,10 @@ public class ApplicationEnterGameHallState implements ApplicationState {
             request = HttpRequestUtil.buildHttpPostRequest(url, applicationContext.currentUser.getUserId());
             response = request.execute();
             if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                HttpRequestUtil.updateUserOnlineList();
+                HttpRequestUtil.updateGameTableList();
+                gameHallWindow.notifyUserListUpdate();
+                gameHallWindow.notifyGameTableListUpdate();
                 loginWindow.hide();
                 gameHallWindow.show();
                 System.out.println("enter game hall");
@@ -67,7 +71,7 @@ public class ApplicationEnterGameHallState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -83,7 +87,7 @@ public class ApplicationEnterGameHallState implements ApplicationState {
 
     }
 
-    public void destory() {
+    public void destroy() {
 
     }
 }

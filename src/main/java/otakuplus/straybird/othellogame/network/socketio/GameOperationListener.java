@@ -127,24 +127,35 @@ public class GameOperationListener implements Emitter.Listener {
                                 }
                             }
 
-                            if(chessBoard.checkGameOver()){
+                            if (chessBoard.checkGameOver()) {
                                 int white = chessBoard.getWhiteNumber();
                                 int black = chessBoard.getBlackNumber();
-                                if(black > white){
-                                    if(applicationContext.getCurrentSeatId() == 1){
+                                if (black > white) {
+                                    if (applicationContext.getCurrentSeatId() == 1) {
+                                        othelloGameWindow.showWinMessage();
                                         applicationContext.win();
                                     }
-                                }else if(white > black){
-                                    if(applicationContext.getCurrentSeatId() == 0){
+                                } else if (white > black) {
+                                    if (applicationContext.getCurrentSeatId() == 0) {
+                                        othelloGameWindow.showWinMessage();
                                         applicationContext.win();
                                     }
-                                }else{
-                                    if(applicationContext.getCurrentSeatId() == 1){
+                                } else {
+                                    if (applicationContext.getCurrentSeatId() == 1) {
                                         applicationContext.draw();
                                     }
                                 }
-                            }else if(chessBoard.checkHasNext() == false) {
-
+                                gameContext.reboot();
+                                othelloGameWindow.redrawChessBoard();
+                            } else if (!chessBoard.checkHasNext()) {
+                                if (chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_BLACK && applicationContext.getCurrentSeatId() == 1) {
+                                    othelloGameWindow.showSkipMessage();
+                                    othelloGameWindow.redrawChessBoard();
+                                }
+                                if (chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_WHITE && applicationContext.getCurrentSeatId() == 0) {
+                                    othelloGameWindow.showSkipMessage();
+                                    othelloGameWindow.redrawChessBoard();
+                                }
                             }
 
                         }

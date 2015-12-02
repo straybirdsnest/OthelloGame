@@ -41,7 +41,7 @@ public class ApplicationLogoutState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -76,7 +76,7 @@ public class ApplicationLogoutState implements ApplicationState {
 
     }
 
-    public void destory() {
+    public void destroy() {
 
     }
 }

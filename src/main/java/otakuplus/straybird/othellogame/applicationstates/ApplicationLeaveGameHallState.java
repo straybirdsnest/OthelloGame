@@ -62,7 +62,7 @@ public class ApplicationLeaveGameHallState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -78,7 +78,7 @@ public class ApplicationLeaveGameHallState implements ApplicationState {
 
     }
 
-    public void destory() {
+    public void destroy() {
 
     }
 }

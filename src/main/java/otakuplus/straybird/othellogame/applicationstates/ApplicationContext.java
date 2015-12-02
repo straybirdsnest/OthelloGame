@@ -22,7 +22,7 @@ public class ApplicationContext {
     public static final String SERVER_PORT = "serverport";
     public static final String SOCKET_PORT = "socketport";
 
-    public static final int REFRESH_TIME= 10000;
+    public static final int REFRESH_TIME = 10000;
 
     // UI Scope
     protected Display display;
@@ -41,7 +41,8 @@ public class ApplicationContext {
     protected String serverName;
     protected String serverPort;
     protected String socketPort;
-
+    protected SocketIOClient socketIOClient;
+    protected List<String> currentCookie;
     protected Runnable timer = new Runnable() {
         @Override
         public void run() {
@@ -56,11 +57,6 @@ public class ApplicationContext {
             });
         }
     };
-
-    protected SocketIOClient socketIOClient;
-
-    protected List<String> currentCookie;
-
     private ApplicationState applicationState;
 
     public ApplicationContext() {
@@ -84,22 +80,31 @@ public class ApplicationContext {
 
     }
 
-    public void loadPropertiesFromEnv(){
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        applicationContext.loadPropertiesFromEnv();
+        applicationContext.loadPropertiesFromCommandLineArguments(args);
+        applicationContext.initialize();
+        applicationContext.connect();
+        applicationContext.startUp();
+    }
+
+    public void loadPropertiesFromEnv() {
         String serverNameEnv = System.getenv(SERVER_NAME);
         String serverPortEnv = System.getenv(SERVER_PORT);
         String socketPortEnv = System.getenv(SOCKET_PORT);
-        if(serverName == null){
+        if (serverName == null) {
             serverName = serverNameEnv;
         }
-        if(serverPort == null){
+        if (serverPort == null) {
             serverPort = serverPortEnv;
         }
-        if(socketPort == null){
+        if (socketPort == null) {
             socketPort = socketPortEnv;
         }
     }
 
-    public void loadPropertiesFromCommandLineArguments(String[] args){
+    public void loadPropertiesFromCommandLineArguments(String[] args) {
         if (args == null) return;
         Optional<String> _serverName = Arrays.stream(args)
                 .filter(e -> e.contains(SERVER_NAME)).findFirst();
@@ -116,15 +121,6 @@ public class ApplicationContext {
         if (_socketPort.isPresent()) {
             socketPort = _socketPort.get().split("=")[1];
         }
-    }
-
-    public static void main(String[] args) {
-        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        applicationContext.loadPropertiesFromEnv();
-        applicationContext.loadPropertiesFromCommandLineArguments(args);
-        applicationContext.initialize();
-        applicationContext.connect();
-        applicationContext.startUp();
     }
 
     public void initialize() {
@@ -159,11 +155,11 @@ public class ApplicationContext {
         applicationState.giveUp();
     }
 
-    public void draw(){
+    public void draw() {
         applicationState.draw();
     }
 
-    public void win(){
+    public void win() {
         applicationState.win();
     }
 
@@ -176,7 +172,7 @@ public class ApplicationContext {
     }
 
     public void destory() {
-        applicationState.destory();
+        applicationState.destroy();
     }
 
     public void changeState(ApplicationState applicationState) {
@@ -254,19 +250,19 @@ public class ApplicationContext {
         return serverName;
     }
 
-    public void setCurrentCookie(List<String> currentCookie) {
-        this.currentCookie = currentCookie;
-    }
-
     public List<String> getCurrentCookie() {
         return currentCookie;
     }
 
-    public void startRefresh(){
-        display.timerExec(REFRESH_TIME , timer);
+    public void setCurrentCookie(List<String> currentCookie) {
+        this.currentCookie = currentCookie;
     }
 
-    public void stopRefresh(){
+    public void startRefresh() {
+        display.timerExec(REFRESH_TIME, timer);
+    }
+
+    public void stopRefresh() {
         display.timerExec(-1, timer);
     }
 

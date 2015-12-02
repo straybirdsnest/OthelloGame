@@ -33,6 +33,8 @@ public class OthelloGameWindow {
 
     protected Canvas chessBoardCanvas;
     protected Image chessBoardImage;
+    protected Image blackSetImage;
+    protected Image whiteSetImage;
 
     protected Text gameChat;
     protected Text messageText;
@@ -55,7 +57,7 @@ public class OthelloGameWindow {
 
     protected void createContents() {
         shell = new Shell(display, SWT.SHELL_TRIM);
-        shell.setText("OthelloGame");
+        shell.setText("奥赛罗棋");
         shell.setLocation((Display.getDefault().getBounds().width - 400) / 2,
                 (Display.getDefault().getBounds().height - 400) / 2);
         GridLayout othellGameLayout = new GridLayout();
@@ -85,13 +87,13 @@ public class OthelloGameWindow {
         whiteLabel = new Label(shell, SWT.CENTER);
         GridData whiteLabelGridData = new GridData();
         whiteLabelGridData.horizontalSpan = 3;
-        whiteLabel.setText("White: 02");
+        whiteLabel.setText("白方: 02");
         whiteLabel.setLayoutData(whiteLabelGridData);
 
         blackLabel = new Label(shell, SWT.CENTER);
         GridData blackLabelGridData = new GridData();
         blackLabelGridData.horizontalSpan = 3;
-        blackLabel.setText("Black: 02");
+        blackLabel.setText("黑方: 02");
         blackLabel.setLayoutData(blackLabelGridData);
 
         whiteTimer = new Label(shell, SWT.CENTER);
@@ -107,6 +109,8 @@ public class OthelloGameWindow {
         blackTimer.setLayoutData(blackTimerGridData);
 
         chessBoardImage = new Image(Display.getDefault(), "Chessboard.png");
+        blackSetImage = new Image(Display.getDefault(), "BlackSet.png");
+
         chessBoardCanvas.addPaintListener(new PaintListener() {
             public void paintControl(PaintEvent e) {
                 // drawing chessboard
@@ -119,12 +123,7 @@ public class OthelloGameWindow {
                 for (i = 0; i < 64; i++) {
                     chessmanStat = chessBoard.getChessman(i / 8, i % 8);
                     if (chessmanStat == ChessBoard.CHESSMAN_BLACK) {
-                        e.gc.setBackground(Display.getDefault().getSystemColor(
-                                SWT.COLOR_GREEN));
-                        e.gc.drawOval((i % 8) * 40 + 4, (i / 8) * 40 + 4, 32,
-                                32);
-                        e.gc.fillOval((i % 8) * 40 + 5, (i / 8) * 40 + 5, 31,
-                                31);
+                        e.gc.drawImage(blackSetImage, 0, 0, blackSetImage.getBounds().width, blackSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
                     } else if (chessmanStat == ChessBoard.CHESSMAN_WHITE) {
                         e.gc.setBackground(Display.getDefault().getSystemColor(
                                 SWT.COLOR_BLUE));
@@ -138,7 +137,8 @@ public class OthelloGameWindow {
                 // drawing suggested position
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                 Integer seatId = applicationContext.getCurrentSeatId();
-                if (seatId != null) {
+                GameState gameState = gameContext.getGameState();
+                if (applicationContext.getCurrentSeatId() != null && (gameState instanceof GameWhiteSetState || gameState instanceof GameBlackSetState)) {
                     int current = chessBoard.getCurrentChessman();
                     if ((current == ChessBoard.CHESSMAN_BLACK && seatId == 1) || (current == ChessBoard.CHESSMAN_WHITE && seatId == 0)) {
                         int suggestedPosition[] = chessBoard.getSuggestedPosition();
@@ -174,13 +174,20 @@ public class OthelloGameWindow {
                 SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
                 GameContext gameContext = GameContextSigleton.getGameContextInstance();
                 GameState gameState = gameContext.getGameState();
-                if (applicationContext.getCurrentSeatId() == 0 && gameState instanceof GameWhiteSetState) {
-                    gameOperation.setOperation(GameOperation.WHITE_SET);
-                    socketIOClient.doGameOperation(gameOperation);
-                }
-                if (applicationContext.getCurrentSeatId() == 1 && gameState instanceof GameBlackSetState) {
-                    gameOperation.setOperation(GameOperation.BLACK_SET);
-                    socketIOClient.doGameOperation(gameOperation);
+                if (chessBoard.checkHasNext()) {
+                    int suggest[] = chessBoard.getSuggestedPosition();
+                    if (suggest[(y / 40) * 8 + (x / 40)] == 0) {
+                        showWrongPositionMessage();
+                        return;
+                    }
+                    if (applicationContext.getCurrentSeatId() == 0 && gameState instanceof GameWhiteSetState) {
+                        gameOperation.setOperation(GameOperation.WHITE_SET);
+                        socketIOClient.doGameOperation(gameOperation);
+                    }
+                    if (applicationContext.getCurrentSeatId() == 1 && gameState instanceof GameBlackSetState) {
+                        gameOperation.setOperation(GameOperation.BLACK_SET);
+                        socketIOClient.doGameOperation(gameOperation);
+                    }
                 }
             }
 
@@ -340,7 +347,7 @@ public class OthelloGameWindow {
 
     public void sendMessage() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        if (messageText.getText().length()>0) {
+        if (messageText.getText().length() > 0) {
             applicationContext.getSocketIOClient().sendeMessage(
                     SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId(), messageText.getText());
             messageText.setText("");
@@ -371,13 +378,7 @@ public class OthelloGameWindow {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         GameState gameState = gameContext.getGameState();
         GameOperation gameOperation = new GameOperation();
-        if (gameState instanceof GameNoReadyState) {
-            standByButton.setText("取消准备");
-            gameOperation.setOperation(GameOperation.STAND_BY);
-            socketIOClient.doGameOperation(gameOperation);
-            shell.pack();
-            shell.redraw();
-        } else if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1) {
+        if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1) {
             standByButton.setText("准备");
             gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
             socketIOClient.doGameOperation(gameOperation);
@@ -441,22 +442,47 @@ public class OthelloGameWindow {
             }
         } else {
             standByButton.setEnabled(true);
+            standByButton.setText("准备");
             giveUpButton.setEnabled(false);
             drawButton.setEnabled(false);
             takeBackButton.setEnabled(false);
         }
-        blackLabel.setText("Black: " + chessBoard.getBlackNumber());
-        whiteLabel.setText("White: " + chessBoard.getWhiteNumber());
+        blackLabel.setText("黑方: " + chessBoard.getBlackNumber());
+        whiteLabel.setText("白方: " + chessBoard.getWhiteNumber());
         chessBoardCanvas.redraw();
         shell.pack();
         shell.redraw();
+    }
+
+    public void showSkipMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏提示");
+        messageBox.setMessage("您当前无子可下，系统将跳过您的回合。");
+        messageBox.open();
+    }
+
+    public void showWrongPositionMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏提示");
+        messageBox.setMessage("请将棋子下在提示的位置内。");
+        messageBox.open();
     }
 
     public void showWinMessage() {
         MessageBox messageBox = new MessageBox(shell,
                 SWT.APPLICATION_MODAL | SWT.OK);
         messageBox.setText("游戏结束");
-        messageBox.setMessage("恭喜您获得本次游戏的胜利");
+        messageBox.setMessage("恭喜您获得本次游戏的胜利!");
+        messageBox.open();
+    }
+
+    public void showLostMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏结束");
+        messageBox.setMessage("经过艰苦的对垒您还是输了，太可惜了。");
         messageBox.open();
     }
 

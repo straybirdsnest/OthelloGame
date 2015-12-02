@@ -33,7 +33,7 @@ public class ApplicationDestoryState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -48,7 +48,7 @@ public class ApplicationDestoryState implements ApplicationState {
     public void disconnect() {
     }
 
-    public void destory() {
+    public void destroy() {
         GameHallWindow gameHallWindow = ApplicationContextSingleton.getInstance().getGameHallWindow();
         OthelloGameWindow othelloGameWindow = ApplicationContextSingleton.getInstance().getOthelloGameWindow();
         LoginWindow loginWindow = ApplicationContextSingleton.getInstance().getLoginWinodow();

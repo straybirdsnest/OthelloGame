@@ -31,7 +31,7 @@ public class ApplicationDisconnectState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -52,7 +52,7 @@ public class ApplicationDisconnectState implements ApplicationState {
         applicationContext.destory();
     }
 
-    public void destory() {
+    public void destroy() {
     }
 
 }

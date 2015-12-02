@@ -38,7 +38,7 @@ public class ApplicationConnectState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -54,7 +54,7 @@ public class ApplicationConnectState implements ApplicationState {
 
     }
 
-    public void destory() {
+    public void destroy() {
 
     }
 

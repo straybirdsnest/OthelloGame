@@ -32,7 +32,7 @@ public class SocketIOClient {
     public void createSocketIOClient() {
         try {
             ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-            String serverUri = "http://"+applicationContext.getServerName()+":"+applicationContext.getSocketPort();
+            String serverUri = "http://" + applicationContext.getServerName() + ":" + applicationContext.getSocketPort();
             socket = IO.socket(serverUri);
         } catch (java.net.URISyntaxException urisyntaxexception) {
 

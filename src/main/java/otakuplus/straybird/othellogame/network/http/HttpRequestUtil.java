@@ -17,9 +17,9 @@ import java.util.List;
 public class HttpRequestUtil {
     public static String HOST_BASE_URL = "http://localhost:8080";
 
-    public static void setUpHostBaseUrl(){
+    public static void setUpHostBaseUrl() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
-        HOST_BASE_URL = "http://"+applicationContext.getServerName()+":"+applicationContext.getServerPort();
+        HOST_BASE_URL = "http://" + applicationContext.getServerName() + ":" + applicationContext.getServerPort();
     }
 
     public static HttpRequest buildHttpGetRequest(String url) {

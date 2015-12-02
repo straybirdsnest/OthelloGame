@@ -55,7 +55,7 @@ public class ApplicationIntializeState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -70,7 +70,7 @@ public class ApplicationIntializeState implements ApplicationState {
     public void disconnect() {
     }
 
-    public void destory() {
+    public void destroy() {
     }
 
 }

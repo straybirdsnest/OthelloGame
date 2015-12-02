@@ -58,7 +58,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 logger.debug("enter game table");
             }
         } catch (IOException e) {
-            if(e.getMessage().equals("400 Bad Request")){
+            if (e.getMessage().equals("400 Bad Request")) {
                 logger.info("error while enter table");
             }
             e.printStackTrace();
@@ -71,7 +71,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         applicationContext.leaveGameTable(gameTableId, seatId);
     }
 
-    public void giveUp(){
+    public void giveUp() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
@@ -91,7 +91,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         }
     }
 
-    public void draw(){
+    public void draw() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
@@ -139,7 +139,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
 
     }
 
-    public void destory() {
+    public void destroy() {
 
     }
 }

@@ -26,6 +26,6 @@ public interface ApplicationState {
 
     public void disconnect();
 
-    public void destory();
+    public void destroy();
 
 }

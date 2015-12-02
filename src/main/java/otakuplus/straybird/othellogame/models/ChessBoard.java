@@ -74,7 +74,7 @@ public class ChessBoard {
      * initChessboard funtion resets the chessboard.
      */
     public void initChessboard() {
-        int i = 0, j = 0, k=0;
+        int i = 0, j = 0, k = 0;
         currentStep = 1;
 
         if (chessmen == null) {
@@ -82,7 +82,7 @@ public class ChessBoard {
             return;
         }
         // Clean the chessboard
-        for(k=0;k<STEP_SIZE;k++){
+        for (k = 0; k < STEP_SIZE; k++) {
             for (i = 0; i < BOARDWIDTH; i++) {
                 for (j = 0; j < BOARDWIDTH; j++) {
                     chessmen[k][i][j] = CHESSMAN_NONE;
@@ -153,7 +153,7 @@ public class ChessBoard {
                         result = stepDirection(x - 1, y, true, DIRECTION_TOP,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -161,7 +161,7 @@ public class ChessBoard {
                         result = stepDirection(x, y - 1, true, DIRECTION_LEFT,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -169,7 +169,7 @@ public class ChessBoard {
                         result = stepDirection(x, y + 1, true, DIRECTION_RIGHT,
                                 flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -177,7 +177,7 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y, true,
                                 DIRECTION_BUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -185,7 +185,7 @@ public class ChessBoard {
                         result = stepDirection(x - 1, y - 1, true,
                                 DIRECTION_LEFTTOP, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -193,7 +193,7 @@ public class ChessBoard {
                         result = stepDirection(x - 1, y + 1, true,
                                 DIRECTION_RIGHTTOP, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -201,7 +201,7 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y - 1, true,
                                 DIRECTION_LEFTBUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -209,7 +209,7 @@ public class ChessBoard {
                         result = stepDirection(x + 1, y + 1, true,
                                 DIRECTION_RIGHTBUTTOM, flip);
                         if (result == 1 && flip == true) {
-                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+                            chessmen[currentStep][x][y] = (chessmen[currentStep][x][y] == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
                         }
                         return result;
                     }
@@ -281,7 +281,7 @@ public class ChessBoard {
                     && chessmen[currentStep][x][y] == CHESSMAN_NONE) {
                 if (checkChessmanPosition(x, y)) {
                     testAllDirection(x, y, true);
-                    chessmen[currentStep][x][y]=currentChessman;
+                    chessmen[currentStep][x][y] = currentChessman;
                     return true;
                 }
             }
@@ -307,21 +307,21 @@ public class ChessBoard {
         return flag;
     }
 
-    public boolean checkGameOver(){
+    public boolean checkGameOver() {
         int backup = currentChessman;
         boolean flag = true;
         searchSuggestedChessmanPosition();
-        if(checkHasNext()){
+        if (checkHasNext()) {
             flag = false;
         }
-        if (backup == CHESSMAN_BLACK){
+        if (backup == CHESSMAN_BLACK) {
             currentChessman = CHESSMAN_WHITE;
         }
-        if(backup == CHESSMAN_WHITE){
+        if (backup == CHESSMAN_WHITE) {
             currentChessman = CHESSMAN_BLACK;
         }
         searchSuggestedChessmanPosition();
-        if(checkHasNext()){
+        if (checkHasNext()) {
             flag = false;
         }
         currentChessman = backup;
@@ -329,16 +329,16 @@ public class ChessBoard {
         return flag;
     }
 
-    public void takeBack(){
-        if (currentStep < 3){
+    public void takeBack() {
+        if (currentStep < 3) {
             // 最开始的第一步没下不能悔棋
             return;
         }
         currentStep -= 2;
         int j = 0, k = 0;
-        for(j = 0; j <BOARDWIDTH;j++) {
+        for (j = 0; j < BOARDWIDTH; j++) {
             for (k = 0; k < BOARDWIDTH; k++) {
-                chessmen[currentStep][j][k] = chessmen[currentStep-1][j][k];
+                chessmen[currentStep][j][k] = chessmen[currentStep - 1][j][k];
             }
         }
 
@@ -348,19 +348,19 @@ public class ChessBoard {
 
     public void turnEnd() {
         if (checkHasNext() == true) {
-            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
             currentStep++;
-            for(int i=0;i<BOARDWIDTH;i++){
-                for(int j=0;j<BOARDWIDTH;j++){
-                    chessmen[currentStep][i][j] = chessmen[currentStep-1][i][j];
+            for (int i = 0; i < BOARDWIDTH; i++) {
+                for (int j = 0; j < BOARDWIDTH; j++) {
+                    chessmen[currentStep][i][j] = chessmen[currentStep - 1][i][j];
                 }
             }
         } else {
-            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE: CHESSMAN_BLACK;
+            currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
             currentStep++;
-            for(int i=0;i<BOARDWIDTH;i++){
-                for(int j=0;j<BOARDWIDTH;j++){
-                    chessmen[currentStep][i][j] = chessmen[currentStep-1][i][j];
+            for (int i = 0; i < BOARDWIDTH; i++) {
+                for (int j = 0; j < BOARDWIDTH; j++) {
+                    chessmen[currentStep][i][j] = chessmen[currentStep - 1][i][j];
                 }
             }
         }
@@ -395,11 +395,11 @@ public class ChessBoard {
         return suggestedPosition;
     }
 
-    public int getCurrentChessman(){
+    public int getCurrentChessman() {
         return currentChessman;
     }
 
-    public int getCurrentStep(){
+    public int getCurrentStep() {
         return currentStep;
     }
 

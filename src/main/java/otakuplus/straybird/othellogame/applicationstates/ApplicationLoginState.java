@@ -80,7 +80,7 @@ public class ApplicationLoginState implements ApplicationState {
 
     }
 
-    public void draw(){
+    public void draw() {
 
     }
 
@@ -99,7 +99,7 @@ public class ApplicationLoginState implements ApplicationState {
         applicationContext.disconnect();
     }
 
-    public void destory() {
+    public void destroy() {
     }
 
 }
