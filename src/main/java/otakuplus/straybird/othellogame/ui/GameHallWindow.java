@@ -30,7 +30,9 @@ public class GameHallWindow {
     protected Table userListTable;
 
     protected Image tableMiniUserIcon;
-    protected Image tableEmptyIcon;
+    protected Image tableEmpty;
+    protected Image tableWaiting;
+    protected Image tablePlaying;
 
     public GameHallWindow() {
 
@@ -60,7 +62,9 @@ public class GameHallWindow {
         composite.setData(compositeGridData);
 
         tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
-        tableEmptyIcon = new Image(Display.getDefault(), "Empty-chair-icon.png");
+        tableEmpty = new Image(Display.getDefault(), "player-56px.png");
+        tableWaiting = new Image(Display.getDefault(), "table-waiting-96px.png");
+        tablePlaying = new Image(Display.getDefault(), "table-playing-96px.png");
 
         gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
         GridData tableCanvasGridData = new GridData();
@@ -86,40 +90,24 @@ public class GameHallWindow {
                         heightOffset = index / 2 * 208;
                         event.gc.setForeground(Display.getDefault()
                                 .getSystemColor(SWT.COLOR_BLACK));
-                        event.gc.setBackground(Display.getDefault()
-                                .getSystemColor(SWT.COLOR_WHITE));
                         event.gc.drawString(
                                 "" + tempGameTable.getGameTableId(),
                                 100 + widthOffset, 156 + heightOffset);
-                        event.gc.setBackground(Display.getDefault()
-                                .getSystemColor(SWT.COLOR_DARK_YELLOW));
-                        event.gc.drawRectangle(56 + widthOffset,
-                                56 + heightOffset, 96, 96);
-                        event.gc.fillRectangle(57 + widthOffset,
-                                57 + heightOffset, 95, 95);
+                        event.gc.drawImage(tableWaiting, 0, 0, tableWaiting.getBounds().width, tableWaiting.getBounds().height, 56 + widthOffset, 56 + heightOffset, 96, 96);
+                        event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 4+widthOffset, 80 + heightOffset, 48, 48);
+                        event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 156 + widthOffset, 80 + heightOffset, 48, 48);
                         if (tempGameTable.getPlayerA() != null) {
                             event.gc.drawImage(tableMiniUserIcon, 0, 0,
                                     tableMiniUserIcon.getBounds().width,
                                     tableMiniUserIcon.getBounds().height,
-                                    4 + widthOffset, 80 + heightOffset, 48, 48);
-                        } else {
-                            event.gc.drawImage(tableEmptyIcon, 0, 0,
-                                    tableEmptyIcon.getBounds().width,
-                                    tableEmptyIcon.getBounds().height,
-                                    4 + widthOffset, 80 + heightOffset, 48, 48);
+                                    12 + widthOffset, 88 + heightOffset, 32, 32);
                         }
                         if (tempGameTable.getPlayerB() != null) {
                             event.gc.drawImage(tableMiniUserIcon, 0, 0,
                                     tableMiniUserIcon.getBounds().width,
                                     tableMiniUserIcon.getBounds().height,
-                                    156 + widthOffset, 80 + heightOffset, 48,
-                                    48);
-                        } else {
-                            event.gc.drawImage(tableEmptyIcon, 0, 0,
-                                    tableEmptyIcon.getBounds().width,
-                                    tableEmptyIcon.getBounds().height,
-                                    156 + widthOffset, 80 + heightOffset, 48,
-                                    48);
+                                    164 + widthOffset, 88 + heightOffset, 32,
+                                    32);
                         }
                         index++;
                     }
@@ -269,8 +257,14 @@ public class GameHallWindow {
         if (tableMiniUserIcon != null) {
             tableMiniUserIcon.dispose();
         }
-        if (tableEmptyIcon != null) {
-            tableEmptyIcon.dispose();
+        if (tableEmpty != null) {
+            tableEmpty.dispose();
+        }
+        if (tableWaiting != null) {
+            tableWaiting.dispose();
+        }
+        if (tablePlaying != null) {
+            tablePlaying.dispose();
         }
     }
 

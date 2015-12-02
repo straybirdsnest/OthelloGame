@@ -73,8 +73,8 @@ public class OthelloGameWindow {
 
         chessBoardCanvas = new Canvas(shell, SWT.NONE);
         GridData canvasChessBoardGridData = new GridData(GridData.FILL_BOTH);
-        canvasChessBoardGridData.widthHint = 321;
-        canvasChessBoardGridData.heightHint = 321;
+        canvasChessBoardGridData.widthHint = 406;
+        canvasChessBoardGridData.heightHint = 406;
         canvasChessBoardGridData.horizontalSpan = 4;
         canvasChessBoardGridData.verticalSpan = 4;
         chessBoardCanvas.setLayoutData(canvasChessBoardGridData);
@@ -109,26 +109,26 @@ public class OthelloGameWindow {
         blackTimer.setText("15:00");
         blackTimer.setLayoutData(blackTimerGridData);
 
-        chessBoardImage = new Image(Display.getDefault(), "ChessBoard.png");
-        blackSetImage = new Image(Display.getDefault(), "BlackSet.png");
-        whiteSetImage = new Image(Display.getDefault(), "WhiteSet.png");
-        hintSetImage = new Image(Display.getDefault(), "HintSet.png");
+        chessBoardImage = new Image(Display.getDefault(), "chessboard_405px.png");
+        blackSetImage = new Image(Display.getDefault(), "black_48px.png");
+        whiteSetImage = new Image(Display.getDefault(), "white_48px_transparent.png");
+        hintSetImage = new Image(Display.getDefault(), "hint_48px.png");
 
         chessBoardCanvas.addPaintListener(new PaintListener() {
             public void paintControl(PaintEvent e) {
                 // drawing chessboard
                 e.gc.drawImage(chessBoardImage, 0, 0,
                         chessBoardImage.getBounds().width,
-                        chessBoardImage.getBounds().height, 1, 1, 320, 320);
+                        chessBoardImage.getBounds().height, 1, 1, 405, 405);
                 // drawing chessmen
                 int i = 0, chessmanStat = 0;
                 i = 0;
                 for (i = 0; i < 64; i++) {
                     chessmanStat = chessBoard.getChessman(i / 8, i % 8);
                     if (chessmanStat == ChessBoard.CHESSMAN_BLACK) {
-                        e.gc.drawImage(blackSetImage, 0, 0, blackSetImage.getBounds().width, blackSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
+                        e.gc.drawImage(blackSetImage, 0, 0, blackSetImage.getBounds().width, blackSetImage.getBounds().height, (i % 8) * 50 + 4, (i / 8) * 50 + 4, 48, 48);
                     } else if (chessmanStat == ChessBoard.CHESSMAN_WHITE) {
-                        e.gc.drawImage(whiteSetImage, 0, 0, whiteSetImage.getBounds().width, whiteSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
+                        e.gc.drawImage(whiteSetImage, 0, 0, whiteSetImage.getBounds().width, whiteSetImage.getBounds().height, (i % 8) * 50 + 4, (i / 8) * 50 + 4, 48, 48);
                     }
                 }
 
@@ -142,7 +142,7 @@ public class OthelloGameWindow {
                         int suggestedPosition[] = chessBoard.getSuggestedPosition();
                         for (i = 0; i < suggestedPosition.length; i++) {
                             if (suggestedPosition[i] == 1) {
-                                e.gc.drawImage(hintSetImage, 0, 0, hintSetImage.getBounds().width, hintSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
+                                e.gc.drawImage(hintSetImage, 0, 0, hintSetImage.getBounds().width, hintSetImage.getBounds().height, (i % 8) * 50 + 4, (i / 8) * 50 + 4, 48, 48);
                             }
                         }
                     }
@@ -156,12 +156,12 @@ public class OthelloGameWindow {
             }
 
             public void mouseDown(MouseEvent e) {
-                int x = e.x;
-                int y = e.y;
+                int x = e.x - 3;
+                int y = e.y - 3;
 
                 GameOperation gameOperation = new GameOperation();
-                gameOperation.setSetX(y / 40);
-                gameOperation.setSetY(x / 40);
+                gameOperation.setSetX(y / 50);
+                gameOperation.setSetY(x / 50);
 
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                 SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
@@ -169,7 +169,7 @@ public class OthelloGameWindow {
                 GameState gameState = gameContext.getGameState();
                 if (chessBoard.checkHasNext()) {
                     int suggest[] = chessBoard.getSuggestedPosition();
-                    if (suggest[(y / 40) * 8 + (x / 40)] == 0) {
+                    if (suggest[(y / 50) * 8 + (x / 50)] == 0) {
                         showWrongPositionMessage();
                         return;
                     }
@@ -449,14 +449,14 @@ public class OthelloGameWindow {
             drawButton.setEnabled(false);
             takeBackButton.setEnabled(false);
         }
-        if(chessBoard.getBlackNumber()<10){
+        if (chessBoard.getBlackNumber() < 10) {
             blackLabel.setText("黑方: 0" + chessBoard.getBlackNumber());
-        }else {
+        } else {
             blackLabel.setText("黑方: " + chessBoard.getBlackNumber());
         }
-        if(chessBoard.getWhiteNumber()<10){
+        if (chessBoard.getWhiteNumber() < 10) {
             whiteLabel.setText("白方: 0" + chessBoard.getWhiteNumber());
-        }else {
+        } else {
             whiteLabel.setText("白方: " + chessBoard.getWhiteNumber());
         }
         whiteLabel.redraw();
