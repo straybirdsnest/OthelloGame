@@ -30,7 +30,6 @@ public class HttpRequestUtil {
         try {
             request = requestFactory.buildGetRequest(genericUrl);
             if (applicationContext.getCurrentCookie() != null) {
-                System.out.println("current Cookie: " + applicationContext.getCurrentCookie());
                 request.getHeaders().set("cookie", applicationContext.getCurrentCookie());
                 List<HttpCookie> cookie = HttpCookie.parse(applicationContext.getCurrentCookie().get(0));
                 request.getHeaders().set("X-XSRF-TOKEN", cookie.get(0).getValue());
@@ -53,7 +52,6 @@ public class HttpRequestUtil {
         try {
             request = requestFactory.buildPostRequest(genericUrl, jsonHttpContent);
             if (applicationContext.getCurrentCookie() != null) {
-                System.out.println("current Cookie: " + applicationContext.getCurrentCookie());
                 request.getHeaders().set("cookie", applicationContext.getCurrentCookie());
                 List<HttpCookie> cookie = HttpCookie.parse(applicationContext.getCurrentCookie().get(0));
                 request.getHeaders().set("X-XSRF-TOKEN", cookie.get(0).getValue());
@@ -128,8 +126,12 @@ public class HttpRequestUtil {
                         ArrayList<UserOnline> userOnlines = userOnlineList.getUserOnlines();
                         for (int i = 0; i < userOnlines.size(); i++) {
                             User user = HttpRequestUtil.getUserByHref(userOnlines.get(i).getLinks().getUser().getHref());
-                            UserInformation userInformation = HttpRequestUtil.getUserInformationByHref(user.getLinks().getUserInformation().getHref());
-                            applicationContext.getUserInformationList().add(userInformation);
+                            if (user != null) {
+                                UserInformation userInformation = HttpRequestUtil.getUserInformationByHref(user.getLinks().getUserInformation().getHref());
+                                if (userInformation != null) {
+                                    applicationContext.getUserInformationList().add(userInformation);
+                                }
+                            }
                         }
                     }
                 }

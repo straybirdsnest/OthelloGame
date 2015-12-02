@@ -35,6 +35,7 @@ public class OthelloGameWindow {
     protected Image chessBoardImage;
     protected Image blackSetImage;
     protected Image whiteSetImage;
+    protected Image hintSetImage;
 
     protected Text gameChat;
     protected Text messageText;
@@ -108,8 +109,10 @@ public class OthelloGameWindow {
         blackTimer.setText("15:00");
         blackTimer.setLayoutData(blackTimerGridData);
 
-        chessBoardImage = new Image(Display.getDefault(), "Chessboard.png");
+        chessBoardImage = new Image(Display.getDefault(), "ChessBoard.png");
         blackSetImage = new Image(Display.getDefault(), "BlackSet.png");
+        whiteSetImage = new Image(Display.getDefault(), "WhiteSet.png");
+        hintSetImage = new Image(Display.getDefault(), "HintSet.png");
 
         chessBoardCanvas.addPaintListener(new PaintListener() {
             public void paintControl(PaintEvent e) {
@@ -125,12 +128,7 @@ public class OthelloGameWindow {
                     if (chessmanStat == ChessBoard.CHESSMAN_BLACK) {
                         e.gc.drawImage(blackSetImage, 0, 0, blackSetImage.getBounds().width, blackSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
                     } else if (chessmanStat == ChessBoard.CHESSMAN_WHITE) {
-                        e.gc.setBackground(Display.getDefault().getSystemColor(
-                                SWT.COLOR_BLUE));
-                        e.gc.drawOval((i % 8) * 40 + 4, (i / 8) * 40 + 4, 32,
-                                32);
-                        e.gc.fillOval((i % 8) * 40 + 5, (i / 8) * 40 + 5, 31,
-                                31);
+                        e.gc.drawImage(whiteSetImage, 0, 0, whiteSetImage.getBounds().width, whiteSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
                     }
                 }
 
@@ -142,14 +140,9 @@ public class OthelloGameWindow {
                     int current = chessBoard.getCurrentChessman();
                     if ((current == ChessBoard.CHESSMAN_BLACK && seatId == 1) || (current == ChessBoard.CHESSMAN_WHITE && seatId == 0)) {
                         int suggestedPosition[] = chessBoard.getSuggestedPosition();
-                        e.gc.setBackground(Display.getDefault().getSystemColor(
-                                SWT.COLOR_CYAN));
                         for (i = 0; i < suggestedPosition.length; i++) {
                             if (suggestedPosition[i] == 1) {
-                                e.gc.drawRectangle((i % 8) * 40 + 4, i / 8 * 40 + 4,
-                                        32, 32);
-                                e.gc.fillRectangle((i % 8) * 40 + 5, i / 8 * 40 + 5,
-                                        31, 31);
+                                e.gc.drawImage(hintSetImage, 0, 0, hintSetImage.getBounds().width, hintSetImage.getBounds().height, (i % 8) * 40, (i / 8) * 40, 40, 40);
                             }
                         }
                     }
@@ -370,6 +363,15 @@ public class OthelloGameWindow {
         if (chessBoardImage != null) {
             chessBoardImage.dispose();
         }
+        if (whiteSetImage != null) {
+            whiteSetImage.dispose();
+        }
+        if (blackSetImage != null) {
+            blackSetImage.dispose();
+        }
+        if (hintSetImage != null) {
+            hintSetImage.dispose();
+        }
     }
 
     public void standByOrCancel() {
@@ -447,11 +449,35 @@ public class OthelloGameWindow {
             drawButton.setEnabled(false);
             takeBackButton.setEnabled(false);
         }
-        blackLabel.setText("黑方: " + chessBoard.getBlackNumber());
-        whiteLabel.setText("白方: " + chessBoard.getWhiteNumber());
+        if(chessBoard.getBlackNumber()<10){
+            blackLabel.setText("黑方: 0" + chessBoard.getBlackNumber());
+        }else {
+            blackLabel.setText("黑方: " + chessBoard.getBlackNumber());
+        }
+        if(chessBoard.getWhiteNumber()<10){
+            whiteLabel.setText("白方: 0" + chessBoard.getWhiteNumber());
+        }else {
+            whiteLabel.setText("白方: " + chessBoard.getWhiteNumber());
+        }
+        whiteLabel.redraw();
+        blackLabel.redraw();
         chessBoardCanvas.redraw();
         shell.pack();
         shell.redraw();
+    }
+
+    public void syncGameReadyState() {
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameState gameState = gameContext.getGameState();
+        GameOperation gameOperation = new GameOperation();
+        if (gameState instanceof GameBlackReadyState) {
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+        } else if (gameState instanceof GameWhiteReadyState) {
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+        }
     }
 
     public void showSkipMessage() {

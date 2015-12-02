@@ -4,6 +4,8 @@ import io.socket.emitter.Emitter.Listener;
 import org.eclipse.swt.widgets.Display;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 import otakuplus.straybird.othellogame.ui.GameHallWindow;
@@ -11,12 +13,12 @@ import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 public class SendMessageListener implements Listener {
 
+    private static final Logger logger = LoggerFactory.getLogger(SendMessageListener.class);
+
     private SendMessage sendMessage = new SendMessage();
 
     public void call(Object... object) {
-        System.out.print("send message event.");
         int count = object.length;
-        System.out.print("object number :" + count);
         JSONObject jsonObject = null;
         for (int i = 0; i < count; i++) {
             jsonObject = (JSONObject) object[i];
@@ -39,11 +41,12 @@ public class SendMessageListener implements Listener {
                         } else if (sendMessage.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
                             othelloGameWindow.receiveMessage(sendMessage);
+                            //othelloGameWindow.syncGameReadyState();
                         }
                     }
                 });
             } catch (JSONException e) {
-                e.printStackTrace();
+                logger.error("SendMessageListener", e.getStackTrace());
             }
         }
     }

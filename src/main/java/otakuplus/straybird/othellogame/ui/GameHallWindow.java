@@ -143,11 +143,15 @@ public class GameHallWindow {
                 int heightOffset = (index / 2) * 208;
                 if (x >= 4 + widthOffset && x <= 56 + widthOffset
                         && y <= 128 + heightOffset && y >= 80 + heightOffset) {
-                    applicationContext.enterGameTable(index + 1, 0);
+                    if (applicationContext.getCurrentTableId() == null) {
+                        applicationContext.enterGameTable(index + 1, 0);
+                    }
                 }
                 if (x >= 156 + widthOffset && x <= 204 + widthOffset
                         && y <= 128 + heightOffset && y >= 80 + heightOffset) {
-                    applicationContext.enterGameTable(index + 1, 1);
+                    if (applicationContext.getCurrentTableId() == null) {
+                        applicationContext.enterGameTable(index + 1, 1);
+                    }
                 }
             }
 
