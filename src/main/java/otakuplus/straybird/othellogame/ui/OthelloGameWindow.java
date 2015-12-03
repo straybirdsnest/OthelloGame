@@ -232,7 +232,7 @@ public class OthelloGameWindow {
         GridData standByGridData = new GridData();
         standByGridData.horizontalSpan = 2;
         standByButton.setLayoutData(standByGridData);
-        standByButton.setText("准备");
+        standByButton.setText("准    备");
         standByButton.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent selectionEvent) {
                 standByOrCancel();
@@ -385,21 +385,38 @@ public class OthelloGameWindow {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
         GameState gameState = gameContext.getGameState();
         GameOperation gameOperation = new GameOperation();
-        if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1) {
-            standByButton.setText("准备");
+        if (gameState instanceof GameNoReadyState) {
+            standByButton.setText("取消准备");
+            standByButton.redraw();
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        } else if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 0) {
+            standByButton.setText("取消准备");
+            standByButton.redraw();
+            gameOperation.setOperation(GameOperation.STAND_BY);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        } else if (gameState instanceof GameBlackReadyState && applicationContext.getCurrentSeatId() == 1) {
+            standByButton.setText("准    备");
+            standByButton.redraw();
             gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
+            socketIOClient.doGameOperation(gameOperation);
+            shell.pack();
+            shell.redraw();
+        } else if (gameState instanceof GameWhiteReadyState && applicationContext.getCurrentSeatId() == 1) {
+            standByButton.setText("取消准备");
+            standByButton.redraw();
+            gameOperation.setOperation(GameOperation.STAND_BY);
             socketIOClient.doGameOperation(gameOperation);
             shell.pack();
             shell.redraw();
         } else if (gameState instanceof GameWhiteReadyState && applicationContext.getCurrentSeatId() == 0) {
-            standByButton.setText("准备");
+            standByButton.setText("准    备");
+            standByButton.redraw();
             gameOperation.setOperation(GameOperation.STAND_BY_CANCLE);
-            socketIOClient.doGameOperation(gameOperation);
-            shell.pack();
-            shell.redraw();
-        } else {
-            standByButton.setText("取消准备");
-            gameOperation.setOperation(GameOperation.STAND_BY);
             socketIOClient.doGameOperation(gameOperation);
             shell.pack();
             shell.redraw();
@@ -449,7 +466,9 @@ public class OthelloGameWindow {
             }
         } else {
             standByButton.setEnabled(true);
-            standByButton.setText("准备");
+            if (gameState instanceof GameNoReadyState) {
+                standByButton.setText("准    备");
+            }
             giveUpButton.setEnabled(false);
             drawButton.setEnabled(false);
             takeBackButton.setEnabled(false);
@@ -464,6 +483,7 @@ public class OthelloGameWindow {
         } else {
             whiteLabel.setText("白方: " + chessBoard.getWhiteNumber());
         }
+        standByButton.redraw();
         whiteLabel.redraw();
         blackLabel.redraw();
         chessBoardCanvas.redraw();
