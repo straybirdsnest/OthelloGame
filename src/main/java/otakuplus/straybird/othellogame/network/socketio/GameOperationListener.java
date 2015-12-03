@@ -64,6 +64,9 @@ public class GameOperationListener implements Emitter.Listener {
                                     gameContext.blackStandBy();
                                     othelloGameWindow.redrawChessBoard();
                                 }
+                                if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
+                                    othelloGameWindow.showPlayerStandByMessage();
+                                }
                             }
                             if (gameOperation.getOperation().equals(GameOperation.STAND_BY_CANCLE)) {
                                 if (gameOperation.getSeatId() == 0) {
@@ -73,6 +76,9 @@ public class GameOperationListener implements Emitter.Listener {
                                 if (gameOperation.getSeatId() == 1) {
                                     gameContext.blackStandByCancel();
                                     othelloGameWindow.redrawChessBoard();
+                                }
+                                if (!gameOperation.getSeatId().equals(applicationContext.getCurrentSeatId())) {
+                                    othelloGameWindow.showPlayerStandByCancelMessage();
                                 }
                             }
                             if (gameOperation.getOperation().equals(GameOperation.BLACK_SET)) {

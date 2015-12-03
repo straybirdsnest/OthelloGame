@@ -64,7 +64,7 @@ public class GameContext {
 
     public void changeState(GameState gameState) {
         this.gameState = gameState;
-        logger.info("change to" + gameState);
+        //logger.info("change to" + gameState);
     }
 
     public ChessBoard getChessBoard() {

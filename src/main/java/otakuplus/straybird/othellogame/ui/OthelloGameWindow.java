@@ -533,6 +533,22 @@ public class OthelloGameWindow {
         messageBox.open();
     }
 
+    public void showPlayerStandByMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏提示");
+        messageBox.setMessage("对面玩家已准备。");
+        messageBox.open();
+    }
+
+    public void showPlayerStandByCancelMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏提示");
+        messageBox.setMessage("对面玩家已取消准备。");
+        messageBox.open();
+    }
+
     public void showWinMessage() {
         MessageBox messageBox = new MessageBox(shell,
                 SWT.APPLICATION_MODAL | SWT.OK);
