@@ -6,9 +6,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
 
 public class LoginWindow {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginWindow.class);
+
     protected Shell shell;
     protected Display display;
     protected Text userNameText;
@@ -91,7 +97,16 @@ public class LoginWindow {
         usernameGridData.widthHint = 194;
         userNameText.setLayoutData(usernameGridData);
         Link registerLink = new Link(shell, SWT.CENTER);
-        registerLink.setText("注册帐号");
+        registerLink.setText("<a>注册帐号</a>");
+        registerLink.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                logger.info("link click");
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                org.eclipse.swt.program.Program.launch("http://" + applicationContext.getServerName() + ":" + applicationContext.getServerPort() + "/#/register");
+
+            }
+        });
 
         passWordText = new Text(shell, SWT.LEFT);
         passWordText.setText("密码");
@@ -122,7 +137,16 @@ public class LoginWindow {
         passwordGridData.widthHint = 194;
         passWordText.setLayoutData(passwordGridData);
         Link forgetLink = new Link(shell, SWT.CENTER);
-        forgetLink.setText("找回密码");
+        forgetLink.setText("<a>找回密码</a>");
+        forgetLink.addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                logger.info("link click");
+                ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+                org.eclipse.swt.program.Program.launch("http://" + applicationContext.getServerName() + ":" + applicationContext.getServerPort() + "/#/forgetPassword");
+
+            }
+        });
 
         Button remeberButton = new Button(shell, SWT.CHECK);
         GridData remeberButtonGridData = new GridData();

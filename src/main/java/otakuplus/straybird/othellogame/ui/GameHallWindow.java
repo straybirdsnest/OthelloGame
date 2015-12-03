@@ -33,6 +33,7 @@ public class GameHallWindow {
     protected Image tableEmpty;
     protected Image tableWaiting;
     protected Image tablePlaying;
+    protected Image tableTaken;
 
     public GameHallWindow() {
 
@@ -62,9 +63,10 @@ public class GameHallWindow {
         composite.setData(compositeGridData);
 
         tableMiniUserIcon = new Image(Display.getDefault(), "Dog-icon.png");
-        tableEmpty = new Image(Display.getDefault(), "player-56px.png");
-        tableWaiting = new Image(Display.getDefault(), "table-waiting-96px.png");
-        tablePlaying = new Image(Display.getDefault(), "table-playing-96px.png");
+        tableEmpty = new Image(Display.getDefault(), "player_48px.png");
+        tableWaiting = new Image(Display.getDefault(), "table-waiting-96px_brighter.png");
+        tablePlaying = new Image(Display.getDefault(), "table-playing-96px_brighter.png");
+        tableTaken = new Image(Display.getDefault(), "player-boarder-48px.png");
 
         gameTableCanvas = new Canvas(composite, SWT.V_SCROLL | SWT.FILL);
         GridData tableCanvasGridData = new GridData();
@@ -97,12 +99,14 @@ public class GameHallWindow {
                         event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 4+widthOffset, 80 + heightOffset, 48, 48);
                         event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 156 + widthOffset, 80 + heightOffset, 48, 48);
                         if (tempGameTable.getPlayerA() != null) {
+                            event.gc.drawImage(tableTaken, 0, 0, tableTaken.getBounds().width, tableTaken.getBounds().height, 4 + widthOffset, 80 + heightOffset, 48, 48);
                             event.gc.drawImage(tableMiniUserIcon, 0, 0,
                                     tableMiniUserIcon.getBounds().width,
                                     tableMiniUserIcon.getBounds().height,
                                     12 + widthOffset, 88 + heightOffset, 32, 32);
                         }
                         if (tempGameTable.getPlayerB() != null) {
+                            event.gc.drawImage(tableTaken, 0, 0, tableTaken.getBounds().width, tableTaken.getBounds().height, 156 + widthOffset, 80 + heightOffset, 48, 48);
                             event.gc.drawImage(tableMiniUserIcon, 0, 0,
                                     tableMiniUserIcon.getBounds().width,
                                     tableMiniUserIcon.getBounds().height,
