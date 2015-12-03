@@ -136,12 +136,19 @@ public class LoginWindow {
                 false, 3, 1);
         passwordGridData.widthHint = 194;
         passWordText.setLayoutData(passwordGridData);
+        passWordText.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.keyCode == 13) {
+                    loginWithData();
+                }
+            }
+        });
+
         Link forgetLink = new Link(shell, SWT.CENTER);
         forgetLink.setText("<a>找回密码</a>");
         forgetLink.addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
-                logger.info("link click");
                 ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
                 org.eclipse.swt.program.Program.launch("http://" + applicationContext.getServerName() + ":" + applicationContext.getServerPort() + "/#/forgetPassword");
 
@@ -169,11 +176,7 @@ public class LoginWindow {
         loginButton.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent e) {
-                String username = userNameText.getText();
-                String password = passWordText.getText();
-                if (username.length() > 0 && password.length() > 0) {
-                    ApplicationContextSingleton.getInstance().login();
-                }
+                loginWithData();
             }
 
             public void widgetDefaultSelected(SelectionEvent e) {
@@ -203,6 +206,14 @@ public class LoginWindow {
 
         shell.setTabList(new Control[]{userNameText, passWordText, loginButton, autoButton, registerLink, forgetLink});
         shell.pack();
+    }
+
+    public void loginWithData() {
+        String username = userNameText.getText();
+        String password = passWordText.getText();
+        if (username.length() > 0 && password.length() > 0) {
+            ApplicationContextSingleton.getInstance().login();
+        }
     }
 
     public void open() {

@@ -96,7 +96,7 @@ public class GameHallWindow {
                                 "" + tempGameTable.getGameTableId(),
                                 100 + widthOffset, 156 + heightOffset);
                         event.gc.drawImage(tableWaiting, 0, 0, tableWaiting.getBounds().width, tableWaiting.getBounds().height, 56 + widthOffset, 56 + heightOffset, 96, 96);
-                        event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 4+widthOffset, 80 + heightOffset, 48, 48);
+                        event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 4 + widthOffset, 80 + heightOffset, 48, 48);
                         event.gc.drawImage(tableEmpty, 0, 0, tableEmpty.getBounds().width, tableEmpty.getBounds().height, 156 + widthOffset, 80 + heightOffset, 48, 48);
                         if (tempGameTable.getPlayerA() != null) {
                             event.gc.drawImage(tableTaken, 0, 0, tableTaken.getBounds().width, tableTaken.getBounds().height, 4 + widthOffset, 80 + heightOffset, 48, 48);
@@ -207,6 +207,13 @@ public class GameHallWindow {
         messageText.setText("请输入聊天信息");
         messageText.setFocus();
         messageText.setLayoutData(messageTextGridData);
+        messageText.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.keyCode == 13) {
+                    sendMessage();
+                }
+            }
+        });
 
         Button sendMessageButton = new Button(composite2, SWT.PUSH);
         GridData sendMessageGridData = new GridData();

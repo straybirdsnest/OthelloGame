@@ -256,6 +256,13 @@ public class OthelloGameWindow {
         messageText.setText("请输入聊天信息");
         messageText.setFocus();
         messageText.setLayoutData(messageTextGridData);
+        messageText.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                if (e.keyCode == 13) {
+                    sendMessage();
+                }
+            }
+        });
 
         sendMessageButton = new Button(shell, SWT.PUSH);
         GridData sendMessageGridData = new GridData();
