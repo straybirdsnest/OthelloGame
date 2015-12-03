@@ -41,7 +41,7 @@ public class SendMessageListener implements Listener {
                         } else if (sendMessage.getRoomName().equals(SocketIOClient.GAME_TABLE_ROOM + applicationContext.getCurrentTableId())) {
                             OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
                             othelloGameWindow.receiveMessage(sendMessage);
-                            //othelloGameWindow.syncGameReadyState();
+                            othelloGameWindow.syncGameReadyState();
                         }
                     }
                 });
