@@ -347,7 +347,7 @@ public class ChessBoard {
     }
 
     public void turnEnd() {
-        if (checkHasNext() == true) {
+        if (checkHasNext()) {
             currentChessman = (currentChessman == CHESSMAN_BLACK) ? CHESSMAN_WHITE : CHESSMAN_BLACK;
             currentStep++;
             for (int i = 0; i < BOARDWIDTH; i++) {

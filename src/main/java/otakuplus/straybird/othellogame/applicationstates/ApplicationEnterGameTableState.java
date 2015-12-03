@@ -55,6 +55,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
                 applicationContext.currentSeatId = seatId;
                 GameContext gameContext = GameContextSigleton.getGameContextInstance();
                 gameContext.changeState(GameStateSingleton.getGameNoReadyStateInstance());
+                gameContext.reboot();
                 logger.debug("enter game table");
             }
         } catch (IOException e) {

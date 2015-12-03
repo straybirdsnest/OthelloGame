@@ -1,5 +1,7 @@
 package otakuplus.straybird.othellogame.applicationstates.game;
 
+import otakuplus.straybird.othellogame.models.ChessBoard;
+
 public class GameNoReadyState implements GameState {
     public void whiteStandBy() {
         GameContext gameContext = GameContextSigleton.getGameContextInstance();
@@ -37,6 +39,9 @@ public class GameNoReadyState implements GameState {
     }
 
     public void reboot() {
-
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        chessBoard.initChessboard();
+        gameContext.changeState(GameStateSingleton.getGameNoReadyStateInstance());
     }
 }

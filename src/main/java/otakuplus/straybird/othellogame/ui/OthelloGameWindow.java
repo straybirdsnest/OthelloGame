@@ -304,11 +304,15 @@ public class OthelloGameWindow {
                     messageBox.setMessage("游戏中离开会被视为认输，确定要离开？");
                     int result = messageBox.open();
                     if (result == SWT.YES) {
+                        applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
+                                applicationContext.getCurrentSeatId());
                         giveUp();
                     }
+                } else {
+                    applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
+                            applicationContext.getCurrentSeatId());
                 }
-                applicationContext.leaveGameTable(applicationContext.getCurrentTableId(),
-                        applicationContext.getCurrentSeatId());
+
             }
         });
 
@@ -336,6 +340,7 @@ public class OthelloGameWindow {
 
     public void show() {
         shell.setVisible(true);
+        redrawChessBoard();
     }
 
     public void sendMessage() {
