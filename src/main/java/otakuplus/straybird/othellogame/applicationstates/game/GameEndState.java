@@ -17,7 +17,7 @@ public class GameEndState implements GameState {
 
     }
 
-    public void beginGame() {
+    public void skipSet() {
 
     }
 

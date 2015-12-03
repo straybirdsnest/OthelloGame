@@ -491,6 +491,11 @@ public class OthelloGameWindow {
         messageBox.setText("游戏提示");
         messageBox.setMessage("您当前无子可下，系统将跳过您的回合。");
         messageBox.open();
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        SocketIOClient socketIOClient = applicationContext.getSocketIOClient();
+        GameOperation gameOperation = new GameOperation();
+        gameOperation.setOperation(GameOperation.SKIP_SET);
+        socketIOClient.doGameOperation(gameOperation);
     }
 
     public void showWrongPositionMessage() {
@@ -506,6 +511,14 @@ public class OthelloGameWindow {
                 SWT.APPLICATION_MODAL | SWT.OK);
         messageBox.setText("游戏结束");
         messageBox.setMessage("恭喜您获得本次游戏的胜利!");
+        messageBox.open();
+    }
+
+    public void showDrawGameMessage() {
+        MessageBox messageBox = new MessageBox(shell,
+                SWT.APPLICATION_MODAL | SWT.OK);
+        messageBox.setText("游戏结束");
+        messageBox.setMessage("经过艰苦的一局，双方不分胜负，辛苦了。");
         messageBox.open();
     }
 

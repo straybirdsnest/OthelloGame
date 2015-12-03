@@ -19,7 +19,7 @@ public class GameWhiteReadyState implements GameState {
 
     }
 
-    public void beginGame() {
+    public void skipSet() {
 
     }
 

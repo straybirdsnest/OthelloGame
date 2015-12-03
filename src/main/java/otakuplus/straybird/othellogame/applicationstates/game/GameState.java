@@ -9,7 +9,7 @@ public interface GameState {
 
     public void blackStandByCancel();
 
-    public void beginGame();
+    public void skipSet();
 
     public void whiteSet(Integer x, Integer y);
 

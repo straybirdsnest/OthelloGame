@@ -19,7 +19,7 @@ public class GameBlackReadyState implements GameState {
         gameContext.changeState(GameStateSingleton.getGameNoReadyStateInstance());
     }
 
-    public void beginGame() {
+    public void skipSet() {
 
     }
 

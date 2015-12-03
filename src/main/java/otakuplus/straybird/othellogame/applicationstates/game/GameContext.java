@@ -32,8 +32,8 @@ public class GameContext {
         gameState.whiteStandByCancel();
     }
 
-    public void beginGame() {
-        gameState.beginGame();
+    public void skipSet() {
+        gameState.skipSet();
     }
 
     public void endGame() {
@@ -52,12 +52,12 @@ public class GameContext {
         gameState.reboot();
     }
 
-    public void takeBack(){
+    public void takeBack() {
         chessBoard.takeBack();
-        if(chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_BLACK){
+        if (chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_BLACK) {
             changeState(GameStateSingleton.getGameBlackSetStateInstance());
         }
-        if(chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_WHITE){
+        if (chessBoard.getCurrentChessman() == ChessBoard.CHESSMAN_WHITE) {
             changeState(GameStateSingleton.getGameWhiteSetStateInstance());
         }
     }

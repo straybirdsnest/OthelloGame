@@ -1,8 +1,13 @@
 package otakuplus.straybird.othellogame.applicationstates.game;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.models.ChessBoard;
 
 public class GameWhiteSetState implements GameState {
+
+    private static final Logger logger = LoggerFactory.getLogger(GameWhiteSetState.class);
+
     public void whiteStandBy() {
 
     }
@@ -19,8 +24,15 @@ public class GameWhiteSetState implements GameState {
 
     }
 
-    public void beginGame() {
-
+    public void skipSet() {
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        if (!chessBoard.checkHasNext()) {
+            chessBoard.turnEnd();
+            chessBoard.searchSuggestedChessmanPosition();
+            logger.info("The current player have to pass.");
+        }
+        gameContext.changeState(GameStateSingleton.getGameBlackSetStateInstance());
     }
 
     public void whiteSet(Integer x, Integer y) {

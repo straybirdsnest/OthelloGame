@@ -201,6 +201,7 @@ public class LoginWindow {
             }
         });
 
+        shell.setTabList(new Control[]{userNameText, passWordText, loginButton, autoButton, registerLink, forgetLink});
         shell.pack();
     }
 

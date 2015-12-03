@@ -21,7 +21,7 @@ public class GameNoReadyState implements GameState {
 
     }
 
-    public void beginGame() {
+    public void skipSet() {
 
     }
 

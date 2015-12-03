@@ -87,6 +87,10 @@ public class GameOperationListener implements Emitter.Listener {
                                     othelloGameWindow.redrawChessBoard();
                                 }
                             }
+                            if (gameOperation.getOperation().equals(GameOperation.SKIP_SET)) {
+                                gameContext.skipSet();
+                                othelloGameWindow.redrawChessBoard();
+                            }
                             if (gameOperation.getOperation().equals(GameOperation.GIVE_UP)) {
                                 if (gameOperation.getSeatId() != null) {
                                     gameContext.reboot();
@@ -134,15 +138,20 @@ public class GameOperationListener implements Emitter.Listener {
                                     if (applicationContext.getCurrentSeatId() == 1) {
                                         othelloGameWindow.showWinMessage();
                                         applicationContext.win();
+                                    } else {
+                                        othelloGameWindow.showLostMessage();
                                     }
                                 } else if (white > black) {
                                     if (applicationContext.getCurrentSeatId() == 0) {
                                         othelloGameWindow.showWinMessage();
                                         applicationContext.win();
+                                    } else {
+                                        othelloGameWindow.showLostMessage();
                                     }
                                 } else {
                                     if (applicationContext.getCurrentSeatId() == 1) {
                                         applicationContext.draw();
+                                        othelloGameWindow.showDrawGameMessage();
                                     }
                                 }
                                 gameContext.reboot();
