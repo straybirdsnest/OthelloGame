@@ -8,10 +8,15 @@ import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContext;
 import otakuplus.straybird.othellogame.applicationstates.game.GameContextSigleton;
 import otakuplus.straybird.othellogame.applicationstates.game.GameStateSingleton;
+import otakuplus.straybird.othellogame.models.ChessBoard;
+import otakuplus.straybird.othellogame.models.GameRecord;
+import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.network.http.HttpRequestUtil;
 import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 public class ApplicationEnterGameTableState implements ApplicationState {
 
@@ -76,6 +81,22 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
+        GameRecord gameRecord = applicationContext.getGameRecord();
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
+        gameRecord.setGameEndTime(nowTime.toString());
+
+        if (applicationContext.getCurrentTableId() != null) {
+            GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);
+            gameRecord.setPlayerA(gameTable.getPlayerA().getUsername());
+            gameRecord.setPlayerB(gameTable.getPlayerB().getUsername());
+        }
+
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        gameRecord.setBlackNumber(chessBoard.getBlackNumber());
+        gameRecord.setWhiteNumber(chessBoard.getWhiteNumber());
+        gameRecord.setRecord(chessBoard.getRecord());
+
         String url = HttpRequestUtil.HOST_BASE_URL
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/giveUp";
         HttpResponse response = null;
@@ -86,6 +107,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
             response = request.execute();
             if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 logger.info("giveUp");
+                HttpRequestUtil.uploadGameRecord(gameRecord);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -95,6 +117,22 @@ public class ApplicationEnterGameTableState implements ApplicationState {
     public void draw() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+
+        GameRecord gameRecord = applicationContext.getGameRecord();
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
+        gameRecord.setGameEndTime(nowTime.toString());
+
+        if (applicationContext.getCurrentTableId() != null) {
+            GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);
+            gameRecord.setPlayerA(gameTable.getPlayerA().getUsername());
+            gameRecord.setPlayerB(gameTable.getPlayerB().getUsername());
+        }
+
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        gameRecord.setBlackNumber(chessBoard.getBlackNumber());
+        gameRecord.setWhiteNumber(chessBoard.getWhiteNumber());
+        gameRecord.setRecord(chessBoard.getRecord());
 
         String url = HttpRequestUtil.HOST_BASE_URL
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/draw";
@@ -106,6 +144,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
             response = request.execute();
             if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 logger.info("draw");
+                HttpRequestUtil.uploadGameRecord(gameRecord);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,6 +154,22 @@ public class ApplicationEnterGameTableState implements ApplicationState {
     public void win() {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
+
+        GameRecord gameRecord = applicationContext.getGameRecord();
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
+        gameRecord.setGameEndTime(nowTime.toString());
+
+        if (applicationContext.getCurrentTableId() != null) {
+            GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);
+            gameRecord.setPlayerA(gameTable.getPlayerA().getUsername());
+            gameRecord.setPlayerB(gameTable.getPlayerB().getUsername());
+        }
+
+        GameContext gameContext = GameContextSigleton.getGameContextInstance();
+        ChessBoard chessBoard = gameContext.getChessBoard();
+        gameRecord.setBlackNumber(chessBoard.getBlackNumber());
+        gameRecord.setWhiteNumber(chessBoard.getWhiteNumber());
+        gameRecord.setRecord(chessBoard.getRecord());
 
         String url = HttpRequestUtil.HOST_BASE_URL
                 + "/api/gameTables/" + applicationContext.getCurrentTableId() + "/seats/" + applicationContext.getCurrentSeatId() + "/win";
@@ -126,6 +181,7 @@ public class ApplicationEnterGameTableState implements ApplicationState {
             response = request.execute();
             if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
                 logger.info("win");
+                HttpRequestUtil.uploadGameRecord(gameRecord);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,16 +1,24 @@
 package otakuplus.straybird.othellogame.models;
 
-import java.util.Date;
+import com.google.api.client.util.Key;
 
 public class GameRecord {
 
     private int gameRecordId = 0;
-    private int playerAId = 0;
-    private int playerBId = 0;
-    private Date gameBeginTime;
-    private Date gameEndTIme;
+    @Key
+    private String playerA;
+    @Key
+    private String playerB;
+    @Key
+    private String gameBeginTime;
+    @Key
+    private String gameEndTime;
+    @Key
     private int whiteNumber = 0;
+    @Key
     private int blackNumber = 0;
+    @Key
+    private byte[] record;
 
     public int getGameRecordId() {
         return gameRecordId;
@@ -20,36 +28,37 @@ public class GameRecord {
         this.gameRecordId = gameRecordId;
     }
 
-    public int getPlayerAId() {
-        return playerAId;
+
+    public String getPlayerA() {
+        return playerA;
     }
 
-    public void setPlayerAId(int playerAId) {
-        this.playerAId = playerAId;
+    public void setPlayerA(String playerA) {
+        this.playerA = playerA;
     }
 
-    public int getPlayerBId() {
-        return playerBId;
+    public String getPlayerB() {
+        return playerB;
     }
 
-    public void setPlayerBId(int playerBId) {
-        this.playerBId = playerBId;
+    public void setPlayerB(String playerB) {
+        this.playerB = playerB;
     }
 
-    public Date getGameBeginTime() {
+    public String getGameBeginTime() {
         return gameBeginTime;
     }
 
-    public void setGameBeginTime(Date gameBeginTime) {
+    public void setGameBeginTime(String gameBeginTime) {
         this.gameBeginTime = gameBeginTime;
     }
 
-    public Date getGameEndTIme() {
-        return gameEndTIme;
+    public String getGameEndTime() {
+        return gameEndTime;
     }
 
-    public void setGameEndTIme(Date gameEndTIme) {
-        this.gameEndTIme = gameEndTIme;
+    public void setGameEndTime(String gameEndTime) {
+        this.gameEndTime = gameEndTime;
     }
 
     public int getWhiteNumber() {
@@ -68,4 +77,11 @@ public class GameRecord {
         this.blackNumber = blackNumber;
     }
 
+    public byte[] getRecord() {
+        return record;
+    }
+
+    public void setRecord(byte[] record) {
+        this.record = record;
+    }
 }

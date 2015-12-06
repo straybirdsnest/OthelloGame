@@ -2,6 +2,7 @@ package otakuplus.straybird.othellogame.applicationstates;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import otakuplus.straybird.othellogame.models.GameRecord;
 import otakuplus.straybird.othellogame.models.GameTable;
 import otakuplus.straybird.othellogame.models.User;
 import otakuplus.straybird.othellogame.models.UserInformation;
@@ -37,6 +38,7 @@ public class ApplicationContext {
     protected Integer currentSeatId;
     protected ArrayList<GameTable> gameTableList;
     protected ArrayList<UserInformation> userInformationList;
+    protected GameRecord gameRecord;
     // Network Scope
     protected String serverName;
     protected String serverPort;
@@ -77,6 +79,7 @@ public class ApplicationContext {
             gameTable.setGameTableId(i);
             gameTableList.add(gameTable);
         }
+        gameRecord = new GameRecord();
 
     }
 
@@ -248,6 +251,10 @@ public class ApplicationContext {
 
     public String getServerName() {
         return serverName;
+    }
+
+    public GameRecord getGameRecord() {
+        return gameRecord;
     }
 
     public List<String> getCurrentCookie() {

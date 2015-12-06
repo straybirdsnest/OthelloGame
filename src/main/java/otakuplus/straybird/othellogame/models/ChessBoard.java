@@ -10,9 +10,9 @@ public class ChessBoard {
     public static final int BOARDWIDTH = 8;
     public static final int STEP_SIZE = 64;
 
-    public static final int CHESSMAN_NONE = 0;
-    public static final int CHESSMAN_BLACK = 1;
-    public static final int CHESSMAN_WHITE = 2;
+    public static final byte CHESSMAN_NONE = 0;
+    public static final byte CHESSMAN_BLACK = 1;
+    public static final byte CHESSMAN_WHITE = 2;
 
     private static final int DIRECTION_TOP = 1;
     private static final int DIRECTION_LEFT = 2;
@@ -23,11 +23,11 @@ public class ChessBoard {
     private static final int DIRECTION_LEFTBUTTOM = 7;
     private static final int DIRECTION_RIGHTBUTTOM = 8;
 
-    private int chessmen[][][] = null;
+    private byte chessmen[][][] = null;
     private int currentStep = 1;
 
     private int suggestedPosition[] = null;
-    private int currentChessman = CHESSMAN_BLACK;
+    private byte currentChessman = CHESSMAN_BLACK;
 
     private int blackNumber = 0;
     private int whiteNumber = 0;
@@ -37,7 +37,7 @@ public class ChessBoard {
             suggestedPosition = new int[64];
         }
         if (chessmen == null) {
-            chessmen = new int[STEP_SIZE][BOARDWIDTH][BOARDWIDTH];
+            chessmen = new byte[STEP_SIZE][BOARDWIDTH][BOARDWIDTH];
         }
         initChessboard();
     }
@@ -308,7 +308,7 @@ public class ChessBoard {
     }
 
     public boolean checkGameOver() {
-        int backup = currentChessman;
+        byte backup = currentChessman;
         boolean flag = true;
         searchSuggestedChessmanPosition();
         if (checkHasNext()) {
@@ -403,4 +403,18 @@ public class ChessBoard {
         return currentStep;
     }
 
+    public byte[] getRecord() {
+        byte[] record = new byte[4096];
+        int i = 0, j = 0, k = 0;
+        int index = 0;
+        for (i = 0; i < STEP_SIZE; i++) {
+            for (j = 0; j < BOARDWIDTH; j++) {
+                for (k = 0; k < BOARDWIDTH; k++) {
+                    record[index] = chessmen[i][j][k];
+                    index++;
+                }
+            }
+        }
+        return record;
+    }
 }

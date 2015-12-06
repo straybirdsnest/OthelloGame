@@ -2,12 +2,11 @@ package otakuplus.straybird.othellogame.network.http;
 
 import com.google.api.client.http.*;
 import com.google.api.client.http.json.JsonHttpContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContext;
 import otakuplus.straybird.othellogame.applicationstates.ApplicationContextSingleton;
-import otakuplus.straybird.othellogame.models.GameTable;
-import otakuplus.straybird.othellogame.models.User;
-import otakuplus.straybird.othellogame.models.UserInformation;
-import otakuplus.straybird.othellogame.models.UserOnline;
+import otakuplus.straybird.othellogame.models.*;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpRequestUtil {
+    private static final Logger logger = LoggerFactory.getLogger(HttpRequestUtil.class);
     public static String HOST_BASE_URL = "http://localhost:8080";
 
     public static void setUpHostBaseUrl() {
@@ -180,6 +180,28 @@ public class HttpRequestUtil {
             } else {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static void uploadGameRecord(GameRecord gameRecord) {
+        logger.info("gameRecord:" + gameRecord.getGameBeginTime());
+        logger.info("userA" + gameRecord.getPlayerA());
+        ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
+        String url = HttpRequestUtil.HOST_BASE_URL + "/api/gameRecords";
+        HttpResponse response = null;
+        HttpRequest request;
+        updateCsrfToken();
+        try {
+            request = HttpRequestUtil.buildHttpPostRequest(url, gameRecord);
+            response = request.execute();
+            if (response != null && response.getStatusCode() == HttpStatusCodes.STATUS_CODE_OK) {
+                logger.info("upload game record to server.");
+            }
+        } catch (IOException e) {
+            if (e.getMessage().equals("400 Bad Request")) {
+                logger.error("HttpRequestUtil", e.getStackTrace());
+            }
+            e.printStackTrace();
         }
     }
 
