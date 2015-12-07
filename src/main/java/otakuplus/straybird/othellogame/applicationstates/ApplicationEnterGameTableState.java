@@ -17,6 +17,7 @@ import otakuplus.straybird.othellogame.ui.OthelloGameWindow;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ApplicationEnterGameTableState implements ApplicationState {
 
@@ -82,8 +83,9 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
         GameRecord gameRecord = applicationContext.getGameRecord();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
-        gameRecord.setGameEndTime(nowTime.toString());
+        gameRecord.setGameEndTime(nowTime.format(formatter));
 
         if (applicationContext.getCurrentTableId() != null) {
             GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);
@@ -119,8 +121,9 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
         GameRecord gameRecord = applicationContext.getGameRecord();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
-        gameRecord.setGameEndTime(nowTime.toString());
+        gameRecord.setGameEndTime(nowTime.format(formatter));
 
         if (applicationContext.getCurrentTableId() != null) {
             GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);
@@ -156,8 +159,9 @@ public class ApplicationEnterGameTableState implements ApplicationState {
         OthelloGameWindow othelloGameWindow = applicationContext.getOthelloGameWindow();
 
         GameRecord gameRecord = applicationContext.getGameRecord();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
-        gameRecord.setGameEndTime(nowTime.toString());
+        gameRecord.setGameEndTime(nowTime.format(formatter));
 
         if (applicationContext.getCurrentTableId() != null) {
             GameTable gameTable = applicationContext.getGameTableList().get(applicationContext.getCurrentTableId() - 1);

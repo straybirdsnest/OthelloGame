@@ -6,6 +6,7 @@ import otakuplus.straybird.othellogame.models.GameRecord;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GameWhiteReadyState implements GameState {
     public void whiteStandBy() {
@@ -23,7 +24,8 @@ public class GameWhiteReadyState implements GameState {
         ApplicationContext applicationContext = ApplicationContextSingleton.getInstance();
         GameRecord gameRecord = applicationContext.getGameRecord();
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("GMT+8"));
-        gameRecord.setGameBeginTime(nowTime.toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        gameRecord.setGameBeginTime(nowTime.format(formatter));
     }
 
     public void blackStandByCancel() {
